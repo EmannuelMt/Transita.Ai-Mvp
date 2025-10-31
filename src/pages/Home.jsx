@@ -35,7 +35,28 @@ import {
   FaRegHeart,
   FaBolt,
   FaAward,
-  FaGlobeAmericas
+  FaGlobeAmericas,
+  FaEnvelope,
+  FaMapPin,
+  FaBook,
+  FaGraduationCap,
+  FaLightbulb,
+  FaHandshake,
+  FaTrophy,
+  FaMedal,
+  FaUserTie,
+  FaHistory,
+  FaVideo,
+  FaImages,
+  FaNewspaper,
+  FaBlog,
+  FaPenAlt,
+  FaCommentDots,
+  FaComments,
+  FaPaperPlane,
+  FaMapMarkedAlt,
+  FaPhoneAlt,
+  FaWhatsapp
 } from 'react-icons/fa';
 import '../styles/home.css';
 
@@ -87,7 +108,7 @@ const InteractiveParticles = () => {
   );
 };
 
-// Componente de Card de Ação Rápida Super Melhorado
+// Componente de Card de Ação Rápida
 const QuickActionCard = ({ icon, title, description, color, action, badge, index }) => {
   const { ref, isInView } = useScrollAnimation();
   const [isHovered, setIsHovered] = useState(false);
@@ -119,7 +140,6 @@ const QuickActionCard = ({ icon, title, description, color, action, badge, index
       } : { opacity: 0, y: 50, rotateX: 45 }}
     >
       <div className="action-card-glow"></div>
-      <div className="action-card-background"></div>
       
       <AnimatePresence>
         {isHovered && (
@@ -185,7 +205,7 @@ const QuickActionCard = ({ icon, title, description, color, action, badge, index
   );
 };
 
-// Componente de Estatística com Gráficos em Tempo Real
+// Componente de Estatística com Gráficos
 const AnimatedStatCard = ({ icon, value, label, color, change, trend, subtitle, index }) => {
   const { ref, isInView } = useScrollAnimation();
   const [animatedValue, setAnimatedValue] = useState(0);
@@ -242,7 +262,6 @@ const AnimatedStatCard = ({ icon, value, label, color, change, trend, subtitle, 
     >
       <div className="stat-background-pattern"></div>
       <div className="stat-glow"></div>
-      <div className="stat-particles"></div>
       
       <div className="stat-content">
         <div className="stat-main">
@@ -305,7 +324,6 @@ const AnimatedStatCard = ({ icon, value, label, color, change, trend, subtitle, 
         </motion.div>
       </div>
 
-      {/* Mini gráfico animado */}
       <div className="stat-chart">
         {[20, 40, 60, 80, 100].map((height, i) => (
           <motion.div
@@ -326,7 +344,212 @@ const AnimatedStatCard = ({ icon, value, label, color, change, trend, subtitle, 
   );
 };
 
-// Componente de Feature Card com Efeito Parallax
+// Componente de Logo da Empresa
+const CompanyLogo = () => {
+  const { ref, isInView } = useScrollAnimation();
+
+  return (
+    <motion.div 
+      ref={ref}
+      className="company-logo-section"
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
+      transition={{ duration: 0.8, type: "spring" }}
+    >
+      <div className="logo-container">
+        <motion.div 
+          className="logo-main"
+          whileHover={{ scale: 1.05, rotate: 5 }}
+          transition={{ type: "spring", stiffness: 300 }}
+        >
+          <FaRocket className="logo-icon" />
+          <div className="logo-text">
+            <span className="logo-primary">LogiTech</span>
+            <span className="logo-secondary">Pro</span>
+          </div>
+        </motion.div>
+        
+        <motion.div 
+          className="logo-tagline"
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ delay: 0.3 }}
+        >
+          <FaAward className="tagline-icon" />
+          <span>Líder em Soluções Logísticas Inteligentes</span>
+        </motion.div>
+
+        <motion.div 
+          className="logo-certifications"
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+          transition={{ delay: 0.5 }}
+        >
+          <div className="certification">
+            <FaShieldAlt />
+            <span>ISO 9001 Certified</span>
+          </div>
+          <div className="certification">
+            <FaMedal />
+            <span>Prêmio Inovação 2024</span>
+          </div>
+          <div className="certification">
+            <FaTrophy />
+            <span>Top 10 Startups Brasil</span>
+          </div>
+        </motion.div>
+      </div>
+    </motion.div>
+  );
+};
+
+// Componente Sobre a Empresa
+const AboutCompany = () => {
+  const { ref, isInView } = useScrollAnimation();
+
+  const milestones = [
+    { year: '2018', event: 'Fundação da LogiTech', icon: <FaRocket /> },
+    { year: '2019', event: 'Primeiro Cliente Enterprise', icon: <FaUserTie /> },
+    { year: '2020', event: 'Expansão Nacional', icon: <FaMapMarkedAlt /> },
+    { year: '2021', event: 'Série A Funding', icon: <FaChartLine /> },
+    { year: '2022', event: '+1000 Clientes', icon: <FaUsers /> },
+    { year: '2023', event: 'IA Integrada', icon: <FaCog /> },
+    { year: '2024', event: 'Expansão Internacional', icon: <FaGlobeAmericas /> }
+  ];
+
+  const values = [
+    {
+      icon: <FaLightbulb />,
+      title: 'Inovação',
+      description: 'Buscamos constantemente novas tecnologias e soluções criativas'
+    },
+    {
+      icon: <FaHandshake />,
+      title: 'Parceria',
+      description: 'Trabalhamos lado a lado com nossos clientes para o sucesso mútuo'
+    },
+    {
+      icon: <FaShieldAlt />,
+      title: 'Confiança',
+      description: 'Segurança e transparência em todas as nossas operações'
+    },
+    {
+      icon: <FaLeaf />,
+      title: 'Sustentabilidade',
+      description: 'Compromisso com operações logísticas eco-friendly'
+    }
+  ];
+
+  return (
+    <section ref={ref} className="about-company-section">
+      <div className="container">
+        <motion.div 
+          className="section-header center"
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+        >
+          <h2>Sobre a LogiTech</h2>
+          <p>Transformando a logística brasileira com tecnologia de ponta</p>
+        </motion.div>
+
+        <div className="about-content">
+          <motion.div 
+            className="about-text"
+            initial={{ opacity: 0, x: -50 }}
+            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
+            transition={{ delay: 0.2 }}
+          >
+            <h3>Nossa História</h3>
+            <p>
+              Fundada em 2018, a LogiTech nasceu da visão de revolucionar o setor logístico 
+              brasileiro através da tecnologia. Começamos como uma pequena startup e hoje 
+              somos referência em soluções inteligentes para gestão de frotas.
+            </p>
+            <p>
+              Nossa missão é simplificar a complexidade das operações logísticas, 
+              proporcionando eficiência, redução de custos e sustentabilidade para 
+              empresas de todos os portes.
+            </p>
+
+            <div className="company-stats">
+              <div className="stat">
+                <strong>500+</strong>
+                <span>Clientes Ativos</span>
+              </div>
+              <div className="stat">
+                <strong>50K+</strong>
+                <span>Entregas/Mês</span>
+              </div>
+              <div className="stat">
+                <strong>99.8%</strong>
+                <span>Disponibilidade</span>
+              </div>
+              <div className="stat">
+                <strong>40%</strong>
+                <span>Redução de Custos</span>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div 
+            className="about-visual"
+            initial={{ opacity: 0, x: 50 }}
+            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
+            transition={{ delay: 0.4 }}
+          >
+            <div className="milestones-timeline">
+              <h4>Nossa Jornada</h4>
+              <div className="timeline">
+                {milestones.map((milestone, index) => (
+                  <motion.div 
+                    key={index}
+                    className="timeline-item"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                    transition={{ delay: 0.6 + index * 0.1 }}
+                  >
+                    <div className="timeline-icon">{milestone.icon}</div>
+                    <div className="timeline-content">
+                      <span className="timeline-year">{milestone.year}</span>
+                      <span className="timeline-event">{milestone.event}</span>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        <motion.div 
+          className="company-values"
+          initial={{ opacity: 0, y: 50 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+          transition={{ delay: 0.8 }}
+        >
+          <h3>Nossos Valores</h3>
+          <div className="values-grid">
+            {values.map((value, index) => (
+              <motion.div 
+                key={index}
+                className="value-card"
+                whileHover={{ scale: 1.05, y: -5 }}
+                initial={{ opacity: 0, y: 30 }}
+                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+                transition={{ delay: 1 + index * 0.1 }}
+              >
+                <div className="value-icon">{value.icon}</div>
+                <h4>{value.title}</h4>
+                <p>{value.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+// Componente de Feature Card
 const FeatureCard = ({ icon, title, description, delay = 0, index }) => {
   const { ref, isInView } = useScrollAnimation();
   const [isHovered, setIsHovered] = useState(false);
@@ -356,7 +579,6 @@ const FeatureCard = ({ icon, title, description, delay = 0, index }) => {
       }}
     >
       <div className="feature-card-glow"></div>
-      <div className="feature-card-background"></div>
       
       <AnimatePresence>
         {isHovered && (
@@ -425,7 +647,7 @@ const FeatureCard = ({ icon, title, description, delay = 0, index }) => {
   );
 };
 
-// Componente de Plano com Efeito de Destaque
+// Componente de Plano
 const PremiumPlanCard = ({ name, price, features, recommended, color, period = 'mês', popular }) => {
   const { ref, isInView } = useScrollAnimation();
   const [isHovered, setIsHovered] = useState(false);
@@ -453,7 +675,6 @@ const PremiumPlanCard = ({ name, price, features, recommended, color, period = '
         transition: { type: "spring", stiffness: 300, damping: 25 }
       }}
     >
-      {/* Badges */}
       {recommended && (
         <motion.div 
           className="recommended-badge"
@@ -480,7 +701,6 @@ const PremiumPlanCard = ({ name, price, features, recommended, color, period = '
       )}
       
       <div className="plan-glow"></div>
-      <div className="plan-background"></div>
       
       <AnimatePresence>
         {isHovered && (
@@ -564,7 +784,6 @@ const PremiumPlanCard = ({ name, price, features, recommended, color, period = '
         </motion.div>
       </motion.button>
 
-      {/* Elementos decorativos */}
       <div className="plan-decoration">
         <motion.div 
           className="decoration-orb"
@@ -583,7 +802,665 @@ const PremiumPlanCard = ({ name, price, features, recommended, color, period = '
   );
 };
 
-// Componente de Header com Navegação Suave
+// Componente de Guia Rápido
+const QuickGuide = () => {
+  const { ref, isInView } = useScrollAnimation();
+
+  const guides = [
+    {
+      step: 1,
+      title: 'Configuração Inicial',
+      description: 'Configure sua conta e adicione seus primeiros veículos',
+      icon: <FaCog />,
+      features: ['Cadastro de veículos', 'Configuração de motoristas', 'Definição de rotas base'],
+      video: '/videos/setup-guide.mp4',
+      duration: '5 min'
+    },
+    {
+      step: 2,
+      title: 'Primeiro Frete',
+      description: 'Aprenda a criar e gerenciar seu primeiro frete',
+      icon: <FaTruck />,
+      features: ['Criação de fretes', 'Atribuição de veículos', 'Acompanhamento em tempo real'],
+      video: '/videos/first-shipment.mp4',
+      duration: '8 min'
+    },
+    {
+      step: 3,
+      title: 'Monitoramento',
+      description: 'Monitore suas operações em tempo real',
+      icon: <FaMapMarkerAlt />,
+      features: ['Dashboard interativo', 'Alertas inteligentes', 'Relatórios automáticos'],
+      video: '/videos/monitoring.mp4',
+      duration: '6 min'
+    },
+    {
+      step: 4,
+      title: 'Otimização',
+      description: 'Use nossas ferramentas de IA para otimizar rotas',
+      icon: <FaRoute />,
+      features: ['Otimização de rotas', 'Redução de custos', 'Previsão de entrega'],
+      video: '/videos/optimization.mp4',
+      duration: '7 min'
+    }
+  ];
+
+  return (
+    <section ref={ref} className="quick-guide-section">
+      <div className="container">
+        <motion.div 
+          className="section-header center"
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+        >
+          <h2>Guia Rápido do Sistema</h2>
+          <p>Aprenda a usar todas as funcionalidades em poucos minutos</p>
+        </motion.div>
+
+        <div className="guides-container">
+          {guides.map((guide, index) => (
+            <motion.div 
+              key={guide.step}
+              className="guide-card"
+              initial={{ opacity: 0, y: 50 }}
+              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+              transition={{ delay: index * 0.2 }}
+              whileHover={{ scale: 1.02, y: -5 }}
+            >
+              <div className="guide-header">
+                <div className="guide-step">Passo {guide.step}</div>
+                <div className="guide-duration">
+                  <FaClock />
+                  {guide.duration}
+                </div>
+              </div>
+              
+              <div className="guide-icon">{guide.icon}</div>
+              
+              <h3>{guide.title}</h3>
+              <p>{guide.description}</p>
+              
+              <div className="guide-features">
+                {guide.features.map((feature, featureIndex) => (
+                  <div key={featureIndex} className="feature">
+                    <FaCheckCircle />
+                    <span>{feature}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="guide-actions">
+                <motion.button 
+                  className="btn-primary btn-sm"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <FaPlay />
+                  Assistir Tutorial
+                </motion.button>
+                <button className="btn-outline btn-sm">
+                  <FaBook />
+                  Ler Documentação
+                </button>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        <motion.div 
+          className="guide-resources"
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{ delay: 0.8 }}
+        >
+          <h3>Recursos Adicionais</h3>
+          <div className="resources-grid">
+            <div className="resource-card">
+              <FaGraduationCap className="resource-icon" />
+              <h4>Academia LogiTech</h4>
+              <p>Cursos completos e certificações</p>
+              <button className="btn-link">
+                Explorar Cursos <FaArrowRight />
+              </button>
+            </div>
+            
+            <div className="resource-card">
+              <FaVideo className="resource-icon" />
+              <h4>Webinars</h4>
+              <p>Sessões ao vivo com especialistas</p>
+              <button className="btn-link">
+                Ver Agenda <FaArrowRight />
+              </button>
+            </div>
+            
+            <div className="resource-card">
+              <FaFileAlt className="resource-icon" />
+              <h4>Documentação</h4>
+              <p>Manuais técnicos e APIs</p>
+              <button className="btn-link">
+                Acessar Docs <FaArrowRight />
+              </button>
+            </div>
+            
+            <div className="resource-card">
+              <FaComments className="resource-icon" />
+              <h4>Comunidade</h4>
+              <p>Tire dúvidas com outros usuários</p>
+              <button className="btn-link">
+                Entrar na Comunidade <FaArrowRight />
+              </button>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+// Componente de Blog
+const BlogSection = () => {
+  const { ref, isInView } = useScrollAnimation();
+
+  const blogPosts = [
+    {
+      id: 1,
+      title: 'Como a IA está revolucionando a logística em 2024',
+      excerpt: 'Descubra as principais tendências de inteligência artificial aplicadas à gestão de frotas e otimização de rotas...',
+      author: 'Carlos Silva',
+      date: '15 Mar 2024',
+      readTime: '8 min',
+      category: 'Tecnologia',
+      image: '/images/blog-ia-logistica.jpg',
+      featured: true
+    },
+    {
+      id: 2,
+      title: '5 Estratégias para Reduzir Custos na sua Frota',
+      excerpt: 'Aprenda técnicas comprovadas para diminuir custos operacionais e aumentar a eficiência da sua frota...',
+      author: 'Ana Costa',
+      date: '12 Mar 2024',
+      readTime: '6 min',
+      category: 'Gestão',
+      image: '/images/blog-reducao-custos.jpg'
+    },
+    {
+      id: 3,
+      title: 'Sustentabilidade na Logística: Um Guia Prático',
+      excerpt: 'Como implementar práticas sustentáveis na sua operação logística e reduzir o impacto ambiental...',
+      author: 'Pedro Santos',
+      date: '10 Mar 2024',
+      readTime: '10 min',
+      category: 'Sustentabilidade',
+      image: '/images/blog-sustentabilidade.jpg'
+    },
+    {
+      id: 4,
+      title: 'Novas Regulamentações do Setor de Transporte',
+      excerpt: 'Fique por dentro das mudanças na legislação que afetam o transporte de cargas no Brasil...',
+      author: 'Mariana Oliveira',
+      date: '8 Mar 2024',
+      readTime: '5 min',
+      category: 'Legislação',
+      image: '/images/blog-regulamentacoes.jpg'
+    }
+  ];
+
+  return (
+    <section ref={ref} className="blog-section">
+      <div className="container">
+        <motion.div 
+          className="section-header"
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+        >
+          <div className="section-title">
+            <h2>Blog LogiTech</h2>
+            <p>Fique por dentro das novidades do setor logístico</p>
+          </div>
+          <motion.button 
+            className="btn-link"
+            whileHover={{ x: 5 }}
+          >
+            Ver todos os artigos <FaArrowRight />
+          </motion.button>
+        </motion.div>
+
+        <div className="blog-grid">
+          {blogPosts.map((post, index) => (
+            <motion.article 
+              key={post.id}
+              className={`blog-card ${post.featured ? 'featured' : ''}`}
+              initial={{ opacity: 0, y: 50 }}
+              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+              transition={{ delay: index * 0.1 }}
+              whileHover={{ y: -8, transition: { type: "spring", stiffness: 300 } }}
+            >
+              {post.featured && (
+                <div className="featured-badge">
+                  <FaStar />
+                  Destaque
+                </div>
+              )}
+              
+              <div className="blog-image">
+                <div className="image-placeholder">
+                  <FaImages />
+                </div>
+                <div className="blog-category">{post.category}</div>
+              </div>
+              
+              <div className="blog-content">
+                <div className="blog-meta">
+                  <span className="blog-date">{post.date}</span>
+                  <span className="blog-read-time">{post.readTime}</span>
+                </div>
+                
+                <h3 className="blog-title">{post.title}</h3>
+                <p className="blog-excerpt">{post.excerpt}</p>
+                
+                <div className="blog-footer">
+                  <div className="blog-author">
+                    <div className="author-avatar">
+                      <FaUserTie />
+                    </div>
+                    <span>{post.author}</span>
+                  </div>
+                  
+                  <motion.button 
+                    className="btn-link btn-sm"
+                    whileHover={{ x: 3 }}
+                  >
+                    Ler mais <FaArrowRight />
+                  </motion.button>
+                </div>
+              </div>
+            </motion.article>
+          ))}
+        </div>
+
+        <motion.div 
+          className="blog-newsletter"
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{ delay: 0.5 }}
+        >
+          <div className="newsletter-content">
+            <FaNewspaper className="newsletter-icon" />
+            <div className="newsletter-text">
+              <h4>Newsletter LogiTech</h4>
+              <p>Receba as melhores dicas e novidades do setor logístico diretamente no seu email</p>
+            </div>
+            <div className="newsletter-form">
+              <input 
+                type="email" 
+                placeholder="Seu melhor email"
+                className="newsletter-input"
+              />
+              <motion.button 
+                className="btn-primary"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Assinar
+              </motion.button>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+// Componente de Contato e Suporte
+const ContactSupport = () => {
+  const { ref, isInView } = useScrollAnimation();
+  const [activeTab, setActiveTab] = useState('contact');
+
+  const contactMethods = [
+    {
+      icon: <FaWhatsapp />,
+      title: 'WhatsApp',
+      description: 'Suporte rápido via WhatsApp',
+      info: '+55 (11) 99999-9999',
+      action: 'Iniciar Conversa',
+      color: '#25D366'
+    },
+    {
+      icon: <FaPhoneAlt />,
+      title: 'Telefone',
+      description: 'Atendimento telefônico',
+      info: '0800 123 4567',
+      action: 'Ligar Agora',
+      color: '#007bff'
+    },
+    {
+      icon: <FaEnvelope />,
+      title: 'Email',
+      description: 'Suporte por email',
+      info: 'suporte@logitech.com',
+      action: 'Enviar Email',
+      color: '#dc3545'
+    },
+    {
+      icon: <FaComments />,
+      title: 'Chat Online',
+      description: 'Chat em tempo real',
+      info: 'Disponível 24/7',
+      action: 'Iniciar Chat',
+      color: '#6f42c1'
+    }
+  ];
+
+  const supportChannels = [
+    {
+      icon: <FaHeadset />,
+      title: 'Suporte Técnico',
+      description: 'Ajuda com problemas técnicos e configurações',
+      availability: '24/7',
+      responseTime: 'Até 15min'
+    },
+    {
+      icon: <FaGraduationCap />,
+      title: 'Suporte Educacional',
+      description: 'Dúvidas sobre uso da plataforma e treinamentos',
+      availability: '8h-18h',
+      responseTime: 'Até 2h'
+    },
+    {
+      icon: <FaUserTie />,
+      title: 'Suporte Comercial',
+      description: 'Informações sobre planos e contratações',
+      availability: '9h-17h',
+      responseTime: 'Até 1h'
+    },
+    {
+      icon: <FaShieldAlt />,
+      title: 'Suporte Enterprise',
+      description: 'Atendimento dedicado para clientes corporativos',
+      availability: '24/7',
+      responseTime: 'Imediato'
+    }
+  ];
+
+  return (
+    <section ref={ref} className="contact-support-section">
+      <div className="container">
+        <motion.div 
+          className="section-header center"
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+        >
+          <h2>Fale Conosco</h2>
+          <p>Estamos aqui para ajudar você a transformar sua operação logística</p>
+        </motion.div>
+
+        <div className="contact-tabs">
+          <div className="tab-buttons">
+            <button 
+              className={`tab-button ${activeTab === 'contact' ? 'active' : ''}`}
+              onClick={() => setActiveTab('contact')}
+            >
+              <FaEnvelope />
+              Contato
+            </button>
+            <button 
+              className={`tab-button ${activeTab === 'support' ? 'active' : ''}`}
+              onClick={() => setActiveTab('support')}
+            >
+              <FaHeadset />
+              Suporte
+            </button>
+            <button 
+              className={`tab-button ${activeTab === 'locations' ? 'active' : ''}`}
+              onClick={() => setActiveTab('locations')}
+            >
+              <FaMapMarkedAlt />
+              Nossas Unidades
+            </button>
+          </div>
+
+          <div className="tab-content">
+            <AnimatePresence mode="wait">
+              {activeTab === 'contact' && (
+                <motion.div 
+                  className="contact-content"
+                  key="contact"
+                  initial={{ opacity: 0, x: 50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -50 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="contact-methods">
+                    {contactMethods.map((method, index) => (
+                      <motion.div 
+                        key={index}
+                        className="contact-method"
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                        whileHover={{ scale: 1.02 }}
+                      >
+                        <div 
+                          className="method-icon"
+                          style={{ color: method.color }}
+                        >
+                          {method.icon}
+                        </div>
+                        <div className="method-content">
+                          <h4>{method.title}</h4>
+                          <p>{method.description}</p>
+                          <span className="method-info">{method.info}</span>
+                        </div>
+                        <motion.button 
+                          className="btn-primary btn-sm"
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          style={{ backgroundColor: method.color }}
+                        >
+                          {method.action}
+                        </motion.button>
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  <div className="contact-form-container">
+                    <h3>Envie sua Mensagem</h3>
+                    <form className="contact-form">
+                      <div className="form-row">
+                        <input type="text" placeholder="Seu nome" required />
+                        <input type="email" placeholder="Seu email" required />
+                      </div>
+                      <input type="text" placeholder="Assunto" required />
+                      <select required>
+                        <option value="">Selecione o departamento</option>
+                        <option value="suporte">Suporte Técnico</option>
+                        <option value="comercial">Comercial</option>
+                        <option value="financeiro">Financeiro</option>
+                        <option value="outro">Outro</option>
+                      </select>
+                      <textarea 
+                        placeholder="Como podemos ajudar você?" 
+                        rows="5"
+                        required
+                      ></textarea>
+                      <motion.button 
+                        type="submit"
+                        className="btn-primary"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <FaPaperPlane />
+                        Enviar Mensagem
+                      </motion.button>
+                    </form>
+                  </div>
+                </motion.div>
+              )}
+
+              {activeTab === 'support' && (
+                <motion.div 
+                  className="support-content"
+                  key="support"
+                  initial={{ opacity: 0, x: 50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -50 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="support-channels">
+                    {supportChannels.map((channel, index) => (
+                      <motion.div 
+                        key={index}
+                        className="support-channel"
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                        whileHover={{ y: -5 }}
+                      >
+                        <div className="channel-icon">{channel.icon}</div>
+                        <div className="channel-content">
+                          <h4>{channel.title}</h4>
+                          <p>{channel.description}</p>
+                          <div className="channel-meta">
+                            <span>
+                              <FaClock />
+                              {channel.availability}
+                            </span>
+                            <span>
+                              <FaBell />
+                              {channel.responseTime}
+                            </span>
+                          </div>
+                        </div>
+                        <button className="btn-outline btn-sm">
+                          Solicitar Suporte
+                        </button>
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  <div className="support-resources">
+                    <h3>Recursos de Ajuda</h3>
+                    <div className="resources-grid">
+                      <div className="resource">
+                        <FaBook />
+                        <span>Base de Conhecimento</span>
+                      </div>
+                      <div className="resource">
+                        <FaVideo />
+                        <span>Tutoriais em Vídeo</span>
+                      </div>
+                      <div className="resource">
+                        <FaFileAlt />
+                        <span>Documentação</span>
+                      </div>
+                      <div className="resource">
+                        <FaComments />
+                        <span>FAQ</span>
+                      </div>
+                      <div className="resource">
+                        <FaGraduationCap />
+                        <span>Treinamentos</span>
+                      </div>
+                      <div className="resource">
+                        <FaNewspaper />
+                        <span>Blog</span>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+
+              {activeTab === 'locations' && (
+                <motion.div 
+                  className="locations-content"
+                  key="locations"
+                  initial={{ opacity: 0, x: 50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -50 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="locations-grid">
+                    <div className="location-card">
+                      <div className="location-header">
+                        <FaMapPin className="location-icon" />
+                        <div>
+                          <h4>São Paulo - Matriz</h4>
+                          <p>Av. Paulista, 1000 - Bela Vista</p>
+                        </div>
+                      </div>
+                      <div className="location-info">
+                        <span><FaPhoneAlt /> (11) 3333-3333</span>
+                        <span><FaEnvelope /> sp@logitech.com</span>
+                        <span><FaClock /> Seg-Sex: 8h-18h</span>
+                      </div>
+                    </div>
+
+                    <div className="location-card">
+                      <div className="location-header">
+                        <FaMapPin className="location-icon" />
+                        <div>
+                          <h4>Rio de Janeiro</h4>
+                          <p>Av. Rio Branco, 100 - Centro</p>
+                        </div>
+                      </div>
+                      <div className="location-info">
+                        <span><FaPhoneAlt /> (21) 2222-2222</span>
+                        <span><FaEnvelope /> rj@logitech.com</span>
+                        <span><FaClock /> Seg-Sex: 8h-18h</span>
+                      </div>
+                    </div>
+
+                    <div className="location-card">
+                      <div className="location-header">
+                        <FaMapPin className="location-icon" />
+                        <div>
+                          <h4>Belo Horizonte</h4>
+                          <p>Av. do Contorno, 5000 - Lourdes</p>
+                        </div>
+                      </div>
+                      <div className="location-info">
+                        <span><FaPhoneAlt /> (31) 4444-4444</span>
+                        <span><FaEnvelope /> bh@logitech.com</span>
+                        <span><FaClock /> Seg-Sex: 8h-18h</span>
+                      </div>
+                    </div>
+
+                    <div className="location-card">
+                      <div className="location-header">
+                        <FaMapPin className="location-icon" />
+                        <div>
+                          <h4>Porto Alegre</h4>
+                          <p>Av. Assis Brasil, 1000 - Passo d'Areia</p>
+                        </div>
+                      </div>
+                      <div className="location-info">
+                        <span><FaPhoneAlt /> (51) 5555-5555</span>
+                        <span><FaEnvelope /> poa@logitech.com</span>
+                        <span><FaClock /> Seg-Sex: 8h-18h</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="map-container">
+                    <div className="map-placeholder">
+                      <FaMapMarkedAlt />
+                      <p>Mapa interativo das nossas localizações</p>
+                      <button className="btn-primary">
+                        Ver no Google Maps
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// Componente de Header
 const AnimatedHeader = ({ user, onNavigate, isScrolled }) => {
   return (
     <motion.header 
@@ -684,7 +1561,7 @@ function Home({ user, onNavigate }) {
     };
   }, []);
 
-  // Dados melhorados com mais informações
+  // Dados para as seções
   const operationalStats = [
     { 
       icon: <FaTruck />, 
@@ -899,7 +1776,7 @@ function Home({ user, onNavigate }) {
 
   return (
     <div className="home-container">
-      {/* Hero Section com Efeitos Avançados */}
+      {/* Hero Section */}
       <motion.section 
         ref={heroRef}
         className="hero-section"
@@ -911,42 +1788,7 @@ function Home({ user, onNavigate }) {
         </div>
         
         <div className="hero-content">
-          <motion.div 
-            className="logo-section"
-            initial={{ scale: 0.8, opacity: 0, y: 50 }}
-            animate={{ scale: 1, opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, type: "spring" }}
-          >
-            <motion.div 
-              className="logo-wrapper"
-              whileHover={{ scale: 1.05 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              <motion.div
-                className="logo-icon"
-                animate={{ 
-                  y: [0, -10, 0],
-                  rotate: [0, 5, -5, 0]
-                }}
-                transition={{ 
-                  duration: 4,
-                  repeat: Infinity,
-                  repeatType: "reverse"
-                }}
-              >
-                <FaRocket />
-              </motion.div>
-              <span className="logo-text">LogiTech Pro</span>
-            </motion.div>
-            <motion.p 
-              className="logo-tagline"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
-            >
-              Revolucionando a Logística com IA
-            </motion.p>
-          </motion.div>
+          <CompanyLogo />
           
           <motion.div 
             className="hero-text"
@@ -1116,6 +1958,9 @@ function Home({ user, onNavigate }) {
         </div>
       </section>
 
+      {/* Sobre a Empresa */}
+      <AboutCompany />
+
       {/* Features Section */}
       <section className="features-section">
         <div className="container">
@@ -1177,57 +2022,14 @@ function Home({ user, onNavigate }) {
         </div>
       </section>
 
-      {/* CTA Section Final */}
-      <section className="cta-section">
-        <div className="cta-background"></div>
-        <div className="container">
-          <div className="cta-content">
-            <div className="cta-text">
-              <motion.h2
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-              >
-                Pronto para transformar sua operação logística?
-              </motion.h2>
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.1 }}
-              >
-                Junte-se a mais de 500 empresas que já otimizaram seus processos conosco
-              </motion.p>
-            </div>
-            <div className="cta-actions">
-              <motion.button 
-                className="btn-primary btn-large"
-                whileHover={{ 
-                  scale: 1.05, 
-                  y: -2,
-                  boxShadow: '0 20px 40px rgba(99, 102, 241, 0.4)'
-                }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <FaPlay className="btn-icon" />
-                Começar Agora
-              </motion.button>
-              <motion.button 
-                className="btn-secondary btn-large"
-                whileHover={{ 
-                  scale: 1.05, 
-                  y: -2,
-                  boxShadow: '0 20px 40px rgba(255, 255, 255, 0.2)'
-                }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <FaHeadset className="btn-icon" />
-                Falar com Especialista
-              </motion.button>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Seção de Guia Rápido */}
+      <QuickGuide />
+
+      {/* Seção de Blog */}
+      <BlogSection />
+
+      {/* Seção de Contato e Suporte */}
+      <ContactSupport />
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { 
   FaBars, 
   FaShieldAlt, 
@@ -26,7 +26,15 @@ import {
   FaGasPump,
   FaClipboardCheck,
   FaPhoneAlt,
-  FaQuestionCircle
+  FaQuestionCircle,
+  FaRocket,
+  FaLeaf,
+  FaBolt,
+  FaStar,
+  FaHeart,
+  FaSun,
+  FaMoon,
+  FaPalette
 } from 'react-icons/fa';
 import { 
   HiMenuAlt3,
@@ -40,7 +48,8 @@ import {
   RiTruckFill,
   RiMapPinFill,
   RiUserFill,
-  RiSettings4Fill
+  RiSettings4Fill,
+  RiFlashlightFill
 } from 'react-icons/ri';
 import '../styles/navbar.css';
 
@@ -67,6 +76,41 @@ const useDropdown = () => {
   return { isOpen, toggle, close, open, ref };
 };
 
+// Theme Toggle Component
+const ThemeToggle = ({ theme, onThemeChange }) => {
+  return (
+    <motion.button
+      className="theme-toggle"
+      onClick={onThemeChange}
+      whileHover={{ scale: 1.1, rotate: 180 }}
+      whileTap={{ scale: 0.9 }}
+      title={theme === 'light' ? 'Modo escuro' : 'Modo claro'}
+    >
+      <AnimatePresence mode="wait">
+        {theme === 'light' ? (
+          <motion.div
+            key="moon"
+            initial={{ scale: 0, rotate: -180 }}
+            animate={{ scale: 1, rotate: 0 }}
+            exit={{ scale: 0, rotate: 180 }}
+          >
+            <FaMoon className="theme-icon" />
+          </motion.div>
+        ) : (
+          <motion.div
+            key="sun"
+            initial={{ scale: 0, rotate: -180 }}
+            animate={{ scale: 1, rotate: 0 }}
+            exit={{ scale: 0, rotate: 180 }}
+          >
+            <FaSun className="theme-icon" />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.button>
+  );
+};
+
 // Professional Navbar Component
 const ProfessionalNavbar = ({ user, onLogout, sidebarOpen, onToggleSidebar }) => {
   const location = useLocation();
@@ -74,10 +118,29 @@ const ProfessionalNavbar = ({ user, onLogout, sidebarOpen, onToggleSidebar }) =>
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeHover, setActiveHover] = useState(null);
   const [mobileView, setMobileView] = useState(false);
+  const [theme, setTheme] = useState('light');
+  const [notifications, setNotifications] = useState([
+    { id: 1, type: 'info', title: 'Novo frete disponível', time: '5 min ago', read: false },
+    { id: 2, type: 'warning', title: 'Manutenção preventiva', time: '1 hora atrás', read: false },
+    { id: 3, type: 'success', title: 'Pagamento confirmado', time: '2 horas atrás', read: true }
+  ]);
   
   const dropdown = useDropdown();
   const mobileMenu = useDropdown();
   const searchModal = useDropdown();
+  const notificationsDropdown = useDropdown();
+
+  const { scrollY } = useScroll();
+  const navbarBackground = useTransform(
+    scrollY,
+    [0, 100],
+    ['rgba(255, 255, 255, 0.8)', 'rgba(255, 255, 255, 0.95)']
+  );
+  const navbarShadow = useTransform(
+    scrollY,
+    [0, 100],
+    ['0 1px 3px rgba(0,0,0,0.1)', '0 8px 25px rgba(0,0,0,0.15)']
+  );
 
   // Scroll effect
   useEffect(() => {
@@ -113,9 +176,20 @@ const ProfessionalNavbar = ({ user, onLogout, sidebarOpen, onToggleSidebar }) =>
     dropdown.close();
     mobileMenu.close();
     searchModal.close();
-  }, [dropdown, mobileMenu, searchModal]);
+    notificationsDropdown.close();
+  }, [dropdown, mobileMenu, searchModal, notificationsDropdown]);
 
-  // Navigation data structure
+  const toggleTheme = useCallback(() => {
+    setTheme(prev => prev === 'light' ? 'dark' : 'light');
+  }, []);
+
+  const markAllAsRead = useCallback(() => {
+    setNotifications(prev => prev.map(notif => ({ ...notif, read: true })));
+  }, []);
+
+  const unreadCount = notifications.filter(n => !n.read).length;
+
+  // Navigation data structure - Atualizada para combinar com a home
   const navigationConfig = {
     primary: [
       { 
@@ -123,122 +197,147 @@ const ProfessionalNavbar = ({ user, onLogout, sidebarOpen, onToggleSidebar }) =>
         icon: FaHome, 
         label: 'Início',
         description: 'Página inicial do sistema',
-        badge: null
+        badge: null,
+        gradient: 'primary'
       },
       { 
         path: '/dashboard', 
         icon: RiDashboardFill, 
         label: 'Dashboard',
-        description: 'Métricas e analytics',
-        badge: '3'
+        description: 'Métricas e analytics em tempo real',
+        badge: '3',
+        gradient: 'success'
       },
       { 
         path: '/fretes', 
         icon: RiTruckFill, 
         label: 'Fretes',
-        description: 'Gestão de transportes',
-        badge: '12'
+        description: 'Gestão inteligente de transportes',
+        badge: '12',
+        gradient: 'warning'
       },
       { 
         path: '/monitoramento', 
         icon: RiMapPinFill, 
         label: 'Monitoramento',
-        description: 'Rastreamento em tempo real',
-        badge: null
+        description: 'Rastreamento em tempo real com IA',
+        badge: null,
+        gradient: 'info'
       }
     ],
     dropdown: [
       {
-        title: 'Operações',
+        title: 'Operações Logísticas',
         icon: FaTruck,
-        color: '#4fc3f7',
+        color: '#6366f1',
+        gradient: 'primary',
         items: [
           { 
             path: '/motoristas', 
             icon: RiUserFill, 
             label: 'Motoristas',
-            description: 'Gestão de colaboradores'
+            description: 'Gestão de colaboradores',
+            features: ['Cadastro', 'Escalas', 'Desempenho']
           },
           { 
             path: '/veiculos', 
             icon: FaTruck, 
-            label: 'Frota',
-            description: 'Controle de veículos'
+            label: 'Frota Inteligente',
+            description: 'Controle completo de veículos',
+            features: ['Manutenção', 'Custos', 'Documentos']
           },
           { 
             path: '/rotas', 
             icon: FaRoute, 
-            label: 'Rotas',
-            description: 'Planejamento de trajetos'
+            label: 'Rotas Otimizadas',
+            description: 'Planejamento com IA',
+            features: ['Otimização', 'Tráfego', 'Custos']
           },
           { 
             path: '/cargas', 
             icon: FaWarehouse, 
             label: 'Cargas',
-            description: 'Gestão de inventário'
+            description: 'Gestão de inventário',
+            features: ['Tracking', 'Documentos', 'Status']
           }
         ]
       },
       {
-        title: 'Gestão',
+        title: 'Gestão & Analytics',
         icon: FaChartBar,
-        color: '#29b6f6',
+        color: '#10b981',
+        gradient: 'success',
         items: [
           { 
             path: '/relatorios', 
             icon: FaChartBar, 
-            label: 'Relatórios',
-            description: 'Analytics e insights'
+            label: 'Relatórios Avançados',
+            description: 'Analytics e insights preditivos',
+            features: ['Dashboard', 'Export', 'KPI']
           },
           { 
             path: '/financeiro', 
             icon: FaDollarSign, 
             label: 'Financeiro',
-            description: 'Controle financeiro'
+            description: 'Controle financeiro automatizado',
+            features: ['Faturamento', 'Custos', 'Fluxo']
           },
           { 
             path: '/manutencao', 
             icon: FaTools, 
             label: 'Manutenção',
-            description: 'Agendamentos e ordens'
+            description: 'Gestão preditiva de manutenções',
+            features: ['Agendamentos', 'Histórico', 'Custos']
           },
           { 
             path: '/combustivel', 
             icon: FaGasPump, 
             label: 'Combustível',
-            description: 'Controle de abastecimento'
+            description: 'Controle inteligente de abastecimento',
+            features: ['Abastecimento', 'Medições', 'Economia']
           }
         ]
       },
       {
-        title: 'Suporte',
-        icon: HiCog,
-        color: '#26c6da',
+        title: 'Sistema & Suporte',
+        icon: RiSettings4Fill,
+        color: '#8b5cf6',
+        gradient: 'purple',
         items: [
           { 
             path: '/configuracoes', 
             icon: RiSettings4Fill, 
             label: 'Configurações',
-            description: 'Preferências do sistema'
+            description: 'Personalização do sistema',
+            features: ['Preferências', 'Integrações', 'Segurança']
           },
           { 
             path: '/suporte', 
             icon: FaPhoneAlt, 
-            label: 'Suporte',
-            description: 'Central de ajuda'
+            label: 'Suporte 24/7',
+            description: 'Central de ajuda especializada',
+            features: ['Chat', 'Ticket', 'Remote']
           },
           { 
             path: '/documentacao', 
             icon: FaClipboardCheck, 
             label: 'Documentação',
-            description: 'Manuais e guias'
+            description: 'Manuais e guias completos',
+            features: ['API', 'Tutoriais', 'FAQ']
+          },
+          { 
+            path: '/integracao', 
+            icon: FaBolt, 
+            label: 'Integrações',
+            description: 'Conecte com outras plataformas',
+            features: ['ERP', 'Tracking', 'Payment']
           }
         ]
       }
     ]
   };
 
-  // Animation variants
+  // Animation variants - Melhoradas
   const animations = {
     navbar: {
       hidden: { y: -100, opacity: 0 },
@@ -247,8 +346,8 @@ const ProfessionalNavbar = ({ user, onLogout, sidebarOpen, onToggleSidebar }) =>
         opacity: 1,
         transition: {
           type: "spring",
-          stiffness: 100,
-          damping: 20
+          stiffness: 200,
+          damping: 25
         }
       }
     },
@@ -259,12 +358,12 @@ const ProfessionalNavbar = ({ user, onLogout, sidebarOpen, onToggleSidebar }) =>
         x: 0,
         transition: {
           type: "spring",
-          stiffness: 150,
-          delay: i * 0.1
+          stiffness: 200,
+          delay: i * 0.05
         }
       }),
       hover: {
-        scale: 1.02,
+        scale: 1.05,
         y: -2,
         transition: {
           type: "spring",
@@ -275,7 +374,7 @@ const ProfessionalNavbar = ({ user, onLogout, sidebarOpen, onToggleSidebar }) =>
     dropdown: {
       hidden: { 
         opacity: 0, 
-        y: -10,
+        y: -20,
         scale: 0.95
       },
       visible: { 
@@ -284,40 +383,52 @@ const ProfessionalNavbar = ({ user, onLogout, sidebarOpen, onToggleSidebar }) =>
         scale: 1,
         transition: {
           type: "spring",
-          stiffness: 300,
-          damping: 25
+          stiffness: 400,
+          damping: 30
         }
       },
       exit: { 
         opacity: 0, 
-        y: -10,
-        transition: { duration: 0.2 }
+        y: -20,
+        transition: { duration: 0.15 }
       }
     },
     mobileMenu: {
       hidden: { 
         opacity: 0,
         x: "100%",
-        transition: { duration: 0.3 }
+        transition: { duration: 0.3, ease: "easeInOut" }
       },
       visible: { 
         opacity: 1,
         x: 0,
         transition: {
           type: "spring",
-          stiffness: 300,
-          damping: 30
+          stiffness: 400,
+          damping: 40
         }
       },
       exit: { 
         opacity: 0,
         x: "100%",
-        transition: { duration: 0.3 }
+        transition: { duration: 0.25, ease: "easeInOut" }
       }
+    },
+    notification: {
+      hidden: { opacity: 0, x: 50 },
+      visible: (i) => ({
+        opacity: 1,
+        x: 0,
+        transition: {
+          delay: i * 0.1,
+          type: "spring",
+          stiffness: 300
+        }
+      })
     }
   };
 
-  // Search Component
+  // Search Component - Melhorado
   const SearchModal = () => (
     <AnimatePresence>
       {searchModal.isOpen && (
@@ -331,13 +442,16 @@ const ProfessionalNavbar = ({ user, onLogout, sidebarOpen, onToggleSidebar }) =>
           />
           <motion.div 
             className="search-modal"
-            initial={{ scale: 0.8, opacity: 0, y: -50 }}
+            initial={{ scale: 0.9, opacity: 0, y: -20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
-            exit={{ scale: 0.8, opacity: 0, y: -50 }}
+            exit={{ scale: 0.9, opacity: 0, y: -20 }}
             onClick={(e) => e.stopPropagation()}
           >
             <div className="search-header">
-              <h3>Buscar no sistema</h3>
+              <div className="search-title">
+                <HiSearch className="title-icon" />
+                <h3>Busca Inteligente</h3>
+              </div>
               <motion.button
                 className="search-close-btn"
                 onClick={searchModal.close}
@@ -347,30 +461,60 @@ const ProfessionalNavbar = ({ user, onLogout, sidebarOpen, onToggleSidebar }) =>
                 <HiX />
               </motion.button>
             </div>
+            
             <div className="search-input-container">
               <HiSearch className="search-icon" />
               <input
                 type="text"
-                placeholder="Buscar por fretes, motoristas, veículos..."
+                placeholder="Buscar por fretes, motoristas, veículos, relatórios..."
                 className="search-input"
                 autoFocus
               />
+              <motion.button 
+                className="search-action-btn"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <FaBolt />
+              </motion.button>
             </div>
+
             <div className="search-suggestions">
-              <span className="suggestion-title">Sugestões:</span>
-              <div className="suggestion-tags">
-                {['Fretes ativos', 'Motoristas', 'Relatórios', 'Manutenção'].map((tag, i) => (
-                  <motion.span
-                    key={tag}
-                    className="suggestion-tag"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.1 }}
+              <div className="suggestion-section">
+                <span className="suggestion-title">Busca Rápida</span>
+                <div className="suggestion-tags">
+                  {['Fretes ativos', 'Motoristas disponíveis', 'Relatórios mensais', 'Manutenção pendente', 'Rotas otimizadas'].map((tag, i) => (
+                    <motion.span
+                      key={tag}
+                      className="suggestion-tag"
+                      whileHover={{ scale: 1.05, y: -1 }}
+                      whileTap={{ scale: 0.95 }}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.1 }}
+                    >
+                      {tag}
+                    </motion.span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="search-recent">
+              <span className="recent-title">Buscas Recentes</span>
+              <div className="recent-items">
+                {['Relatório de desempenho', 'Frota Mercedes', 'Manutenção preventiva'].map((item, i) => (
+                  <motion.div
+                    key={item}
+                    className="recent-item"
+                    whileHover={{ x: 5 }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.3 + i * 0.1 }}
                   >
-                    {tag}
-                  </motion.span>
+                    <HiSearch />
+                    <span>{item}</span>
+                  </motion.div>
                 ))}
               </div>
             </div>
@@ -380,10 +524,72 @@ const ProfessionalNavbar = ({ user, onLogout, sidebarOpen, onToggleSidebar }) =>
     </AnimatePresence>
   );
 
+  // Notifications Dropdown
+  const NotificationsDropdown = () => (
+    <AnimatePresence>
+      {notificationsDropdown.isOpen && (
+        <motion.div 
+          className="notifications-panel"
+          ref={notificationsDropdown.ref}
+          variants={animations.dropdown}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+        >
+          <div className="notifications-header">
+            <h4>Notificações</h4>
+            {unreadCount > 0 && (
+              <motion.button 
+                className="mark-read-btn"
+                onClick={markAllAsRead}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Marcar como lida
+              </motion.button>
+            )}
+          </div>
+          
+          <div className="notifications-list">
+            {notifications.map((notification, i) => (
+              <motion.div
+                key={notification.id}
+                className={`notification-item ${notification.read ? 'read' : 'unread'} ${notification.type}`}
+                custom={i}
+                variants={animations.notification}
+              >
+                <div className="notification-icon">
+                  {notification.type === 'info' && <FaBell />}
+                  {notification.type === 'warning' && <FaBolt />}
+                  {notification.type === 'success' && <FaCheckCircle />}
+                </div>
+                <div className="notification-content">
+                  <span className="notification-title">{notification.title}</span>
+                  <span className="notification-time">{notification.time}</span>
+                </div>
+                {!notification.read && <div className="notification-dot" />}
+              </motion.div>
+            ))}
+          </div>
+
+          <div className="notifications-footer">
+            <Link to="/notificacoes" onClick={closeAllMenus}>
+              Ver todas as notificações
+            </Link>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+
   return (
     <>
       <motion.nav 
         className={`professional-navbar ${isScrolled ? 'scrolled' : ''} ${mobileView ? 'mobile' : ''}`}
+        style={{
+          background: navbarBackground,
+          boxShadow: navbarShadow
+        }}
         variants={animations.navbar}
         initial="hidden"
         animate="visible"
@@ -418,18 +624,25 @@ const ProfessionalNavbar = ({ user, onLogout, sidebarOpen, onToggleSidebar }) =>
                     transition: { duration: 0.6 }
                   }}
                 >
-                  <FaShieldAlt className="brand-icon" />
+                  <FaRocket className="brand-icon" />
                 </motion.div>
                 <div className="brand-content">
                   <motion.span 
                     className="brand-name"
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.1 }}
+                  >
+                    LogiTech
+                  </motion.span>
+                  <motion.span 
+                    className="brand-tagline"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
                     transition={{ delay: 0.2 }}
                   >
-                    Transita.AI
+                    Pro
                   </motion.span>
-                  <span className="brand-tagline">Logistics Intelligence</span>
                 </div>
               </Link>
             </motion.div>
@@ -447,7 +660,7 @@ const ProfessionalNavbar = ({ user, onLogout, sidebarOpen, onToggleSidebar }) =>
                 >
                   <Link 
                     to={item.path}
-                    className={`nav-link ${isActive(item.path) ? 'active' : ''}`}
+                    className={`nav-link ${isActive(item.path) ? 'active' : ''} ${item.gradient}`}
                     onClick={closeAllMenus}
                   >
                     <motion.div
@@ -502,32 +715,40 @@ const ProfessionalNavbar = ({ user, onLogout, sidebarOpen, onToggleSidebar }) =>
           <div className="nav-section nav-section--secondary">
             {/* Quick Actions */}
             <div className="nav-actions">
+              <ThemeToggle theme={theme} onThemeChange={toggleTheme} />
+
               <motion.button
                 className="nav-action"
                 onClick={searchModal.open}
                 whileHover={{ scale: 1.1, rotate: 5 }}
                 whileTap={{ scale: 0.9 }}
-                title="Buscar"
+                title="Busca inteligente"
               >
                 <HiSearch className="action-icon" />
               </motion.button>
 
-              <motion.button
-                className="nav-action"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                title="Notificações"
-              >
-                <HiBell className="action-icon" />
-                <motion.span 
-                  className="action-badge"
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ type: "spring", stiffness: 500 }}
+              <div className="nav-dropdown nav-notifications" ref={notificationsDropdown.ref}>
+                <motion.button
+                  className="nav-action"
+                  onClick={notificationsDropdown.toggle}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  title="Notificações"
                 >
-                  3
-                </motion.span>
-              </motion.button>
+                  <HiBell className="action-icon" />
+                  {unreadCount > 0 && (
+                    <motion.span 
+                      className="action-badge"
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: "spring", stiffness: 500 }}
+                    >
+                      {unreadCount}
+                    </motion.span>
+                  )}
+                </motion.button>
+                <NotificationsDropdown />
+              </div>
             </div>
 
             {/* Resources Dropdown */}
@@ -557,12 +778,16 @@ const ProfessionalNavbar = ({ user, onLogout, sidebarOpen, onToggleSidebar }) =>
                     animate="visible"
                     exit="exit"
                   >
+                    <div className="dropdown-header">
+                      <h3>Navegação Completa</h3>
+                      <span>Todos os módulos do sistema</span>
+                    </div>
+                    
                     {navigationConfig.dropdown.map((section, sectionIndex) => (
                       <div key={sectionIndex} className="dropdown-section">
                         <div className="section-header">
                           <div 
-                            className="section-icon-container"
-                            style={{ '--icon-color': section.color }}
+                            className={`section-icon-container ${section.gradient}`}
                           >
                             <section.icon className="section-icon" />
                           </div>
@@ -586,14 +811,18 @@ const ProfessionalNavbar = ({ user, onLogout, sidebarOpen, onToggleSidebar }) =>
                                 onClick={closeAllMenus}
                               >
                                 <div 
-                                  className="item-icon-container"
-                                  style={{ '--icon-color': section.color }}
+                                  className={`item-icon-container ${section.gradient}`}
                                 >
                                   <item.icon className="item-icon" />
                                 </div>
                                 <div className="item-content">
                                   <span className="item-title">{item.label}</span>
                                   <span className="item-description">{item.description}</span>
+                                  <div className="item-features">
+                                    {item.features?.map((feature, i) => (
+                                      <span key={i} className="item-feature">{feature}</span>
+                                    ))}
+                                  </div>
                                 </div>
                                 <motion.div 
                                   className="item-arrow"
@@ -627,7 +856,7 @@ const ProfessionalNavbar = ({ user, onLogout, sidebarOpen, onToggleSidebar }) =>
                     whileTap={{ scale: 0.9 }}
                   >
                     <FaUserCircle className="avatar-icon" />
-                    <div className="user-status" />
+                    <div className="user-status online" />
                   </motion.div>
                   <div className="user-info">
                     <span className="user-name">{user.displayName || user.email}</span>
@@ -714,6 +943,9 @@ const ProfessionalNavbar = ({ user, onLogout, sidebarOpen, onToggleSidebar }) =>
                 navigationConfig={navigationConfig}
                 isActive={isActive}
                 onClose={closeAllMenus}
+                theme={theme}
+                onThemeChange={toggleTheme}
+                unreadCount={unreadCount}
               />
             </motion.div>
           </>
@@ -726,30 +958,46 @@ const ProfessionalNavbar = ({ user, onLogout, sidebarOpen, onToggleSidebar }) =>
   );
 };
 
-// Mobile Navigation Component
-const MobileNavigation = ({ user, onLogout, navigationConfig, isActive, onClose }) => (
+// Mobile Navigation Component - Melhorado
+const MobileNavigation = ({ user, onLogout, navigationConfig, isActive, onClose, theme, onThemeChange, unreadCount }) => (
   <div className="mobile-nav">
     {/* User Header */}
-    {user && (
-      <div className="mobile-user-header">
-        <div className="user-avatar-large">
-          <FaUserCircle className="avatar-icon" />
-          <div className="user-status online" />
+    <div className="mobile-nav-header">
+      {user ? (
+        <div className="mobile-user-header">
+          <div className="user-avatar-large">
+            <FaUserCircle className="avatar-icon" />
+            <div className="user-status online" />
+          </div>
+          <div className="user-details">
+            <span className="user-name">{user.displayName || user.email}</span>
+            <span className="user-role">Administrador do Sistema</span>
+          </div>
+          <div className="user-actions">
+            <ThemeToggle theme={theme} onThemeChange={onThemeChange} />
+            <motion.button 
+              className="logout-button"
+              onClick={onLogout}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <FaSignOutAlt />
+            </motion.button>
+          </div>
         </div>
-        <div className="user-details">
-          <span className="user-name">{user.displayName || user.email}</span>
-          <span className="user-role">Administrador do Sistema</span>
+      ) : (
+        <div className="mobile-auth-section">
+          <Link to="/login" className="mobile-auth-button primary" onClick={onClose}>
+            <FaSignInAlt />
+            <span>Acessar Sistema</span>
+          </Link>
+          <Link to="/register" className="mobile-auth-button secondary" onClick={onClose}>
+            <FaUserCircle />
+            <span>Criar Conta</span>
+          </Link>
         </div>
-        <motion.button 
-          className="logout-button"
-          onClick={onLogout}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <FaSignOutAlt />
-        </motion.button>
-      </div>
-    )}
+      )}
+    </div>
 
     <div className="mobile-nav-content">
       {/* Primary Navigation */}
@@ -759,7 +1007,7 @@ const MobileNavigation = ({ user, onLogout, navigationConfig, isActive, onClose 
           <Link
             key={item.path}
             to={item.path}
-            className={`mobile-nav-item ${isActive(item.path) ? 'active' : ''}`}
+            className={`mobile-nav-item ${isActive(item.path) ? 'active' : ''} ${item.gradient}`}
             onClick={onClose}
           >
             <div className="item-icon">
@@ -770,6 +1018,12 @@ const MobileNavigation = ({ user, onLogout, navigationConfig, isActive, onClose 
               <span className="item-label">{item.label}</span>
               <span className="item-description">{item.description}</span>
             </div>
+            <motion.div 
+              className="item-arrow"
+              whileHover={{ x: 3 }}
+            >
+              <FaChevronDown />
+            </motion.div>
           </Link>
         ))}
       </nav>
@@ -778,7 +1032,9 @@ const MobileNavigation = ({ user, onLogout, navigationConfig, isActive, onClose 
       {navigationConfig.dropdown.map((section, index) => (
         <nav key={index} className="mobile-nav-section">
           <h3 className="section-title">
-            <section.icon className="title-icon" />
+            <div className={`title-icon-container ${section.gradient}`}>
+              <section.icon className="title-icon" />
+            </div>
             {section.title}
           </h3>
           {section.items.map((item) => (
@@ -794,6 +1050,11 @@ const MobileNavigation = ({ user, onLogout, navigationConfig, isActive, onClose 
               <div className="item-content">
                 <span className="item-label">{item.label}</span>
                 <span className="item-description">{item.description}</span>
+                <div className="item-features">
+                  {item.features?.map((feature, i) => (
+                    <span key={i} className="item-feature">{feature}</span>
+                  ))}
+                </div>
               </div>
             </Link>
           ))}
@@ -803,18 +1064,34 @@ const MobileNavigation = ({ user, onLogout, navigationConfig, isActive, onClose 
 
     {/* Mobile Footer */}
     <div className="mobile-nav-footer">
-      {!user && (
-        <Link to="/login" className="mobile-auth-button" onClick={onClose}>
-          <FaSignInAlt />
-          <span>Acessar Sistema</span>
-        </Link>
-      )}
       <div className="mobile-app-info">
-        <span className="app-version">v2.1.0</span>
-        <span className="app-copyright">© 2024 Transita.AI</span>
+        <div className="app-version">
+          <FaRocket className="version-icon" />
+          <span>LogiTech Pro v2.1.0</span>
+        </div>
+        <div className="app-stats">
+          <span className="stat">
+            <FaUserCircle />
+            12 online
+          </span>
+          <span className="stat">
+            <FaBell />
+            {unreadCount} notif.
+          </span>
+        </div>
+      </div>
+      <div className="app-copyright">
+        <span>© 2024 LogiTech Pro. Todos os direitos reservados.</span>
       </div>
     </div>
   </div>
+);
+
+// Componente auxiliar para ícone de check
+const FaCheckCircle = ({ className }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 0a12 12 0 1012 12A12 12 0 0012 0zm6.2 8.8l-6.8 6.8-3.2-3.2a1 1 0 00-1.4 1.4l4 4a1 1 0 001.4 0l7.5-7.5a1 1 0 00-1.4-1.4z"/>
+  </svg>
 );
 
 export default ProfessionalNavbar;

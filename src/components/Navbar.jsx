@@ -47,7 +47,7 @@ import {
   IoLocation,
   IoPeople
 } from 'react-icons/io5';
-import '../styles/navbar.css';
+import '../styles/Navbar.css';
 
 // Custom hook for dropdown management
 const useDropdown = () => {

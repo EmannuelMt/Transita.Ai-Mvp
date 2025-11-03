@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../styles/relatorios.css';
+import '../styles/Relatorios.css';
 
 const Relatorios = ({ user, onNavigate }) => {
   const [periodo, setPeriodo] = useState('mes');

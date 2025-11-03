@@ -58,7 +58,7 @@ import {
   FaPhoneAlt,
   FaWhatsapp
 } from 'react-icons/fa';
-import '../styles/home.css';
+import '../styles/Home.css';
 
 // Hook personalizado para animações de entrada
 const useScrollAnimation = (threshold = 0.1) => {

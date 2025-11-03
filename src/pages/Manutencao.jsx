@@ -33,7 +33,7 @@ import {
   IoSettingsOutline
 } from 'react-icons/io5';
 import { motion, AnimatePresence } from 'framer-motion';
-import '../styles/manutencao.css'
+import '../styles/Manutencao.css'
 
 const Manutencao = ({ user, onNavigate }) => {
   const [activeTab, setActiveTab] = useState('pendentes');

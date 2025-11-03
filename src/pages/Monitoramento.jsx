@@ -36,7 +36,7 @@ import {
   IoNavigateOutline
 } from 'react-icons/io5';
 import { motion, AnimatePresence } from 'framer-motion';
-import '../styles/monitoramento.css'
+import '../styles/Monitoramento.css'
 
 const Monitoramento = ({ user, onNavigate }) => {
   const [selectedVehicle, setSelectedVehicle] = useState(null);

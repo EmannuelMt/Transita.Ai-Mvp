@@ -43,14 +43,15 @@ function App() {
     return !user ? children : <Navigate to="/" />;
   };
 
-  if (loading) {
+  // Componente de layout para rotas protegidas
+  const ProtectedLayout = ({ children }) => {
     return (
-      <div className="loading-screen">
-        <div className="loading-spinner"></div>
-        <p>Carregando Transita.AI...</p>
-      </div>
+      <>
+        {children}
+        <Footer />
+      </>
     );
-  }
+  };
 
   return (
     <div className="app">
@@ -79,7 +80,9 @@ function App() {
               path="/"
               element={
                 <ProtectedRoute>
-                  <Home user={user} />
+                  <ProtectedLayout>
+                    <Home user={user} />
+                  </ProtectedLayout>
                 </ProtectedRoute>
               }
             />
@@ -88,7 +91,9 @@ function App() {
               path="/dashboard"
               element={
                 <ProtectedRoute>
-                  <Dashboard user={user} />
+                  <ProtectedLayout>
+                    <Dashboard user={user} />
+                  </ProtectedLayout>
                 </ProtectedRoute>
               }
             />
@@ -98,7 +103,9 @@ function App() {
               path="/fretes"
               element={
                 <ProtectedRoute>
-                  <Fretes user={user} />
+                  <ProtectedLayout>
+                    <Fretes user={user} />
+                  </ProtectedLayout>
                 </ProtectedRoute>
               }
             />
@@ -107,7 +114,9 @@ function App() {
               path="/monitoramento"
               element={
                 <ProtectedRoute>
-                  <Monitoramento user={user} />
+                  <ProtectedLayout>
+                    <Monitoramento user={user} />
+                  </ProtectedLayout>
                 </ProtectedRoute>
               }
             />
@@ -116,7 +125,9 @@ function App() {
               path="/motoristas"
               element={
                 <ProtectedRoute>
-                  <Motoristas user={user} />
+                  <ProtectedLayout>
+                    <Motoristas user={user} />
+                  </ProtectedLayout>
                 </ProtectedRoute>
               }
             />
@@ -125,7 +136,9 @@ function App() {
               path="/veiculos"
               element={
                 <ProtectedRoute>
-                  <Veiculos user={user} />
+                  <ProtectedLayout>
+                    <Veiculos user={user} />
+                  </ProtectedLayout>
                 </ProtectedRoute>
               }
             />
@@ -134,7 +147,9 @@ function App() {
               path="/relatorios"
               element={
                 <ProtectedRoute>
-                  <Relatorios user={user} />
+                  <ProtectedLayout>
+                    <Relatorios user={user} />
+                  </ProtectedLayout>
                 </ProtectedRoute>
               }
             />
@@ -143,7 +158,9 @@ function App() {
               path="/manutencao"
               element={
                 <ProtectedRoute>
-                  <Manutencao user={user} />
+                  <ProtectedLayout>
+                    <Manutencao user={user} />
+                  </ProtectedLayout>
                 </ProtectedRoute>
               }
             />
@@ -152,7 +169,9 @@ function App() {
               path="/financeiro"
               element={
                 <ProtectedRoute>
-                  <Financeiro user={user} />
+                  <ProtectedLayout>
+                    <Financeiro user={user} />
+                  </ProtectedLayout>
                 </ProtectedRoute>
               }
             />
@@ -160,7 +179,6 @@ function App() {
             {/* Rota padrão */}
             <Route path="*" element={<Navigate to={user ? "/" : "/login"} />} />
           </Routes>
-          <Footer />
         </main>
       </div>
     </div>

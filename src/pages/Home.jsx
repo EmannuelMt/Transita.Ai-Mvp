@@ -364,8 +364,8 @@ const CompanyLogo = () => {
         >
           <FaRocket className="logo-icon" />
           <div className="logo-text">
-            <span className="logo-primary">LogiTech</span>
-            <span className="logo-secondary">Pro</span>
+            <span className="logo-primary">Transita</span>
+            <span className="logo-secondary">.AI</span>
           </div>
         </motion.div>
         
@@ -448,7 +448,7 @@ const AboutCompany = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
         >
-          <h2>Sobre a LogiTech</h2>
+          <h2>Sobre a Transita.AI</h2>
           <p>Transformando a logística brasileira com tecnologia de ponta</p>
         </motion.div>
 
@@ -917,7 +917,7 @@ const QuickGuide = () => {
           <div className="resources-grid">
             <div className="resource-card">
               <FaGraduationCap className="resource-icon" />
-              <h4>Academia LogiTech</h4>
+              <h4>Academia Transita .AI Pro</h4>
               <p>Cursos completos e certificações</p>
               <button className="btn-link">
                 Explorar Cursos <FaArrowRight />
@@ -1014,7 +1014,7 @@ const BlogSection = () => {
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
         >
           <div className="section-title">
-            <h2>Blog LogiTech</h2>
+            <h2>Blog Transita .AI Pro</h2>
             <p>Fique por dentro das novidades do setor logístico</p>
           </div>
           <motion.button 
@@ -1087,7 +1087,7 @@ const BlogSection = () => {
           <div className="newsletter-content">
             <FaNewspaper className="newsletter-icon" />
             <div className="newsletter-text">
-              <h4>Newsletter LogiTech</h4>
+              <h4>Newsletter Transita .AI Pro</h4>
               <p>Receba as melhores dicas e novidades do setor logístico diretamente no seu email</p>
             </div>
             <div className="newsletter-form">
@@ -1475,7 +1475,7 @@ const AnimatedHeader = ({ user, onNavigate, isScrolled }) => {
           whileHover={{ scale: 1.05 }}
         >
           <FaRocket className="brand-icon" />
-          <span className="brand-text">LogiTech Pro</span>
+          <span className="brand-text">Transita .AI Pro</span>
         </motion.div>
         
         <div className="header-text">
@@ -1485,7 +1485,7 @@ const AnimatedHeader = ({ user, onNavigate, isScrolled }) => {
             animate={{ scale: 1 }}
             transition={{ delay: 0.3, type: "spring" }}
           >
-            <span>🏢 Dashboard Operacional</span>
+            <span>🏢 Transita .AI Pro HomePage</span>
           </motion.div>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -1517,17 +1517,6 @@ const AnimatedHeader = ({ user, onNavigate, isScrolled }) => {
           >
             <FaTruck className="btn-icon" />
             Novo Frete
-          </motion.button>
-          <motion.button 
-            className="btn-secondary"
-            whileHover={{ 
-              scale: 1.05,
-              y: -2
-            }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <FaChartLine className="btn-icon" />
-            Relatório Diário
           </motion.button>
         </div>
       </div>
@@ -1684,8 +1673,8 @@ function Home({ user, onNavigate }) {
 
   const plans = [
     {
-      name: 'Essencial',
-      price: 'R$ 299',
+      name: 'Básico',
+      price: ' R$49 ',
       color: 'blue',
       period: 'mês',
       features: [
@@ -1699,7 +1688,7 @@ function Home({ user, onNavigate }) {
     },
     {
       name: 'Profissional',
-      price: 'R$ 599',
+      price: 'R$99 ',
       color: 'purple',
       period: 'mês',
       recommended: true,
@@ -1716,7 +1705,7 @@ function Home({ user, onNavigate }) {
     },
     {
       name: 'Empresarial',
-      price: 'R$ 999',
+      price: 'R$249',
       color: 'orange',
       period: 'mês',
       features: [

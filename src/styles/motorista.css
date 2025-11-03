@@ -1,13 +1,13 @@
-/* manutencao.css - CSS Profissional e Moderno */
+/* motoristas.css - CSS Profissional e Moderno */
 
-.manutencao-container {
+.motoristas-container {
   min-height: 100vh;
   background: var(--gray-50);
   padding: var(--space-xl);
 }
 
 /* Header Section */
-.manutencao-header {
+.motoristas-header {
   background: white;
   padding: var(--space-2xl);
   border-radius: var(--border-radius-2xl);
@@ -16,18 +16,18 @@
   border: 1px solid var(--gray-200);
 }
 
-.manutencao-header-content {
+.motoristas-header-content {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   gap: var(--space-lg);
 }
 
-.manutencao-header-text {
+.motoristas-header-text {
   flex: 1;
 }
 
-.manutencao-welcome-badge {
+.motoristas-welcome-badge {
   display: inline-flex;
   align-items: center;
   gap: var(--space-xs);
@@ -41,7 +41,7 @@
   border: 1px solid var(--primary-20);
 }
 
-.manutencao-header h1 {
+.motoristas-header h1 {
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: var(--space-xs);
@@ -49,20 +49,20 @@
   line-height: 1.2;
 }
 
-.manutencao-header-subtitle {
+.motoristas-header-subtitle {
   font-size: 1.1rem;
   color: var(--gray-600);
   max-width: 500px;
 }
 
-.manutencao-header-actions {
+.motoristas-header-actions {
   display: flex;
   gap: var(--space-md);
   align-items: center;
 }
 
 /* Botões Específicos */
-.manutencao-btn-primary, .manutencao-btn-outline {
+.motoristas-btn-primary, .motoristas-btn-outline {
   display: inline-flex;
   align-items: center;
   gap: var(--space-sm);
@@ -76,60 +76,80 @@
   text-decoration: none;
 }
 
-.manutencao-btn-primary {
+.motoristas-btn-primary {
   background: var(--gradient-primary);
   color: white;
   box-shadow: var(--shadow-primary);
 }
 
-.manutencao-btn-primary:hover {
+.motoristas-btn-primary:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-primary-lg);
 }
 
-.manutencao-btn-outline {
+.motoristas-btn-outline {
   background: transparent;
   border: 2px solid var(--gray-300);
   color: var(--gray-700);
 }
 
-.manutencao-btn-outline:hover {
+.motoristas-btn-outline:hover {
   border-color: var(--primary);
   color: var(--primary);
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
 }
 
-.manutencao-btn-outline.active {
+.motoristas-btn-outline.active {
   border-color: var(--primary);
   color: var(--primary);
   background: var(--primary-10);
 }
 
-.manutencao-btn-large {
+.motoristas-btn-large {
   padding: var(--space-lg) var(--space-xl);
   font-size: 1.1rem;
   font-weight: 700;
 }
 
-.manutencao-btn-sm {
+.motoristas-btn-sm {
   padding: var(--space-sm) var(--space-md);
   font-size: 0.875rem;
 }
 
-.manutencao-btn-icon {
+.motoristas-btn-icon {
   font-size: 1.1rem;
 }
 
+.motoristas-btn-icon-small {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: var(--border-radius);
+  background: var(--gray-100);
+  color: var(--gray-600);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+}
+
+.motoristas-btn-icon-small:hover {
+  background: var(--primary-10);
+  color: var(--primary);
+}
+
 /* Stats Grid */
-.manutencao-stats-grid {
+.motoristas-stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: var(--space-lg);
   margin-bottom: var(--space-xl);
 }
 
-.manutencao-stat-card {
+.motoristas-stat-card {
   background: white;
   padding: var(--space-xl);
   border-radius: var(--border-radius-2xl);
@@ -140,12 +160,12 @@
   transition: all 0.3s var(--ease-out);
 }
 
-.manutencao-stat-card:hover {
+.motoristas-stat-card:hover {
   transform: translateY(-5px);
   box-shadow: var(--shadow-xl);
 }
 
-.manutencao-stat-background-pattern {
+.motoristas-stat-background-pattern {
   position: absolute;
   top: 0;
   right: 0;
@@ -155,7 +175,7 @@
   opacity: 0.5;
 }
 
-.manutencao-stat-glow {
+.motoristas-stat-glow {
   position: absolute;
   top: -20px;
   right: -20px;
@@ -167,18 +187,18 @@
   opacity: 0.1;
 }
 
-.manutencao-stat-content {
+.motoristas-stat-content {
   position: relative;
   z-index: 2;
 }
 
-.manutencao-stat-main {
+.motoristas-stat-main {
   display: flex;
   align-items: center;
   gap: var(--space-lg);
 }
 
-.manutencao-stat-icon-wrapper {
+.motoristas-stat-icon-wrapper {
   width: 70px;
   height: 70px;
   border-radius: var(--border-radius-xl);
@@ -192,23 +212,23 @@
   flex-shrink: 0;
 }
 
-.manutencao-stat-orange .manutencao-stat-icon-wrapper {
-  background: var(--gradient-warning);
-}
-
-.manutencao-stat-blue .manutencao-stat-icon-wrapper {
+.motoristas-stat-blue .motoristas-stat-icon-wrapper {
   background: var(--gradient-primary);
 }
 
-.manutencao-stat-red .manutencao-stat-icon-wrapper {
-  background: linear-gradient(135deg, #ef4444, #f87171);
-}
-
-.manutencao-stat-green .manutencao-stat-icon-wrapper {
+.motoristas-stat-green .motoristas-stat-icon-wrapper {
   background: var(--gradient-success);
 }
 
-.manutencao-stat-values h3 {
+.motoristas-stat-orange .motoristas-stat-icon-wrapper {
+  background: var(--gradient-warning);
+}
+
+.motoristas-stat-purple .motoristas-stat-icon-wrapper {
+  background: linear-gradient(135deg, #8b5cf6, #a855f7);
+}
+
+.motoristas-stat-values h3 {
   font-size: 2.5rem;
   font-weight: 800;
   color: var(--gray-900);
@@ -216,20 +236,20 @@
   line-height: 1;
 }
 
-.manutencao-stat-label {
+.motoristas-stat-label {
   color: var(--gray-600);
   font-weight: 600;
   margin-bottom: var(--space-xs);
   font-size: 1rem;
 }
 
-.manutencao-stat-desc {
+.motoristas-stat-desc {
   font-size: 0.875rem;
   color: var(--gray-500);
   margin-bottom: var(--space-sm);
 }
 
-.manutencao-stat-trend {
+.motoristas-stat-trend {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2xs);
@@ -241,29 +261,29 @@
   border: 1px solid;
 }
 
-.manutencao-stat-trend.up {
+.motoristas-stat-trend.up {
   background: rgba(16, 185, 129, 0.1);
   color: var(--success);
   border-color: rgba(16, 185, 129, 0.2);
 }
 
-.manutencao-stat-trend.down {
+.motoristas-stat-trend.down {
   background: rgba(239, 68, 68, 0.1);
   color: var(--error);
   border-color: rgba(239, 68, 68, 0.2);
 }
 
-.manutencao-stat-trend.neutral {
+.motoristas-stat-trend.neutral {
   background: rgba(107, 114, 128, 0.1);
   color: var(--gray-600);
   border-color: rgba(107, 114, 128, 0.2);
 }
 
-.manutencao-trend-icon {
+.motoristas-trend-icon {
   font-size: 1rem;
 }
 
-.manutencao-stat-chart {
+.motoristas-stat-chart {
   position: absolute;
   bottom: var(--space-lg);
   left: var(--space-lg);
@@ -275,7 +295,7 @@
   opacity: 0.6;
 }
 
-.manutencao-chart-bar {
+.motoristas-chart-bar {
   flex: 1;
   background: var(--primary);
   border-radius: 2px 2px 0 0;
@@ -283,7 +303,7 @@
 }
 
 /* Controls Section */
-.manutencao-controls-section {
+.motoristas-controls-section {
   background: white;
   padding: var(--space-xl);
   border-radius: var(--border-radius-2xl);
@@ -292,7 +312,7 @@
   border: 1px solid var(--gray-200);
 }
 
-.manutencao-tabs {
+.motoristas-tabs {
   display: flex;
   gap: var(--space-xs);
   background: var(--gray-100);
@@ -301,7 +321,7 @@
   margin-bottom: var(--space-lg);
 }
 
-.manutencao-tab {
+.motoristas-tab {
   display: flex;
   align-items: center;
   gap: var(--space-xs);
@@ -318,17 +338,17 @@
   justify-content: center;
 }
 
-.manutencao-tab.active {
+.motoristas-tab.active {
   background: white;
   color: var(--primary);
   box-shadow: var(--shadow-sm);
 }
 
-.manutencao-tab-icon {
+.motoristas-tab-icon {
   font-size: 1.1rem;
 }
 
-.manutencao-tab-count {
+.motoristas-tab-count {
   background: var(--gray-200);
   color: var(--gray-600);
   padding: var(--space-3xs) var(--space-xs);
@@ -337,38 +357,101 @@
   font-weight: 700;
 }
 
-.manutencao-tab.active .manutencao-tab-count {
+.motoristas-tab.active .motoristas-tab-count {
   background: var(--primary);
   color: white;
 }
 
-.manutencao-controls-buttons {
+.motoristas-search-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  flex-wrap: wrap;
+}
+
+.motoristas-search-box {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+  background: white;
+  border: 1px solid var(--gray-300);
+  border-radius: var(--border-radius-xl);
+  transition: all 0.3s var(--ease-out);
+  flex: 1;
+  min-width: 300px;
+  position: relative;
+}
+
+.motoristas-search-box:focus-within {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-20);
+}
+
+.motoristas-search-icon {
+  color: var(--gray-400);
+  font-size: 1.1rem;
+}
+
+.motoristas-search-input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 0.95rem;
+  background: transparent;
+}
+
+.motoristas-search-input::placeholder {
+  color: var(--gray-400);
+}
+
+.motoristas-search-clear {
+  position: absolute;
+  right: var(--space-md);
+  background: var(--gray-200);
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: var(--gray-600);
+  transition: all 0.2s ease;
+}
+
+.motoristas-search-clear:hover {
+  background: var(--gray-300);
+}
+
+.motoristas-controls-buttons {
   display: flex;
   gap: var(--space-md);
-  justify-content: flex-end;
 }
 
 /* Filtros Expandíveis */
-.manutencao-filters-expanded {
+.motoristas-filters-expanded {
   background: var(--gray-50);
   border-radius: var(--border-radius-lg);
   margin-top: var(--space-lg);
   overflow: hidden;
 }
 
-.manutencao-filters-content {
+.motoristas-filters-content {
   padding: var(--space-lg);
 }
 
-.manutencao-filter-group {
+.motoristas-filter-group {
   margin-bottom: var(--space-xl);
 }
 
-.manutencao-filter-group:last-child {
+.motoristas-filter-group:last-child {
   margin-bottom: 0;
 }
 
-.manutencao-filter-group label {
+.motoristas-filter-group label {
   display: block;
   font-weight: 600;
   color: var(--gray-700);
@@ -376,13 +459,13 @@
   font-size: 0.95rem;
 }
 
-.manutencao-filter-chips {
+.motoristas-filter-chips {
   display: flex;
   gap: var(--space-sm);
   flex-wrap: wrap;
 }
 
-.manutencao-filter-chip {
+.motoristas-filter-chip {
   display: flex;
   align-items: center;
   gap: var(--space-xs);
@@ -397,22 +480,23 @@
   font-weight: 500;
 }
 
-.manutencao-filter-chip.active {
-  font-weight: 600;
+.motoristas-filter-chip:hover {
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
-/* Manutenções List */
-.manutencao-list-container {
+/* Motoristas Grid */
+.motoristas-grid-container {
   margin-bottom: var(--space-2xl);
 }
 
-.manutencao-list {
-  display: flex;
-  flex-direction: column;
+.motoristas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
   gap: var(--space-lg);
 }
 
-.manutencao-card {
+.motorista-card {
   background: white;
   border: 1px solid var(--gray-200);
   border-radius: var(--border-radius-2xl);
@@ -423,73 +507,71 @@
   overflow: hidden;
 }
 
-.manutencao-card:hover {
+.motorista-card:hover {
   border-color: var(--primary);
   box-shadow: var(--shadow-lg);
 }
 
-.manutencao-card.active {
+.motorista-card.active {
   border-color: var(--primary);
   background: var(--primary-5);
   box-shadow: var(--shadow-primary);
 }
 
-.manutencao-card-header {
+.motorista-card-header {
   display: flex;
-  justify-content: space-between;
   align-items: flex-start;
+  gap: var(--space-lg);
   margin-bottom: var(--space-lg);
 }
 
-.manutencao-veiculo-info {
+.motorista-avatar {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.motorista-avatar-initials {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--gradient-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.motorista-status-indicator {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+.motorista-info {
   flex: 1;
 }
 
-.manutencao-veiculo-main {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  margin-bottom: var(--space-sm);
-}
-
-.manutencao-veiculo-placa {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
+.motorista-name {
+  font-size: 1.3rem;
   font-weight: 700;
+  margin-bottom: var(--space-xs);
   color: var(--gray-900);
-  font-size: 1.1rem;
-  font-family: var(--font-mono);
 }
 
-.manutencao-veiculo-modelo {
+.motorista-cnh, .motorista-categoria {
+  display: block;
   font-size: 0.875rem;
-  color: var(--gray-500);
+  color: var(--gray-600);
+  margin-bottom: var(--space-2xs);
 }
 
-.manutencao-tipo-info {
-  margin-bottom: var(--space-sm);
-}
-
-.manutencao-tipo-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-xs);
-  padding: var(--space-2xs) var(--space-sm);
-  border-radius: var(--border-radius);
-  font-size: 0.75rem;
-  font-weight: 600;
-}
-
-.manutencao-status-badges {
-  display: flex;
-  gap: var(--space-sm);
-  flex-direction: column;
-  align-items: flex-end;
-}
-
-.manutencao-status-badge,
-.manutencao-prioridade-badge {
+.motorista-status-badge {
   display: inline-flex;
   align-items: center;
   gap: var(--space-xs);
@@ -498,69 +580,86 @@
   font-size: 0.75rem;
   font-weight: 600;
   border: 1px solid;
+  flex-shrink: 0;
 }
 
-.manutencao-card-content {
+.motorista-card-details {
   margin-bottom: var(--space-lg);
 }
 
-.manutencao-descricao {
-  color: var(--gray-700);
-  line-height: 1.5;
-  margin-bottom: var(--space-lg);
-  font-size: 0.95rem;
-}
-
-.manutencao-details-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: var(--space-md);
+.motorista-contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
   margin-bottom: var(--space-lg);
 }
 
-.manutencao-detail-item {
+.contact-item {
   display: flex;
   align-items: center;
   gap: var(--space-sm);
   font-size: 0.875rem;
+  color: var(--gray-700);
 }
 
-.manutencao-detail-label {
+.contact-item svg {
+  color: var(--gray-500);
+  flex-shrink: 0;
+}
+
+.motorista-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+  padding: var(--space-md);
+  background: var(--gray-50);
+  border-radius: var(--border-radius-xl);
+}
+
+.motorista-stat {
+  text-align: center;
+}
+
+.motorista-stat .stat-value {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: var(--space-xs);
-  color: var(--gray-600);
-  font-weight: 500;
-  min-width: 120px;
-}
-
-.manutencao-detail-value {
+  font-size: 1.1rem;
+  font-weight: 700;
   color: var(--gray-900);
-  font-weight: 600;
+  margin-bottom: var(--space-2xs);
 }
 
-.manutencao-pecas-list {
+.motorista-stat .stat-label {
+  font-size: 0.75rem;
+  color: var(--gray-500);
+  font-weight: 500;
+}
+
+.motorista-especializacoes {
   display: flex;
   align-items: flex-start;
   gap: var(--space-sm);
   font-size: 0.875rem;
 }
 
-.manutencao-pecas-label {
+.especializacoes-label {
   color: var(--gray-600);
   font-weight: 500;
   min-width: 120px;
   flex-shrink: 0;
 }
 
-.manutencao-pecas-chips {
+.especializacoes-chips {
   display: flex;
   gap: var(--space-xs);
   flex-wrap: wrap;
   flex: 1;
 }
 
-.manutencao-peca-chip {
+.especializacao-chip {
   background: var(--gray-100);
   color: var(--gray-700);
   padding: var(--space-2xs) var(--space-sm);
@@ -569,7 +668,7 @@
   font-weight: 500;
 }
 
-.manutencao-peca-more {
+.especializacao-more {
   background: var(--primary-10);
   color: var(--primary);
   padding: var(--space-2xs) var(--space-sm);
@@ -578,211 +677,153 @@
   font-weight: 600;
 }
 
-.manutencao-card-actions {
+.motorista-card-actions {
   display: flex;
-  gap: var(--space-sm);
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-md);
 }
 
-/* Alerts Section */
-.manutencao-alerts-section {
+.contact-actions {
+  display: flex;
+  gap: var(--space-xs);
+}
+
+.action-buttons {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+/* Empty State */
+.motoristas-empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: var(--space-4xl);
   background: white;
-  padding: var(--space-xl);
   border-radius: var(--border-radius-2xl);
-  box-shadow: var(--shadow-lg);
   border: 1px solid var(--gray-200);
 }
 
-.manutencao-alerts-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.empty-icon {
+  font-size: 4rem;
+  color: var(--gray-300);
   margin-bottom: var(--space-lg);
-  padding-bottom: var(--space-md);
-  border-bottom: 1px solid var(--gray-200);
 }
 
-.manutencao-alerts-header h3 {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--gray-900);
-}
-
-.manutencao-alerts-count {
-  background: var(--primary-10);
-  color: var(--primary);
-  padding: var(--space-xs) var(--space-md);
-  border-radius: var(--border-radius-xl);
-  font-size: 0.875rem;
-  font-weight: 600;
-}
-
-.manutencao-alerts-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: var(--space-lg);
-}
-
-.manutencao-alert-card {
-  display: flex;
-  gap: var(--space-lg);
-  padding: var(--space-lg);
-  border-radius: var(--border-radius-xl);
-  border: 1px solid;
-  transition: all 0.3s var(--ease-out);
-}
-
-.manutencao-alert-critical {
-  background: rgba(239, 68, 68, 0.05);
-  border-color: rgba(239, 68, 68, 0.2);
-}
-
-.manutencao-alert-warning {
-  background: rgba(245, 158, 11, 0.05);
-  border-color: rgba(245, 158, 11, 0.2);
-}
-
-.manutencao-alert-info {
-  background: rgba(59, 130, 246, 0.05);
-  border-color: rgba(59, 130, 246, 0.2);
-}
-
-.manutencao-alert-icon {
+.motoristas-empty-state h3 {
   font-size: 1.5rem;
-  flex-shrink: 0;
-}
-
-.manutencao-alert-critical .manutencao-alert-icon {
-  color: var(--error);
-}
-
-.manutencao-alert-warning .manutencao-alert-icon {
-  color: var(--warning);
-}
-
-.manutencao-alert-info .manutencao-alert-icon {
-  color: var(--info);
-}
-
-.manutencao-alert-content {
-  flex: 1;
-}
-
-.manutencao-alert-content h4 {
-  font-size: 1.1rem;
-  font-weight: 700;
-  margin-bottom: var(--space-xs);
-  color: var(--gray-900);
-}
-
-.manutencao-alert-content p {
-  color: var(--gray-600);
-  margin-bottom: var(--space-sm);
-  line-height: 1.5;
-  font-size: 0.95rem;
-}
-
-.manutencao-alert-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.manutencao-alert-time {
-  font-size: 0.875rem;
-  color: var(--gray-500);
-}
-
-.manutencao-alert-acao {
-  font-size: 0.875rem;
   font-weight: 600;
-  color: var(--primary);
+  margin-bottom: var(--space-sm);
+  color: var(--gray-700);
+}
+
+.motoristas-empty-state p {
+  color: var(--gray-500);
+  margin-bottom: var(--space-xl);
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Responsive Design */
-@media (max-width: 1024px) {
-  .manutencao-header-content {
+@media (max-width: 1200px) {
+  .motoristas-header-content {
     flex-direction: column;
     align-items: stretch;
     gap: var(--space-lg);
   }
   
-  .manutencao-header-actions {
+  .motoristas-header-actions {
     justify-content: flex-start;
-  }
-  
-  .manutencao-details-grid {
-    grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 768px) {
-  .manutencao-container {
+  .motoristas-container {
     padding: var(--space-lg);
   }
   
-  .manutencao-stats-grid {
+  .motoristas-stats-grid {
     grid-template-columns: 1fr;
   }
   
-  .manutencao-tabs {
+  .motoristas-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .motoristas-tabs {
     flex-wrap: wrap;
   }
   
-  .manutencao-tab {
+  .motoristas-tab {
     flex: 1;
     min-width: 120px;
   }
   
-  .manutencao-controls-buttons {
+  .motoristas-search-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .motoristas-search-box {
+    min-width: auto;
+  }
+  
+  .motoristas-controls-buttons {
     justify-content: center;
   }
   
-  .manutencao-card-header {
+  .motorista-card-header {
     flex-direction: column;
     align-items: stretch;
     gap: var(--space-md);
   }
   
-  .manutencao-status-badges {
-    flex-direction: row;
-    justify-content: flex-start;
+  .motorista-status-badge {
+    align-self: flex-start;
   }
   
-  .manutencao-card-actions {
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  
-  .manutencao-alerts-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .manutencao-pecas-list {
+  .motorista-card-actions {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
+    gap: var(--space-md);
+  }
+  
+  .contact-actions {
+    justify-content: center;
+  }
+  
+  .action-buttons {
+    justify-content: center;
   }
 }
 
 @media (max-width: 480px) {
-  .manutencao-header h1 {
+  .motoristas-header h1 {
     font-size: 2rem;
   }
   
-  .manutencao-tab {
+  .motoristas-tab {
     padding: var(--space-sm);
     font-size: 0.875rem;
   }
   
-  .manutencao-tab-icon {
+  .motoristas-tab-icon {
     font-size: 1rem;
   }
   
-  .manutencao-btn-large {
+  .motoristas-btn-large {
     padding: var(--space-md) var(--space-lg);
     font-size: 1rem;
+  }
+  
+  .motorista-stats {
+    grid-template-columns: 1fr;
+    gap: var(--space-sm);
+  }
+  
+  .motorista-especializacoes {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }

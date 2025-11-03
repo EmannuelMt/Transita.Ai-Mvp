@@ -33,7 +33,7 @@ import {
   IoSettingsOutline
 } from 'react-icons/io5';
 import { motion, AnimatePresence } from 'framer-motion';
-import '../styles/Manutencao.css';
+import './Manutencao.css';
 
 
 const Manutencao = ({ user, onNavigate }) => {

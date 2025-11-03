@@ -58,7 +58,7 @@ import {
   FaPhoneAlt,
   FaWhatsapp
 } from 'react-icons/fa';
-import '../styles/Home.css';
+import './Home.css';
 
 
 

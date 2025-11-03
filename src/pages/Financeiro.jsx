@@ -33,7 +33,7 @@ import {
 } from 'react-icons/io5';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import '../styles/Financeiro.css';
+import './Financeiro.css';
 
 
 const Financeiro = ({ user, onNavigate }) => {

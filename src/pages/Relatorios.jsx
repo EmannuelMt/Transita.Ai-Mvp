@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../styles/Relatorios.css';
+import '.Relatorios.css';
 
 
 const Relatorios = ({ user, onNavigate }) => {

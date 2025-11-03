@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../styles/Veiculos.css';
+
 
 const Veiculos = ({ user, onNavigate }) => {
   const [activeTab, setActiveTab] = useState('ativos');

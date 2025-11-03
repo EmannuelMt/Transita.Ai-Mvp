@@ -12,7 +12,7 @@ import {
 import { 
   RiDashboardFill, RiSettings4Fill 
 } from 'react-icons/ri';
-import '../styles/Dashboard.css';
+import './Dashboard.css';
 
 // Custom hooks
 const useRealtimeData = (initialData, updateInterval = 3000) => {

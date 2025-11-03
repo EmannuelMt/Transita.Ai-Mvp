@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { logout } from '../../../my-app/src/firebase/auth';
-import '../styles/header.css';
+import './header.css';
 
 function Header({ user, onLogout, onToggleSidebar, sidebarOpen }) {
   const [showMenu, setShowMenu] = useState(false);

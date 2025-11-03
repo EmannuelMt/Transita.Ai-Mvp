@@ -3,7 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { onAuthChange } from './firebase/auth';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
-import Fretes from './pages/Fretes';
+import Multas from './pages/Multas';
 import Monitoramento from './pages/Monitoramento';
 import Motoristas from './pages/Motoristas';
 import Veiculos from './pages/Veiculos';
@@ -100,11 +100,11 @@ function App() {
 
             {/* Rotas do Sistema de Logística */}
             <Route
-              path="/fretes"
+              path="/Multas"
               element={
                 <ProtectedRoute>
                   <ProtectedLayout>
-                    <Fretes user={user} />
+                    <Multas user={user} />
                   </ProtectedLayout>
                 </ProtectedRoute>
               }

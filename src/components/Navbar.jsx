@@ -162,10 +162,10 @@ const ProfessionalNavbar = ({ user, onLogout, sidebarOpen, onToggleSidebar }) =>
         color: '#10b981'
       },
       { 
-        path: '/fretes', 
+        path: '/Multas', 
         icon: RiTruckFill, 
-        label: 'Fretes',
-        description: 'Gestão inteligente de transportes',
+        label: 'Multas',
+        description: 'Gestão inteligente de multas',
         color: '#f59e0b'
       },
       { 

@@ -1,23 +1,22 @@
-/* fretes.css - CSS Completo e Profissional */
+/* multas.css - CSS Completo para Sistema de Multas */
 
 :root {
-  /* Cores específicas para o módulo de fretes */
-  --fretes-primary: hsl(242, 76%, 61%);
-  --fretes-primary-dark: hsl(242, 76%, 51%);
-  --fretes-primary-light: hsl(242, 76%, 71%);
-  --fretes-primary-10: hsla(242, 76%, 61%, 0.1);
-  --fretes-primary-20: hsla(242, 76%, 61%, 0.2);
+  /* Cores específicas para o módulo de multas */
+  --multas-primary: hsl(242, 76%, 61%);
+  --multas-primary-dark: hsl(242, 76%, 51%);
+  --multas-primary-light: hsl(242, 76%, 71%);
+  --multas-primary-10: hsla(242, 76%, 61%, 0.1);
+  --multas-primary-20: hsla(242, 76%, 61%, 0.2);
   
   /* Status colors */
-  --fretes-status-transito: #3b82f6;
-  --fretes-status-carregando: #f59e0b;
-  --fretes-status-pendente: #f59e0b;
-  --fretes-status-entregue: #10b981;
-  --fretes-status-cancelado: #ef4444;
+  --multas-status-pendente: #f59e0b;
+  --multas-status-paga: #10b981;
+  --multas-status-vencida: #ef4444;
+  --multas-status-contestada: #3b82f6;
 }
 
 /* Container Principal */
-.fretes-container {
+.multas-container {
   min-height: 100vh;
   background: var(--gray-50);
   padding: 0;
@@ -25,7 +24,7 @@
 }
 
 /* Loading States */
-.fretes-loading-container {
+.multas-loading-container {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -33,12 +32,12 @@
   background: transparent;
 }
 
-.fretes-loading-content {
+.multas-loading-content {
   text-align: center;
   color: var(--gray-600);
 }
 
-.fretes-loading-spinner {
+.multas-loading-spinner {
   width: 80px;
   height: 80px;
   border: 3px solid var(--gray-200);
@@ -50,30 +49,30 @@
   justify-content: center;
 }
 
-.fretes-spinner-icon {
+.multas-spinner-icon {
   font-size: 1.5rem;
   color: var(--primary);
 }
 
-.fretes-loading-content h3 {
+.multas-loading-content h3 {
   font-size: 1.5rem;
   margin-bottom: var(--space-sm);
   color: var(--gray-700);
 }
 
-.fretes-loading-content p {
+.multas-loading-content p {
   color: var(--gray-500);
 }
 
 /* Header Section */
-.fretes-header {
+.multas-header {
   background: white;
   padding: var(--space-2xl) var(--space-xl);
   border-bottom: 1px solid var(--gray-200);
   margin-bottom: 0;
 }
 
-.fretes-header-content {
+.multas-header-content {
   max-width: 1400px;
   margin: 0 auto;
   display: flex;
@@ -82,25 +81,25 @@
   gap: var(--space-lg);
 }
 
-.fretes-header-text {
+.multas-header-text {
   flex: 1;
 }
 
-.fretes-welcome-badge {
+.multas-welcome-badge {
   display: inline-flex;
   align-items: center;
   gap: var(--space-xs);
-  background: var(--fretes-primary-10);
-  color: var(--fretes-primary);
+  background: var(--multas-primary-10);
+  color: var(--multas-primary);
   padding: var(--space-xs) var(--space-md);
   border-radius: var(--border-radius-xl);
   font-size: 0.875rem;
   font-weight: 600;
   margin-bottom: var(--space-sm);
-  border: 1px solid var(--fretes-primary-20);
+  border: 1px solid var(--multas-primary-20);
 }
 
-.fretes-header h1 {
+.multas-header h1 {
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: var(--space-xs);
@@ -108,20 +107,20 @@
   line-height: 1.2;
 }
 
-.fretes-header-subtitle {
+.multas-header-subtitle {
   font-size: 1.1rem;
   color: var(--gray-600);
   max-width: 500px;
 }
 
-.fretes-header-actions {
+.multas-header-actions {
   display: flex;
   gap: var(--space-md);
   align-items: center;
 }
 
 /* Botões Específicos */
-.fretes-btn-primary, .fretes-btn-outline {
+.multas-btn-primary, .multas-btn-outline {
   display: inline-flex;
   align-items: center;
   gap: var(--space-sm);
@@ -137,48 +136,48 @@
   overflow: hidden;
 }
 
-.fretes-btn-primary {
+.multas-btn-primary {
   background: var(--gradient-primary);
   color: white;
   box-shadow: var(--shadow-primary);
 }
 
-.fretes-btn-primary:hover {
+.multas-btn-primary:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-primary-lg);
 }
 
-.fretes-btn-outline {
+.multas-btn-outline {
   background: transparent;
   border: 2px solid var(--gray-300);
   color: var(--gray-700);
 }
 
-.fretes-btn-outline:hover {
+.multas-btn-outline:hover {
   border-color: var(--primary);
   color: var(--primary);
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
 }
 
-.fretes-btn-outline.active {
+.multas-btn-outline.active {
   border-color: var(--primary);
   color: var(--primary);
   background: var(--primary-10);
 }
 
-.fretes-btn-large {
+.multas-btn-large {
   padding: var(--space-lg) var(--space-xl);
   font-size: 1.1rem;
   font-weight: 700;
 }
 
-.fretes-btn-icon {
+.multas-btn-icon {
   font-size: 1.1rem;
 }
 
 /* Stats Grid */
-.fretes-stats-grid {
+.multas-stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: var(--space-lg);
@@ -187,7 +186,7 @@
   margin: 0 auto;
 }
 
-.fretes-stat-card {
+.multas-stat-card {
   background: white;
   padding: var(--space-xl);
   border-radius: var(--border-radius-2xl);
@@ -198,12 +197,12 @@
   transition: all 0.3s var(--ease-out);
 }
 
-.fretes-stat-card:hover {
+.multas-stat-card:hover {
   transform: translateY(-5px);
   box-shadow: var(--shadow-xl);
 }
 
-.fretes-stat-background-pattern {
+.multas-stat-background-pattern {
   position: absolute;
   top: 0;
   right: 0;
@@ -213,7 +212,7 @@
   opacity: 0.5;
 }
 
-.fretes-stat-glow {
+.multas-stat-glow {
   position: absolute;
   top: -20px;
   right: -20px;
@@ -225,18 +224,18 @@
   opacity: 0.1;
 }
 
-.fretes-stat-content {
+.multas-stat-content {
   position: relative;
   z-index: 2;
 }
 
-.fretes-stat-main {
+.multas-stat-main {
   display: flex;
   align-items: center;
   gap: var(--space-lg);
 }
 
-.fretes-stat-icon-wrapper {
+.multas-stat-icon-wrapper {
   width: 70px;
   height: 70px;
   border-radius: var(--border-radius-xl);
@@ -250,23 +249,27 @@
   flex-shrink: 0;
 }
 
-.fretes-stat-blue .fretes-stat-icon-wrapper {
+.multas-stat-blue .multas-stat-icon-wrapper {
   background: var(--gradient-primary);
 }
 
-.fretes-stat-green .fretes-stat-icon-wrapper {
+.multas-stat-green .multas-stat-icon-wrapper {
   background: var(--gradient-success);
 }
 
-.fretes-stat-orange .fretes-stat-icon-wrapper {
+.multas-stat-orange .multas-stat-icon-wrapper {
   background: var(--gradient-warning);
 }
 
-.fretes-stat-purple .fretes-stat-icon-wrapper {
+.multas-stat-purple .multas-stat-icon-wrapper {
   background: linear-gradient(135deg, #8b5cf6, #a855f7);
 }
 
-.fretes-stat-values h3 {
+.multas-stat-red .multas-stat-icon-wrapper {
+  background: var(--gradient-error);
+}
+
+.multas-stat-values h3 {
   font-size: 2.5rem;
   font-weight: 800;
   color: var(--gray-900);
@@ -274,20 +277,20 @@
   line-height: 1;
 }
 
-.fretes-stat-label {
+.multas-stat-label {
   color: var(--gray-600);
   font-weight: 600;
   margin-bottom: var(--space-xs);
   font-size: 1rem;
 }
 
-.fretes-stat-desc {
+.multas-stat-desc {
   font-size: 0.875rem;
   color: var(--gray-500);
   margin-bottom: var(--space-sm);
 }
 
-.fretes-stat-trend {
+.multas-stat-trend {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2xs);
@@ -299,23 +302,23 @@
   border: 1px solid;
 }
 
-.fretes-stat-trend.up {
+.multas-stat-trend.up {
   background: rgba(16, 185, 129, 0.1);
   color: var(--success);
   border-color: rgba(16, 185, 129, 0.2);
 }
 
-.fretes-stat-trend.down {
+.multas-stat-trend.down {
   background: rgba(239, 68, 68, 0.1);
   color: var(--error);
   border-color: rgba(239, 68, 68, 0.2);
 }
 
-.fretes-trend-icon {
+.multas-trend-icon {
   font-size: 1rem;
 }
 
-.fretes-stat-chart {
+.multas-stat-chart {
   position: absolute;
   bottom: var(--space-lg);
   left: var(--space-lg);
@@ -327,27 +330,77 @@
   opacity: 0.6;
 }
 
-.fretes-chart-bar {
+.multas-chart-bar {
   flex: 1;
   background: var(--primary);
   border-radius: 2px 2px 0 0;
   min-height: 4px;
 }
 
-/* Quick Actions */
-.fretes-quick-actions {
-  padding: 0 var(--space-xl);
-  max-width: 1400px;
-  margin: 0 auto var(--space-xl);
+/* Time Filter */
+.multas-time-filter {
+  background: white;
+  padding: var(--space-lg) var(--space-xl);
+  border-bottom: 1px solid var(--gray-200);
 }
 
-.fretes-quick-actions-grid {
+.multas-time-filter-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.multas-time-filter-content label {
+  font-weight: 600;
+  color: var(--gray-700);
+  white-space: nowrap;
+}
+
+.multas-time-buttons {
+  display: flex;
+  gap: var(--space-xs);
+  flex-wrap: wrap;
+}
+
+.multas-time-btn {
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--gray-300);
+  background: white;
+  border-radius: var(--border-radius-lg);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.multas-time-btn.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.multas-time-btn:hover:not(.active) {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* Quick Actions */
+.multas-quick-actions {
+  padding: var(--space-xl);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.multas-quick-actions-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: var(--space-lg);
 }
 
-.fretes-quick-action-card {
+.multas-quick-action-card {
   background: white;
   border: 1px solid var(--gray-200);
   border-radius: var(--border-radius-2xl);
@@ -358,13 +411,13 @@
   transition: all 0.3s var(--ease-out);
 }
 
-.fretes-quick-action-card:hover {
+.multas-quick-action-card:hover {
   border-color: var(--primary);
   transform: translateY(-3px);
   box-shadow: var(--shadow-lg);
 }
 
-.fretes-action-card-glow {
+.multas-action-card-glow {
   position: absolute;
   top: -2px;
   left: -2px;
@@ -377,11 +430,11 @@
   z-index: -1;
 }
 
-.fretes-quick-action-card:hover .fretes-action-card-glow {
+.multas-quick-action-card:hover .multas-action-card-glow {
   opacity: 0.1;
 }
 
-.fretes-action-card-background {
+.multas-action-card-background {
   position: absolute;
   top: 0;
   left: 0;
@@ -392,57 +445,57 @@
   transition: opacity 0.3s ease;
 }
 
-.fretes-quick-action-card:hover .fretes-action-card-background {
+.multas-quick-action-card:hover .multas-action-card-background {
   opacity: 1;
 }
 
-.fretes-action-card-header {
+.multas-action-card-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: var(--space-lg);
 }
 
-.fretes-action-icon-container {
+.multas-action-icon-container {
   position: relative;
 }
 
-.fretes-action-icon {
+.multas-action-icon {
   font-size: 2.5rem;
   margin-bottom: var(--space-sm);
-  color: var(--fretes-primary);
+  color: var(--multas-primary);
   display: block;
 }
 
-.fretes-quick-action-card:hover .fretes-action-icon {
-  color: var(--action-color, var(--fretes-primary));
+.multas-quick-action-card:hover .multas-action-icon {
+  color: var(--action-color, var(--multas-primary));
 }
 
-.fretes-action-arrow {
+.multas-action-arrow {
   color: var(--gray-400);
   font-size: 1.2rem;
   transition: all 0.3s ease;
 }
 
-.fretes-quick-action-card:hover .fretes-action-arrow {
+.multas-quick-action-card:hover .multas-action-arrow {
   color: var(--primary);
   transform: translateX(4px);
 }
 
-.fretes-action-card-content h3 {
+.multas-action-card-content h3 {
   font-size: 1.3rem;
   font-weight: 700;
   margin-bottom: var(--space-sm);
   color: var(--gray-900);
 }
 
-.fretes-action-card-content p {
+.multas-action-card-content p {
   color: var(--gray-600);
   line-height: 1.5;
   font-size: 0.95rem;
 }
 
-.fretes-action-hover-effect {
+.multas-action-hover-effect {
   position: absolute;
   top: 0;
   left: -100%;
@@ -452,12 +505,12 @@
   transition: left 0.6s ease;
 }
 
-.fretes-quick-action-card:hover .fretes-action-hover-effect {
+.multas-quick-action-card:hover .multas-action-hover-effect {
   left: 100%;
 }
 
 /* Controls Section */
-.fretes-controls-section {
+.multas-controls-section {
   background: white;
   padding: var(--space-xl);
   border-top: 1px solid var(--gray-200);
@@ -465,7 +518,7 @@
   margin-bottom: var(--space-xl);
 }
 
-.fretes-tabs {
+.multas-tabs {
   display: flex;
   gap: var(--space-xs);
   background: var(--gray-100);
@@ -474,7 +527,7 @@
   margin-bottom: var(--space-lg);
 }
 
-.fretes-tab {
+.multas-tab {
   display: flex;
   align-items: center;
   gap: var(--space-xs);
@@ -491,17 +544,17 @@
   justify-content: center;
 }
 
-.fretes-tab.active {
+.multas-tab.active {
   background: white;
   color: var(--primary);
   box-shadow: var(--shadow-sm);
 }
 
-.fretes-tab-icon {
+.multas-tab-icon {
   font-size: 1.1rem;
 }
 
-.fretes-tab-count {
+.multas-tab-count {
   background: var(--gray-200);
   color: var(--gray-600);
   padding: var(--space-3xs) var(--space-xs);
@@ -510,19 +563,19 @@
   font-weight: 700;
 }
 
-.fretes-tab.active .fretes-tab-count {
+.multas-tab.active .multas-tab-count {
   background: var(--primary);
   color: white;
 }
 
-.fretes-search-controls {
+.multas-search-controls {
   display: flex;
   align-items: center;
   gap: var(--space-lg);
   flex-wrap: wrap;
 }
 
-.fretes-search-box {
+.multas-search-box {
   display: flex;
   align-items: center;
   gap: var(--space-md);
@@ -536,17 +589,17 @@
   position: relative;
 }
 
-.fretes-search-box:focus-within {
+.multas-search-box:focus-within {
   border-color: var(--primary);
   box-shadow: 0 0 0 3px var(--primary-20);
 }
 
-.fretes-search-icon {
+.multas-search-icon {
   color: var(--gray-400);
   font-size: 1.1rem;
 }
 
-.fretes-search-input {
+.multas-search-input {
   border: none;
   outline: none;
   flex: 1;
@@ -554,11 +607,11 @@
   background: transparent;
 }
 
-.fretes-search-input::placeholder {
+.multas-search-input::placeholder {
   color: var(--gray-400);
 }
 
-.fretes-search-clear {
+.multas-search-clear {
   position: absolute;
   right: var(--space-md);
   background: var(--gray-200);
@@ -575,45 +628,45 @@
   transition: all 0.2s ease;
 }
 
-.fretes-search-clear:hover {
+.multas-search-clear:hover {
   background: var(--gray-300);
 }
 
-.fretes-controls-buttons {
+.multas-controls-buttons {
   display: flex;
   gap: var(--space-md);
 }
 
 /* Filtros Expandíveis */
-.fretes-filters-expanded {
+.multas-filters-expanded {
   background: var(--gray-50);
   border-radius: var(--border-radius-lg);
   margin-top: var(--space-lg);
   overflow: hidden;
 }
 
-.fretes-filters-content {
+.multas-filters-content {
   padding: var(--space-lg);
 }
 
-.fretes-filter-group {
+.multas-filter-group {
   margin-bottom: var(--space-lg);
 }
 
-.fretes-filter-group label {
+.multas-filter-group label {
   display: block;
   font-weight: 600;
   color: var(--gray-700);
   margin-bottom: var(--space-sm);
 }
 
-.fretes-filter-chips {
+.multas-filter-chips {
   display: flex;
   gap: var(--space-sm);
   flex-wrap: wrap;
 }
 
-.fretes-filter-chip {
+.multas-filter-chip {
   display: flex;
   align-items: center;
   gap: var(--space-xs);
@@ -628,18 +681,26 @@
   font-weight: 500;
 }
 
-.fretes-filter-chip.active {
+.multas-filter-chip.active {
   font-weight: 600;
+  background: white;
+}
+
+.multas-tipo-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
 
 /* Table Container */
-.fretes-table-container {
+.multas-table-container {
   padding: 0 var(--space-xl);
   max-width: 1400px;
   margin: 0 auto;
 }
 
-.fretes-table-wrapper {
+.multas-table-wrapper {
   background: white;
   border-radius: var(--border-radius-2xl);
   box-shadow: var(--shadow-lg);
@@ -647,12 +708,12 @@
   overflow: hidden;
 }
 
-.fretes-table {
+.multas-table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.fretes-table th {
+.multas-table th {
   background: var(--gray-50);
   padding: var(--space-lg);
   text-align: left;
@@ -666,68 +727,68 @@
   transition: background-color 0.2s ease;
 }
 
-.fretes-table th:hover {
+.multas-table th:hover {
   background: var(--gray-100);
 }
 
-.fretes-th-content {
+.multas-th-content {
   display: flex;
   align-items: center;
   gap: var(--space-xs);
 }
 
-.fretes-sort-indicator {
+.multas-sort-indicator {
   color: var(--gray-400);
   transition: color 0.2s ease;
 }
 
-.fretes-table th:hover .fretes-sort-indicator {
+.multas-table th:hover .multas-sort-indicator {
   color: var(--gray-600);
 }
 
-.fretes-table td {
+.multas-table td {
   padding: var(--space-lg);
   border-bottom: 1px solid var(--gray-200);
   transition: background-color 0.2s ease;
 }
 
-.fretes-row:last-child td {
+.multas-row:last-child td {
   border-bottom: none;
 }
 
 /* Células da Tabela */
-.fretes-id-cell {
+.multas-id-cell {
   display: flex;
   flex-direction: column;
   gap: var(--space-xs);
 }
 
-.fretes-id-content {
+.multas-id-content {
   display: flex;
   align-items: center;
   gap: var(--space-sm);
 }
 
-.fretes-id-text {
+.multas-id-text {
   font-weight: 700;
   color: var(--gray-900);
   font-family: var(--font-mono);
   font-size: 0.95rem;
 }
 
-.fretes-priority-badge {
+.multas-desconto-badge {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2xs);
-  background: rgba(239, 68, 68, 0.1);
-  color: var(--error);
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--success);
   padding: var(--space-3xs) var(--space-xs);
   border-radius: var(--border-radius);
   font-size: 0.75rem;
   font-weight: 600;
 }
 
-.fretes-date {
+.multas-date {
   display: flex;
   align-items: center;
   gap: var(--space-xs);
@@ -735,60 +796,79 @@
   color: var(--gray-500);
 }
 
-.fretes-cliente-info {
+.multas-placa-info {
   display: flex;
   flex-direction: column;
   gap: var(--space-xs);
 }
 
-.fretes-cliente-name {
-  font-weight: 600;
+.multas-placa-text {
+  font-weight: 700;
   color: var(--gray-900);
-  font-size: 0.95rem;
+  font-size: 1.1rem;
+  font-family: var(--font-mono);
 }
 
-.fretes-veiculo {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
+.multas-veiculo {
   font-size: 0.875rem;
   color: var(--gray-500);
 }
 
-.fretes-route-info {
+.multas-local-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.multas-cidade {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-weight: 600;
+  color: var(--gray-900);
+}
+
+.multas-estado {
+  font-size: 0.875rem;
+  color: var(--gray-500);
+  background: var(--gray-100);
+  padding: var(--space-3xs) var(--space-sm);
+  border-radius: var(--border-radius);
+  display: inline-block;
+  width: fit-content;
+}
+
+.multas-tipo-info {
   display: flex;
   align-items: center;
   gap: var(--space-sm);
 }
 
-.fretes-origin, .fretes-destination {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-  font-size: 0.9rem;
-  max-width: 120px;
-}
-
-.fretes-arrow {
-  color: var(--primary);
+.multas-tipo-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
   flex-shrink: 0;
 }
 
-.fretes-peso, .fretes-valor {
+.multas-valor {
   display: flex;
   align-items: center;
   gap: var(--space-xs);
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.95rem;
-}
-
-.fretes-valor {
-  color: var(--success);
+  color: var(--error);
   font-family: var(--font-mono);
 }
 
+.multas-pontos {
+  font-weight: 700;
+  color: var(--warning);
+  font-size: 0.95rem;
+}
+
 /* Status Badges */
-.fretes-status-badge {
+.multas-status-badge {
   display: inline-block;
   border-radius: var(--border-radius-xl);
   padding: 0;
@@ -796,7 +876,7 @@
   border: 1px solid;
 }
 
-.fretes-status-content {
+.multas-status-content {
   display: flex;
   align-items: center;
   gap: var(--space-xs);
@@ -806,72 +886,37 @@
   position: relative;
 }
 
-.fretes-status-em_transito {
-  background: rgba(59, 130, 246, 0.1);
-  border-color: var(--fretes-status-transito);
-  color: var(--fretes-status-transito);
-}
-
-.fretes-status-carregando {
+.multas-status-pendente {
   background: rgba(245, 158, 11, 0.1);
-  border-color: var(--fretes-status-carregando);
-  color: var(--fretes-status-carregando);
+  border-color: var(--multas-status-pendente);
+  color: var(--multas-status-pendente);
 }
 
-.fretes-status-pendente {
-  background: rgba(245, 158, 11, 0.1);
-  border-color: var(--fretes-status-pendente);
-  color: var(--fretes-status-pendente);
-}
-
-.fretes-status-entregue {
+.multas-status-paga {
   background: rgba(16, 185, 129, 0.1);
-  border-color: var(--fretes-status-entregue);
-  color: var(--fretes-status-entregue);
+  border-color: var(--multas-status-paga);
+  color: var(--multas-status-paga);
 }
 
-.fretes-status-cancelado {
+.multas-status-vencida {
   background: rgba(239, 68, 68, 0.1);
-  border-color: var(--fretes-status-cancelado);
-  color: var(--fretes-status-cancelado);
+  border-color: var(--multas-status-vencida);
+  color: var(--multas-status-vencida);
 }
 
-.fretes-progress-bar {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--gray-200);
-}
-
-.fretes-progress-fill {
-  height: 100%;
-  background: currentColor;
-  opacity: 0.6;
-}
-
-.fretes-motorista-info {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-}
-
-.fretes-motorista-name {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-  font-weight: 500;
-  font-size: 0.95rem;
+.multas-status-contestada {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: var(--multas-status-contestada);
+  color: var(--multas-status-contestada);
 }
 
 /* Action Buttons */
-.fretes-action-buttons {
+.multas-action-buttons {
   display: flex;
   gap: var(--space-xs);
 }
 
-.fretes-action-btn {
+.multas-action-btn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -886,24 +931,24 @@
   font-size: 0.9rem;
 }
 
-.fretes-action-view:hover {
-  color: var(--primary);
-}
-
-.fretes-action-edit:hover {
-  color: var(--warning);
-}
-
-.fretes-action-track:hover {
+.multas-action-pay:hover {
   color: var(--success);
 }
 
-.fretes-action-more:hover {
+.multas-action-view:hover {
+  color: var(--primary);
+}
+
+.multas-action-edit:hover {
+  color: var(--warning);
+}
+
+.multas-action-more:hover {
   color: var(--gray-700);
 }
 
 /* Empty State */
-.fretes-empty-state {
+.multas-empty-state {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -915,34 +960,34 @@
   border: 1px solid var(--gray-200);
 }
 
-.fretes-empty-icon {
+.multas-empty-icon {
   font-size: 4rem;
   color: var(--gray-300);
   margin-bottom: var(--space-lg);
 }
 
-.fretes-empty-state h3 {
+.multas-empty-state h3 {
   font-size: 1.5rem;
   font-weight: 600;
   margin-bottom: var(--space-sm);
   color: var(--gray-700);
 }
 
-.fretes-empty-state p {
+.multas-empty-state p {
   color: var(--gray-500);
   margin-bottom: var(--space-xl);
   max-width: 400px;
 }
 
 /* Footer Summary */
-.fretes-footer-summary {
+.multas-footer-summary {
   background: white;
   padding: var(--space-lg) var(--space-xl);
   border-top: 1px solid var(--gray-200);
   margin-top: var(--space-xl);
 }
 
-.fretes-summary-content {
+.multas-summary-content {
   max-width: 1400px;
   margin: 0 auto;
   display: flex;
@@ -952,18 +997,18 @@
   flex-wrap: wrap;
 }
 
-.fretes-summary-item {
+.multas-summary-item {
   display: flex;
   align-items: center;
   gap: var(--space-sm);
 }
 
-.fretes-summary-label {
+.multas-summary-label {
   color: var(--gray-600);
   font-weight: 500;
 }
 
-.fretes-summary-value {
+.multas-summary-value {
   color: var(--gray-900);
   font-weight: 600;
   font-family: var(--font-mono);
@@ -971,86 +1016,104 @@
 
 /* Responsive Design */
 @media (max-width: 1200px) {
-  .fretes-header-content {
+  .multas-header-content {
     flex-direction: column;
     align-items: stretch;
     gap: var(--space-lg);
   }
   
-  .fretes-header-actions {
+  .multas-header-actions {
     justify-content: flex-start;
   }
 }
 
 @media (max-width: 768px) {
-  .fretes-container {
+  .multas-container {
     padding: 0;
   }
   
-  .fretes-header {
+  .multas-header {
     padding: var(--space-lg);
   }
   
-  .fretes-header h1 {
+  .multas-header h1 {
     font-size: 2rem;
   }
   
-  .fretes-stats-grid {
+  .multas-stats-grid {
     grid-template-columns: 1fr;
     padding: var(--space-lg);
   }
   
-  .fretes-quick-actions {
-    padding: 0 var(--space-lg);
-  }
-  
-  .fretes-quick-actions-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .fretes-controls-section {
+  .multas-time-filter {
     padding: var(--space-lg);
   }
   
-  .fretes-tabs {
+  .multas-time-filter-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .multas-time-buttons {
+    width: 100%;
+  }
+  
+  .multas-time-btn {
+    flex: 1;
+    text-align: center;
+  }
+  
+  .multas-quick-actions {
+    padding: var(--space-lg);
+  }
+  
+  .multas-quick-actions-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .multas-controls-section {
+    padding: var(--space-lg);
+  }
+  
+  .multas-tabs {
     flex-wrap: wrap;
   }
   
-  .fretes-tab {
+  .multas-tab {
     flex: 1;
     min-width: 120px;
   }
   
-  .fretes-search-controls {
+  .multas-search-controls {
     flex-direction: column;
     align-items: stretch;
   }
   
-  .fretes-search-box {
+  .multas-search-box {
     min-width: auto;
   }
   
-  .fretes-controls-buttons {
+  .multas-controls-buttons {
     justify-content: center;
   }
   
-  .fretes-table-container {
+  .multas-table-container {
     padding: 0 var(--space-lg);
   }
   
-  .fretes-table-wrapper {
+  .multas-table-wrapper {
     overflow-x: auto;
   }
   
-  .fretes-table {
+  .multas-table {
     min-width: 800px;
   }
   
-  .fretes-action-buttons {
+  .multas-action-buttons {
     flex-direction: column;
   }
   
-  .fretes-summary-content {
+  .multas-summary-content {
     flex-direction: column;
     align-items: flex-start;
     gap: var(--space-md);
@@ -1058,26 +1121,26 @@
 }
 
 @media (max-width: 480px) {
-  .fretes-header h1 {
+  .multas-header h1 {
     font-size: 1.75rem;
   }
   
-  .fretes-stat-main {
+  .multas-stat-main {
     flex-direction: column;
     align-items: flex-start;
     gap: var(--space-md);
   }
   
-  .fretes-tab {
+  .multas-tab {
     padding: var(--space-sm);
     font-size: 0.875rem;
   }
   
-  .fretes-tab-icon {
+  .multas-tab-icon {
     font-size: 1rem;
   }
   
-  .fretes-btn-large {
+  .multas-btn-large {
     padding: var(--space-md) var(--space-lg);
     font-size: 1rem;
   }

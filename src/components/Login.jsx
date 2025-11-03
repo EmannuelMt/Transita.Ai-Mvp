@@ -9,45 +9,33 @@ import {
 import { doc, getDoc, setDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from '../firebase/config';
 import { motion, AnimatePresence } from 'framer-motion';
-import './Login.css';
+import './Login.css'
+// React Icons
 import {
   FaEye,
   FaEyeSlash,
   FaCheckCircle,
   FaExclamationTriangle,
-  FaRocket,
-  FaPalette,
-  FaShieldAlt,
   FaSignInAlt,
   FaUserPlus,
   FaKey,
-  FaUser,
   FaSpinner,
   FaTimes,
   FaRegPaperPlane,
   FaTruck,
   FaMapMarkedAlt,
   FaChartLine,
-  FaClock,
-  FaAward,
-  FaGlobeAmericas,
-  FaLeaf,
+  FaShieldAlt,
   FaCogs,
   FaRoute,
   FaChartBar,
   FaLock,
   FaStar,
-  FaPlay,
-  FaBook,
-  FaHandshake,
-  FaBrain,
-  FaRecycle,
-  FaArrowRight,
   FaCheck,
-  FaArrowLeft,
-  FaArrowRight as FaArrowRightSolid,
   FaChevronLeft,
-  FaChevronRight
+  FaChevronRight,
+  FaPlay,
+  FaBook
 } from 'react-icons/fa';
 
 import {
@@ -61,21 +49,9 @@ import {
   FiUsers,
   FiPackage,
   FiShield,
-  FiTarget,
-  FiCalendar,
   FiDollarSign,
-  FiArrowRight,
-  FiChevronDown
+  FiArrowRight
 } from 'react-icons/fi';
-
-import {
-  RiRoadMapLine,
-  RiTeamLine,
-  RiGlobalLine,
-  RiLightbulbFlashLine,
-  RiCustomerService2Line,
-  RiBarChartBoxLine
-} from 'react-icons/ri';
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -90,153 +66,52 @@ export default function Login() {
   const [showResetModal, setShowResetModal] = useState(false);
   const [resetEmail, setResetEmail] = useState('');
   const [resetLoading, setResetLoading] = useState(false);
-  const [securityTipIndex, setSecurityTipIndex] = useState(0);
-  const [currentSection, setCurrentSection] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const carouselRef = useRef(null);
   const autoPlayRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
 
-  const securityTips = [
-    "Use senhas fortes com combinações de letras, números e símbolos",
-    "Ative a autenticação de dois fatores para maior segurança",
-    "Nunca compartilhe suas credenciais de login com ninguém",
-    "Verifique sempre o URL do site antes de inserir suas informações",
-    "Mantenha seu navegador e sistema operacional atualizados"
-  ];
-
-  const sections = [
+  const slides = [
     {
-      id: 'hero',
-      title: 'Transita.AI',
-      subtitle: 'Transformando a logística brasileira com tecnologia de ponta',
-      icon: FaTruck,
-      background: 'var(--gradient-hero)'
+      title: "Gestão Inteligente de Frotas",
+      description: "Controle completo de veículos, manutenções e custos operacionais com IA preditiva para otimizar sua operação logística.",
+      stats: [
+        { value: "500+", label: "Clientes Ativos" },
+        { value: "40%", label: "Redução de Custos" }
+      ],
+      gradient: "var(--gradient-primary)",
+      icon: FaTruck
     },
     {
-      id: 'story',
-      title: 'Nossa História',
-      subtitle: 'Da startup à referência em logística inteligente',
-      icon: RiRoadMapLine,
-      background: 'var(--gradient-primary)'
-    },
-    {
-      id: 'values',
-      title: 'Nossos Valores',
-      subtitle: 'Princípios que guiam nossa jornada',
-      icon: RiTeamLine,
-      background: 'var(--gradient-secondary)'
-    },
-    {
-      id: 'features',
-      title: 'Nossas Soluções',
-      subtitle: 'Tecnologia avançada para sua operação',
-      icon: RiBarChartBoxLine,
-      background: 'var(--gradient-success)'
-    },
-    {
-      id: 'plans',
-      title: 'Planos e Preços',
-      subtitle: 'Escolha o ideal para seu negócio',
-      icon: FiDollarSign,
-      background: 'var(--gradient-warning)'
-    }
-  ];
-
-  const features = [
-    {
-      icon: FaCogs,
-      title: "Gestão de Frota Inteligente",
-      description: "Controle completo de veículos, manutenções e custos operacionais com IA preditiva",
-      number: "01"
-    },
-    {
-      icon: FaMapMarkedAlt,
       title: "Rastreamento em Tempo Real",
-      description: "Monitoramento 24/7 com atualizações instantâneas e alertas inteligentes",
-      number: "02"
-    },
-    {
-      icon: FaRoute,
-      title: "Otimização de Rotas Avançada",
-      description: "Algoritmos de IA para planejamento de rotas que reduzem custos em até 30%",
-      number: "03"
-    },
-    {
-      icon: FaChartBar,
-      title: "Analytics Preditivo",
-      description: "Relatórios detalhados com insights acionáveis e previsões de desempenho",
-      number: "04"
-    }
-  ];
-
-  const values = [
-    {
-      icon: RiLightbulbFlashLine,
-      title: "Inovação",
-      description: "Buscamos constantemente novas tecnologias e soluções criativas"
-    },
-    {
-      icon: RiTeamLine,
-      title: "Parceria",
-      description: "Trabalhamos lado a lado com nossos clientes para o sucesso mútuo"
-    },
-    {
-      icon: FaShieldAlt,
-      title: "Confiança",
-      description: "Segurança e transparência em todas as nossas operações"
-    },
-    {
-      icon: FaRecycle,
-      title: "Sustentabilidade",
-      description: "Compromisso com operações logísticas eco-friendly"
-    }
-  ];
-
-  const plans = [
-    {
-      name: "Essencial",
-      price: "R$ 299",
-      period: "/mês",
-      popular: false,
-      features: [
-        "Até 5 veículos",
-        "Rastreamento básico",
-        "Relatórios simples",
-        "Suporte por email",
-        "App móvel básico"
+      description: "Monitoramento 24/7 com atualizações instantâneas, alertas inteligentes e relatórios detalhados de desempenho.",
+      stats: [
+        { value: "50K+", label: "Entregas/Mês" },
+        { value: "99.8%", label: "Disponibilidade" }
       ],
-      buttonText: "Começar Agora"
+      gradient: "var(--gradient-secondary)",
+      icon: FaMapMarkedAlt
     },
     {
-      name: "Profissional",
-      price: "R$ 599",
-      period: "/mês",
-      popular: true,
-      badge: "Mais Popular",
-      features: [
-        "Até 20 veículos",
-        "Rastreamento avançado",
-        "Relatórios detalhados",
-        "Otimização de rotas com IA",
-        "Suporte prioritário 24/7"
+      title: "Otimização Avançada",
+      description: "Algoritmos de IA para planejamento de rotas que reduzem custos em até 30% e aumentam a eficiência operacional.",
+      stats: [
+        { value: "85%", label: "Eficiência" },
+        { value: "30%", label: "Economia" }
       ],
-      buttonText: "Começar Agora"
+      gradient: "var(--gradient-success)",
+      icon: FaRoute
     },
     {
-      name: "Empresarial",
-      price: "R$ 999",
-      period: "/mês",
-      popular: false,
-      features: [
-        "Frota ilimitada",
-        "Todos os recursos premium",
-        "Dashboard customizado",
-        "Suporte dedicado 24/7",
-        "Consultoria estratégica"
+      title: "Segurança Total",
+      description: "Sistema multicamada com criptografia de ponta a ponta, backups automáticos e conformidade com LGPD.",
+      stats: [
+        { value: "100%", label: "Conformidade" },
+        { value: "24/7", label: "Monitoramento" }
       ],
-      buttonText: "Começar Agora"
+      gradient: "var(--gradient-warning)",
+      icon: FaShieldAlt
     }
   ];
 
@@ -244,8 +119,8 @@ export default function Login() {
   useEffect(() => {
     if (isAutoPlaying) {
       autoPlayRef.current = setInterval(() => {
-        setCurrentSection((prev) => (prev + 1) % sections.length);
-      }, 5000);
+        setCurrentSlide((prev) => (prev + 1) % slides.length);
+      }, 6000);
     }
 
     return () => {
@@ -253,30 +128,18 @@ export default function Login() {
         clearInterval(autoPlayRef.current);
       }
     };
-  }, [isAutoPlaying, sections.length]);
+  }, [isAutoPlaying, slides.length]);
 
-  // Carregar dados salvos do localStorage ao inicializar
+  // Carregar dados salvos
   useEffect(() => {
     const savedEmail = localStorage.getItem('rememberedEmail');
     if (savedEmail) {
       setFormData(prev => ({ ...prev, email: savedEmail }));
       setRememberMe(true);
     }
-
-    // Rotacionar dicas de segurança
-    const tipInterval = setInterval(() => {
-      setSecurityTipIndex(prev => (prev + 1) % securityTips.length);
-    }, 5000);
-
-    return () => {
-      clearInterval(tipInterval);
-      if (autoPlayRef.current) {
-        clearInterval(autoPlayRef.current);
-      }
-    };
   }, []);
 
-  // Verificar se há mensagem de redirecionamento
+  // Verificar mensagem de redirecionamento
   useEffect(() => {
     if (location.state?.message) {
       setMessage({ text: location.state.message, type: 'success' });
@@ -412,13 +275,13 @@ export default function Login() {
         break;
       case AuthErrorCodes.TOO_MANY_ATTEMPTS_TRY_LATER:
         setMessage({ 
-          text: 'Muitas tentativas de login. Sua conta foi temporariamente bloqueada por segurança. Tente novamente mais tarde ou redefina sua senha.', 
+          text: 'Muitas tentativas de login. Sua conta foi temporariamente bloqueada por segurança.', 
           type: 'error' 
         });
         break;
       case AuthErrorCodes.USER_DISABLED:
         setMessage({ 
-          text: 'Esta conta foi desativada. Entre em contato com o suporte para mais informações.', 
+          text: 'Esta conta foi desativada. Entre em contato com o suporte.', 
           type: 'error' 
         });
         break;
@@ -449,7 +312,7 @@ export default function Login() {
     try {
       await sendPasswordResetEmail(auth, email);
       setMessage({ 
-        text: 'Email de redefinição de senha enviado! Verifique sua caixa de entrada e pasta de spam.', 
+        text: 'Email de redefinição de senha enviado! Verifique sua caixa de entrada.', 
         type: 'success' 
       });
       setShowResetModal(false);
@@ -483,370 +346,42 @@ export default function Login() {
     setResetEmail('');
   };
 
-  const nextSection = () => {
-    setCurrentSection((prev) => (prev + 1) % sections.length);
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
     setIsAutoPlaying(false);
     setTimeout(() => setIsAutoPlaying(true), 10000);
   };
 
-  const prevSection = () => {
-    setCurrentSection((prev) => (prev - 1 + sections.length) % sections.length);
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
     setIsAutoPlaying(false);
     setTimeout(() => setIsAutoPlaying(true), 10000);
   };
 
-  const goToSection = (index) => {
-    setCurrentSection(index);
+  const goToSlide = (index) => {
+    setCurrentSlide(index);
     setIsAutoPlaying(false);
     setTimeout(() => setIsAutoPlaying(true), 10000);
-  };
-
-  const renderSectionContent = () => {
-    switch (currentSection) {
-      case 0: // Hero
-        return (
-          <div className="carousel-hero">
-            <motion.div
-              className="hero-logo"
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.8 }}
-            >
-              <div className="logo-icon-wrapper">
-                <FaTruck className="logo-icon" />
-              </div>
-              <h1>Transita<span className="gradient-text">.AI</span></h1>
-            </motion.div>
-            
-            <motion.h2
-              initial={{ y: 30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.3, duration: 0.8 }}
-            >
-              Transformando a logística brasileira com tecnologia de ponta
-            </motion.h2>
-            
-            <motion.p
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.6, duration: 0.8 }}
-            >
-              Soluções inteligentes em gestão de frotas com inteligência artificial 
-              para empresas que buscam eficiência e redução de custos
-            </motion.p>
-
-            <motion.div
-              className="hero-stats"
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.9, duration: 0.8 }}
-            >
-              <div className="stats-grid">
-                <div className="stat-item">
-                  <FiUsers className="stat-icon" />
-                  <div className="stat-content">
-                    <span className="stat-number">500+</span>
-                    <span className="stat-label">Clientes</span>
-                  </div>
-                </div>
-                <div className="stat-item">
-                  <FiPackage className="stat-icon" />
-                  <div className="stat-content">
-                    <span className="stat-number">50K+</span>
-                    <span className="stat-label">Entregas/Mês</span>
-                  </div>
-                </div>
-                <div className="stat-item">
-                  <FiTrendingUp className="stat-icon" />
-                  <div className="stat-content">
-                    <span className="stat-number">40%</span>
-                    <span className="stat-label">Economia</span>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        );
-
-      case 1: // Story
-        return (
-          <div className="carousel-story">
-            <motion.div
-              initial={{ x: -50, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ duration: 0.8 }}
-            >
-              <h2>Nossa História</h2>
-              <div className="story-content">
-                <p>
-                  Fundada em 2018, a Transita.AI nasceu da visão de revolucionar o setor 
-                  logístico brasileiro através da tecnologia. De uma pequena startup a 
-                  referência em soluções inteligentes para gestão de frotas.
-                </p>
-                <p>
-                  Nossa missão é simplificar a complexidade das operações logísticas, 
-                  proporcionando eficiência, redução de custos e sustentabilidade para 
-                  empresas de todos os portes.
-                </p>
-              </div>
-              
-              <div className="journey-highlights">
-                <div className="journey-item">
-                  <span className="year">2018</span>
-                  <span className="event">Fundação</span>
-                </div>
-                <div className="journey-item">
-                  <span className="year">2021</span>
-                  <span className="event">Série A</span>
-                </div>
-                <div className="journey-item">
-                  <span className="year">2024</span>
-                  <span className="event">+1000 Clientes</span>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        );
-
-      case 2: // Values
-        return (
-          <div className="carousel-values">
-            <motion.div
-              initial={{ x: 50, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ duration: 0.8 }}
-            >
-              <h2>Nossos Valores</h2>
-              <div className="values-grid">
-                {values.map((value, index) => (
-                  <motion.div
-                    key={value.title}
-                    className="value-card"
-                    initial={{ y: 30, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ delay: index * 0.1, duration: 0.6 }}
-                  >
-                    <div className="value-icon-wrapper">
-                      <value.icon className="value-icon" />
-                    </div>
-                    <h3>{value.title}</h3>
-                    <p>{value.description}</p>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-          </div>
-        );
-
-      case 3: // Features
-        return (
-          <div className="carousel-features">
-            <motion.div
-              initial={{ y: 50, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8 }}
-            >
-              <h2>Nossas Soluções</h2>
-              <div className="features-grid">
-                {features.map((feature, index) => (
-                  <motion.div
-                    key={feature.title}
-                    className="feature-card"
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ delay: index * 0.1, duration: 0.6 }}
-                  >
-                    <div className="feature-header">
-                      <div className="feature-number">{feature.number}</div>
-                      <div className="feature-icon-wrapper">
-                        <feature.icon className="feature-icon" />
-                      </div>
-                    </div>
-                    <h3>{feature.title}</h3>
-                    <p>{feature.description}</p>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-          </div>
-        );
-
-      case 4: // Plans
-        return (
-          <div className="carousel-plans">
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.8 }}
-            >
-              <h2>Planos e Preços</h2>
-              <div className="plans-grid">
-                {plans.map((plan, index) => (
-                  <motion.div
-                    key={plan.name}
-                    className={`plan-card ${plan.popular ? 'popular' : ''}`}
-                    initial={{ y: 30, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ delay: index * 0.1, duration: 0.6 }}
-                  >
-                    {plan.popular && (
-                      <div className="plan-badge">
-                        <FaStar className="badge-icon" />
-                        {plan.badge}
-                      </div>
-                    )}
-                    <div className="plan-header">
-                      <h3>{plan.name}</h3>
-                      <div className="plan-price">
-                        <span className="price">{plan.price}</span>
-                        <span className="period">{plan.period}</span>
-                      </div>
-                    </div>
-                    <ul className="plan-features">
-                      {plan.features.map((feature, idx) => (
-                        <li key={idx}>
-                          <FaCheck className="feature-check" />
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
-                    <button className="plan-button">
-                      {plan.buttonText}
-                    </button>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-          </div>
-        );
-
-      default:
-        return null;
-    }
   };
 
   return (
     <div className="auth-container">
-      {/* Carrossel Horizontal - Lado Esquerdo */}
+      {/* Tela de Login Fixa - Esquerda */}
       <motion.div
-        className="auth-carousel"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        className="auth-panel"
+        initial={{ opacity: 0, x: -50 }}
+        animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.8 }}
       >
-        <div 
-          className="carousel-background"
-          style={{ background: sections[currentSection].background }}
-        >
-          <div className="background-glow glow-1"></div>
-          <div className="background-glow glow-2"></div>
-          <div className="background-glow glow-3"></div>
-        </div>
-
-        <div className="carousel-container">
-          {/* Navegação do Carrossel */}
-          <div className="carousel-nav">
-            <button 
-              className="nav-button prev"
-              onClick={prevSection}
-              aria-label="Seção anterior"
-            >
-              <FaChevronLeft />
-            </button>
-            
-            <div className="nav-dots">
-              {sections.map((_, index) => (
-                <button
-                  key={index}
-                  className={`nav-dot ${index === currentSection ? 'active' : ''}`}
-                  onClick={() => goToSection(index)}
-                  aria-label={`Ir para seção ${index + 1}`}
-                />
-              ))}
-            </div>
-            
-            <button 
-              className="nav-button next"
-              onClick={nextSection}
-              aria-label="Próxima seção"
-            >
-              <FaChevronRight />
-            </button>
-          </div>
-
-          {/* Conteúdo do Carrossel */}
-          <div className="carousel-content">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentSection}
-                initial={{ opacity: 0, x: 100 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -100 }}
-                transition={{ duration: 0.5 }}
-                className="carousel-slide"
-              >
-                <div className="section-icon-wrapper">
-           
-                </div>
-                {renderSectionContent()}
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-          {/* Indicador de Seção */}
-          <div className="section-indicator">
-            <span className="section-number">0{currentSection + 1}</span>
-            <span className="section-divider">/</span>
-            <span className="section-total">0{sections.length}</span>
-            <span className="section-title">{sections[currentSection].title}</span>
-          </div>
-        </div>
-
-        {/* Dica de Segurança */}
-        <motion.div 
-          className="security-tips"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1 }}
-        >
-          <div className="tip-header">
-            <FiHelpCircle className="tip-icon" />
-            <span>Dica de Segurança</span>
-          </div>
-          <AnimatePresence mode="wait">
-            <motion.p
-              key={securityTipIndex}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.5 }}
-              className="tip-content"
-            >
-              {securityTips[securityTipIndex]}
-            </motion.p>
-          </AnimatePresence>
-        </motion.div>
-      </motion.div>
-
-      {/* Card de Login - Lado Direito */}
-      <motion.div
-        className="auth-card"
-        initial={{ opacity: 0, x: 50 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-      >
-        <div className="card-content">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.6 }}
-          >
+        <div className="panel-content">
+          {/* Header */}
+          <div className="panel-header">
             <Link to="/" className="back-button">
               <FiArrowLeft className="back-icon" />
-              Voltar para home
+              Voltar ao site
             </Link>
-
-            <div className="auth-brand">
+            
+            <div className="brand-section">
               <motion.div
                 className="brand-logo"
                 whileHover={{ scale: 1.05, rotate: 2 }}
@@ -854,186 +389,294 @@ export default function Login() {
               >
                 <FaTruck className="brand-icon" />
               </motion.div>
-              <motion.h1
-                className="brand-text"
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2, duration: 0.5 }}
-              >
-                Transita<span className="gradient-text">.AI</span>
-              </motion.h1>
-              <p className="brand-tagline">Sua jornada logística inteligente</p>
+              <div className="brand-text">
+                <h1>Transita<span className="gradient-text">.AI</span></h1>
+                <p className="brand-tagline">Sua jornada logística inteligente</p>
+              </div>
             </div>
 
-            <motion.div
-              className="auth-header"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.5 }}
-            >
+            <div className="welcome-section">
               <h2>Bem-vindo de volta! 👋</h2>
-              <p>Entre na sua conta para acessar o dashboard completo</p>
-            </motion.div>
+              <p>Acesse sua conta para gerenciar sua operação</p>
+            </div>
+          </div>
 
-            <AnimatePresence>
-              {message.text && (
-                <motion.div
-                  className={`auth-message ${message.type}`}
-                  initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                  transition={{ duration: 0.3 }}
+          {/* Messages */}
+          <AnimatePresence>
+            {message.text && (
+              <motion.div
+                className={`auth-message ${message.type}`}
+                initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                transition={{ duration: 0.3 }}
+              >
+                {message.type === 'success' || message.type === 'info' ? (
+                  <FiCheckCircle className="message-icon" />
+                ) : (
+                  <FiAlertTriangle className="message-icon" />
+                )}
+                <span>{message.text}</span>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Login Form */}
+          <motion.form
+            onSubmit={handleEmailLogin}
+            className="auth-form"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+          >
+            <div className="form-group">
+              <label htmlFor="email">
+                <FiMail className="label-icon" />
+                Endereço de Email
+              </label>
+              <div className="input-container">
+                <FiMail className="input-icon" />
+                <input
+                  id="email"
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="seu@email.com"
+                  className={errors.email ? 'error' : ''}
+                  disabled={loading}
+                  autoComplete="email"
+                />
+              </div>
+              {errors.email && (
+                <motion.span
+                  className="error-message"
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
                 >
-                  {message.type === 'success' || message.type === 'info' ? (
-                    <FiCheckCircle className="message-icon" />
-                  ) : (
-                    <FiAlertTriangle className="message-icon" />
-                  )}
-                  <span>{message.text}</span>
-                </motion.div>
+                  <FiAlertTriangle className="error-icon" />
+                  {errors.email}
+                </motion.span>
               )}
-            </AnimatePresence>
+            </div>
 
-            <motion.form
-              onSubmit={handleEmailLogin}
-              className="auth-form"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-            >
-              <div className="form-group">
-                <label htmlFor="email">
-                  <FiMail className="label-icon" />
-                  Email
-                </label>
-                <div className="input-container">
-                  <FiMail className="input-icon" />
-                  <input
-                    id="email"
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder="seu@email.com"
-                    className={errors.email ? 'error' : ''}
-                    disabled={loading}
-                    autoComplete="email"
-                  />
-                </div>
-                {errors.email && (
-                  <motion.span
-                    className="error-message"
-                    initial={{ opacity: 0, y: -5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                  >
-                    <FiAlertTriangle className="error-icon" />
-                    {errors.email}
-                  </motion.span>
-                )}
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="password">
-                  <FiLock className="label-icon" />
-                  Senha
-                </label>
-                <div className="input-container">
-                  <FiLock className="input-icon" />
-                  <input
-                    id="password"
-                    type={showPassword ? 'text' : 'password'}
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    placeholder="Sua senha"
-                    className={errors.password ? 'error' : ''}
-                    disabled={loading}
-                    autoComplete="current-password"
-                  />
-                  <motion.button
-                    type="button"
-                    className="password-toggle"
-                    onClick={togglePasswordVisibility}
-                    disabled={loading}
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
-                  >
-                    {showPassword ? <FaEyeSlash /> : <FaEye />}
-                  </motion.button>
-                </div>
-                {errors.password && (
-                  <motion.span
-                    className="error-message"
-                    initial={{ opacity: 0, y: -5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                  >
-                    <FiAlertTriangle className="error-icon" />
-                    {errors.password}
-                  </motion.span>
-                )}
-              </div>
-
-              <div className="form-options">
-                <label className="checkbox-container">
-                  <input 
-                    type="checkbox" 
-                    checked={rememberMe}
-                    onChange={(e) => setRememberMe(e.target.checked)}
-                    disabled={loading} 
-                  />
-                  <span className="checkmark"></span>
-                  Lembrar-me
-                </label>
+            <div className="form-group">
+              <label htmlFor="password">
+                <FiLock className="label-icon" />
+                Senha
+              </label>
+              <div className="input-container">
+                <FiLock className="input-icon" />
+                <input
+                  id="password"
+                  type={showPassword ? 'text' : 'password'}
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  placeholder="Sua senha"
+                  className={errors.password ? 'error' : ''}
+                  disabled={loading}
+                  autoComplete="current-password"
+                />
                 <motion.button
                   type="button"
-                  className="forgot-password-btn"
-                  onClick={openResetModal}
+                  className="password-toggle"
+                  onClick={togglePasswordVisibility}
                   disabled={loading}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
                 >
-                  <FaKey className="forgot-icon" />
-                  Esqueci a senha
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </motion.button>
               </div>
+              {errors.password && (
+                <motion.span
+                  className="error-message"
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                >
+                  <FiAlertTriangle className="error-icon" />
+                  {errors.password}
+                </motion.span>
+              )}
+            </div>
 
+            <div className="form-options">
+              <label className="checkbox-container">
+                <input 
+                  type="checkbox" 
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  disabled={loading} 
+                />
+                <span className="checkmark"></span>
+                Manter conectado
+              </label>
               <motion.button
-                type="submit"
-                className="auth-button primary"
+                type="button"
+                className="forgot-password-btn"
+                onClick={openResetModal}
                 disabled={loading}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                {loading ? (
-                  <div className="button-loading">
-                    <FaSpinner className="spinner" />
-                    Entrando...
-                  </div>
-                ) : (
-                  <>
-                    <FaSignInAlt className="button-icon" />
-                    Entrar na plataforma
-                  </>
-                )}
+                <FaKey className="forgot-icon" />
+                Esqueci a senha
               </motion.button>
-            </motion.form>
+            </div>
 
-            <motion.div
-              className="auth-footer"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.8, duration: 0.6 }}
+            <motion.button
+              type="submit"
+              className="auth-button primary"
+              disabled={loading}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
             >
+              {loading ? (
+                <div className="button-loading">
+                  <FaSpinner className="spinner" />
+                  Entrando...
+                </div>
+              ) : (
+                <>
+                  <FaSignInAlt className="button-icon" />
+                  Acessar Plataforma
+                </>
+              )}
+            </motion.button>
+          </motion.form>
+
+          {/* Footer */}
+          <motion.div
+            className="auth-footer"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6, duration: 0.6 }}
+          >
+            <div className="footer-content">
               <p>
                 Não tem uma conta?{' '}
                 <Link to="/registro" className="auth-link">
                   <FaUserPlus className="link-icon" />
-                  Criar conta agora
+                  Solicitar demonstração
                 </Link>
               </p>
-            </motion.div>
+              <div className="security-notice">
+                <FiShield className="security-icon" />
+                <span>Ambiente 100% seguro e criptografado</span>
+              </div>
+            </div>
           </motion.div>
+        </div>
+      </motion.div>
+
+      {/* Carrossel de Apresentação - Direita */}
+      <motion.div
+        className="presentation-panel"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+      >
+        <div 
+          className="slide-background"
+          style={{ background: slides[currentSlide].gradient }}
+        >
+          <div className="background-glow glow-1"></div>
+          <div className="background-glow glow-2"></div>
+          <div className="background-glow glow-3"></div>
+        </div>
+
+        <div className="presentation-content">
+          {/* Navegação */}
+          <div className="slide-nav">
+            <button 
+              className="nav-button prev"
+              onClick={prevSlide}
+              aria-label="Slide anterior"
+            >
+              <FaChevronLeft />
+            </button>
+            
+            <div className="nav-dots">
+              {slides.map((_, index) => (
+                <button
+                  key={index}
+                  className={`nav-dot ${index === currentSlide ? 'active' : ''}`}
+                  onClick={() => goToSlide(index)}
+                  aria-label={`Ir para slide ${index + 1}`}
+                />
+              ))}
+            </div>
+            
+            <button 
+              className="nav-button next"
+              onClick={nextSlide}
+              aria-label="Próximo slide"
+            >
+              <FaChevronRight />
+            </button>
+          </div>
+
+          {/* Conteúdo do Slide */}
+          <div className="slide-content">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentSlide}
+                initial={{ opacity: 0, x: 100 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -100 }}
+                transition={{ duration: 0.7 }}
+                className="slide-inner"
+              >
+                <div className="slide-icon">
+                  {(() => {
+                    const IconComponent = slides[currentSlide].icon;
+                    return <IconComponent className="icon" />;
+                  })()}
+                </div>
+
+                <div className="slide-text">
+                  <motion.h2
+                    initial={{ y: 30, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.2, duration: 0.6 }}
+                  >
+                    {slides[currentSlide].title}
+                  </motion.h2>
+                  
+                  <motion.p
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.4, duration: 0.6 }}
+                  >
+                    {slides[currentSlide].description}
+                  </motion.p>
+
+                  <motion.div
+                    className="slide-stats"
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.6, duration: 0.6 }}
+                  >
+                    {slides[currentSlide].stats.map((stat, index) => (
+                      <div key={index} className="stat-item">
+                        <span className="stat-value">{stat.value}</span>
+                        <span className="stat-label">{stat.label}</span>
+                      </div>
+                    ))}
+                  </motion.div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* Indicador */}
+          <div className="slide-indicator">
+            <span className="current">0{currentSlide + 1}</span>
+            <span className="divider">/</span>
+            <span className="total">0{slides.length}</span>
+          </div>
         </div>
       </motion.div>
 

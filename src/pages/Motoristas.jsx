@@ -34,7 +34,7 @@ import {
   IoTimeOutline
 } from 'react-icons/io5';
 import { motion, AnimatePresence } from 'framer-motion';
-import '.Motorista.css';
+import './Motorista.css';
 const Motoristas = ({ user, onNavigate }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeFilter, setActiveFilter] = useState('todos');

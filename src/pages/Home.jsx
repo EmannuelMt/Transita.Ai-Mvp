@@ -60,6 +60,8 @@ import {
 } from 'react-icons/fa';
 import '../styles/Home.css';
 
+
+
 // Hook personalizado para animações de entrada
 const useScrollAnimation = (threshold = 0.1) => {
   const ref = useRef(null);

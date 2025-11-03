@@ -9,7 +9,7 @@ import {
 import { doc, getDoc, setDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from '../firebase/config';
 import { motion, AnimatePresence } from 'framer-motion';
-import '../styles/login.css'
+import '../styles/Login.css';
 import {
   FaEye,
   FaEyeSlash,

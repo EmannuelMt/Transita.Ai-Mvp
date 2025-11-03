@@ -39,7 +39,7 @@ import {
 } from 'react-icons/io5';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import '../styles/Fretes.css'
+import '../styles/Fretes.css';
 
 const Fretes = ({ onNavigate }) => {
   const [activeTab, setActiveTab] = useState('ativos');

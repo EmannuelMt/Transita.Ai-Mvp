@@ -51,7 +51,7 @@ import {
   IoStatsChart,
   IoHardwareChipOutline
 } from 'react-icons/io5';
-import '../styles/footer.css';
+import '../styles/Footer.css';
 
 const Footer = () => {
     const currentYear = new Date().getFullYear();

@@ -149,26 +149,12 @@ const ProfessionalNavbar = ({ user, onLogout, sidebarOpen, onToggleSidebar }) =>
         color: '#6366f1'
       },
       { 
-        path: '/dashboard', 
-        icon: IoStatsChart, 
-        label: 'Dashboard',
-        description: 'Métricas e analytics em tempo real',
-        color: '#10b981'
-      },
-      { 
         path: '/Multas', 
         icon: RiTruckFill, 
         label: 'Multas',
         description: 'Gestão inteligente de multas',
         color: '#f59e0b'
       },
-      { 
-        path: '/monitoramento', 
-        icon: IoLocation, 
-        label: 'Monitoramento',
-        description: 'Rastreamento em tempo real',
-        color: '#3b82f6'
-      }
     ],
     userMenu: [
       {

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* monitoramento.css - CSS Profissional e Moderno com Google Maps */
 
 :root {
@@ -56,11 +57,18 @@
 }
 
 /* Reset e Base */
+=======
+/* monitoramento.css - CSS Profissional e Moderno */
+
+>>>>>>> 9d410153e6b110099f48b9ce892147f5ef75f43f
 .monitoramento-container {
   min-height: 100vh;
   background: var(--gray-50);
   padding: 0;
+<<<<<<< HEAD
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+=======
+>>>>>>> 9d410153e6b110099f48b9ce892147f5ef75f43f
 }
 
 /* Loading States */
@@ -704,21 +712,48 @@
   display: flex;
   align-items: center;
   justify-content: center;
+<<<<<<< HEAD
   position: relative;
+=======
+>>>>>>> 9d410153e6b110099f48b9ce892147f5ef75f43f
 }
 
 .monitoramento-map-content {
   width: 100%;
   height: 100%;
+<<<<<<< HEAD
   position: relative;
 }
 
 /* Estilos para o Google Maps */
 .map-loading, .map-error {
+=======
+  padding: var(--space-lg);
+}
+
+.monitoramento-map-visualization {
+  background: white;
+  border-radius: var(--border-radius-xl);
+  box-shadow: var(--shadow-lg);
+  height: 100%;
+  overflow: hidden;
+}
+
+.monitoramento-route-map {
+  padding: var(--space-xl);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.monitoramento-route-path {
+  flex: 1;
+>>>>>>> 9d410153e6b110099f48b9ce892147f5ef75f43f
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+<<<<<<< HEAD
   height: 100%;
   color: var(--gray-500);
   background: var(--gray-100);
@@ -745,6 +780,113 @@
 
 .gm-style .gm-style-iw-t::after {
   background: var(--primary) !important;
+=======
+  gap: var(--space-lg);
+  position: relative;
+}
+
+.monitoramento-route-start,
+.monitoramento-route-current,
+.monitoramento-route-end {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background: var(--gray-50);
+  border-radius: var(--border-radius-lg);
+  min-width: 200px;
+}
+
+.monitoramento-route-marker {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.monitoramento-route-marker.start {
+  background: var(--success);
+  color: white;
+}
+
+.monitoramento-route-marker.vehicle {
+  background: var(--primary);
+  color: white;
+}
+
+.monitoramento-route-marker.end {
+  background: var(--error);
+  color: white;
+}
+
+.monitoramento-route-line {
+  width: 4px;
+  flex: 1;
+  background: var(--gray-300);
+  border-radius: 2px;
+  position: relative;
+  min-height: 40px;
+}
+
+.monitoramento-route-progress-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: var(--primary);
+  border-radius: 2px;
+}
+
+.monitoramento-vehicle-on-map {
+  background: white;
+  padding: var(--space-lg);
+  border-radius: var(--border-radius-xl);
+  box-shadow: var(--shadow-lg);
+  margin-top: var(--space-lg);
+}
+
+.monitoramento-vehicle-on-map h4 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: var(--space-sm);
+  color: var(--gray-900);
+}
+
+.monitoramento-vehicle-on-map p {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  color: var(--gray-600);
+  margin-bottom: var(--space-sm);
+}
+
+.monitoramento-map-stats {
+  display: flex;
+  gap: var(--space-lg);
+  font-size: 0.875rem;
+  color: var(--gray-600);
+}
+
+.monitoramento-no-vehicle-selected {
+  text-align: center;
+  color: var(--gray-500);
+  padding: var(--space-2xl);
+}
+
+.monitoramento-map-icon {
+  font-size: 4rem;
+  color: var(--gray-300);
+  margin-bottom: var(--space-lg);
+}
+
+.monitoramento-no-vehicle-selected h3 {
+  font-size: 1.5rem;
+  margin-bottom: var(--space-sm);
+  color: var(--gray-700);
+>>>>>>> 9d410153e6b110099f48b9ce892147f5ef75f43f
 }
 
 /* Details Sidebar */
@@ -911,17 +1053,65 @@
   color: var(--gray-700);
 }
 
+<<<<<<< HEAD
 /* Animações */
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
 
+=======
+/* Responsive Design */
+@media (max-width: 1400px) {
+  .monitoramento-content {
+    grid-template-columns: 350px 1fr 350px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .monitoramento-content {
+    grid-template-columns: 320px 1fr;
+  }
+  
+  .monitoramento-details-sidebar {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .monitoramento-header-content {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+  
+  .monitoramento-header-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .monitoramento-header-actions {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+  
+  .monitoramento-content {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+  
+  .monitoramento-sidebar {
+    border-right: none;
+    border-bottom: 1px solid var(--gray-200);
+  }
+}
+
+/* Animações Específicas */
+>>>>>>> 9d410153e6b110099f48b9ce892147f5ef75f43f
 @keyframes pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.5; }
 }
 
+<<<<<<< HEAD
 @keyframes vehicle-move {
   0% { transform: translateY(0px); }
   50% { transform: translateY(-5px); }
@@ -932,6 +1122,8 @@
   animation: vehicle-move 2s ease-in-out infinite;
 }
 
+=======
+>>>>>>> 9d410153e6b110099f48b9ce892147f5ef75f43f
 .monitoramento-vehicle-card.alert {
   animation: pulse 2s infinite;
 }
@@ -956,6 +1148,7 @@
 .monitoramento-sidebar::-webkit-scrollbar-thumb:hover,
 .monitoramento-details-sidebar::-webkit-scrollbar-thumb:hover {
   background: var(--gray-400);
+<<<<<<< HEAD
 }
 
 /* Responsive Design */
@@ -1018,4 +1211,6 @@
   .monitoramento-map-controls {
     flex-wrap: wrap;
   }
+=======
+>>>>>>> 9d410153e6b110099f48b9ce892147f5ef75f43f
 }

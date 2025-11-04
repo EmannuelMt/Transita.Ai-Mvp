@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { 
   FiTruck, FiRefreshCw, FiMap, FiPhone, FiBarChart2,
@@ -404,6 +405,48 @@ class FleetMonitoringService {
 }
 
 // Componente Principal
+=======
+import React, { useState, useEffect, useMemo } from 'react';
+import { 
+  FiTruck, 
+  FiRefreshCw, 
+  FiMap, 
+  FiPhone, 
+  FiBarChart2,
+  FiSmartphone,
+  FiNavigation,
+  FiClock,
+  FiThermometer,
+  FiDroplet,
+  FiActivity,
+  FiUser,
+  FiCalendar,
+  FiAlertCircle,
+  FiCheckCircle,
+  FiSettings,
+  FiPlay,
+  FiPause,
+  FiFlag
+} from 'react-icons/fi';
+import { 
+  MdSatellite, 
+  MdTraffic, 
+  MdLocationOn,
+  MdMyLocation,
+  MdSpeed,
+  MdLocalGasStation,
+  MdDirectionsCar
+} from 'react-icons/md';
+import { 
+  IoStatsChart,
+  IoSpeedometerOutline,
+  IoTimeOutline,
+  IoNavigateOutline
+} from 'react-icons/io5';
+import { motion, AnimatePresence } from 'framer-motion';
+import './Monitoramento.css';
+
+>>>>>>> 9d410153e6b110099f48b9ce892147f5ef75f43f
 const Monitoramento = ({ user, onNavigate }) => {
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [vehicles, setVehicles] = useState([]);
@@ -412,6 +455,7 @@ const Monitoramento = ({ user, onNavigate }) => {
   const [activeFilter, setActiveFilter] = useState('todos');
   const [mapView, setMapView] = useState('standard');
   const [autoRefresh, setAutoRefresh] = useState(true);
+<<<<<<< HEAD
   const [mapCenter, setMapCenter] = useState({ lat: -23.5505, lng: -46.6333 });
   const [mapZoom, setMapZoom] = useState(10);
   const [mapError, setMapError] = useState(false);
@@ -419,6 +463,143 @@ const Monitoramento = ({ user, onNavigate }) => {
   const monitoringService = useRef(new FleetMonitoringService());
 
   // Configurações de status
+=======
+
+  // Simulação de dados em tempo real
+  useEffect(() => {
+    const initialVehicles = [
+      {
+        id: 1,
+        placa: 'ABC1I23',
+        modelo: 'Volvo FH 540',
+        motorista: 'Carlos Santos',
+        status: 'em_viagem',
+        localizacao: 'Rodovia Presidente Dutra, KM 42',
+        destino: 'Rio de Janeiro - RJ',
+        velocidade: 78,
+        combustivel: 85,
+        temperatura: 18,
+        odometro: 125420,
+        tempo_viagem: '2:45',
+        ultimaAtualizacao: new Date(Date.now() - 120000),
+        carga: 'Eletrônicos',
+        peso: 15.2,
+        efficiency: 2.8,
+        nextMaintenance: 5000,
+        alerts: ['manutencao_proxima'],
+        routeProgress: 65
+      },
+      {
+        id: 2,
+        placa: 'DEF4G56',
+        modelo: 'Scania R440',
+        motorista: 'Maria Oliveira',
+        status: 'carregando',
+        localizacao: 'Centro de Distribuição - SP',
+        destino: 'Brasília - DF',
+        velocidade: 0,
+        combustivel: 92,
+        temperatura: 22,
+        odometro: 89230,
+        tempo_viagem: '0:00',
+        ultimaAtualizacao: new Date(Date.now() - 300000),
+        carga: 'Alimentos',
+        peso: 8.7,
+        efficiency: 3.1,
+        nextMaintenance: 12000,
+        alerts: [],
+        routeProgress: 0
+      },
+      {
+        id: 3,
+        placa: 'GHI7J89',
+        modelo: 'Mercedes Actros 2651',
+        motorista: 'Pedro Costa',
+        status: 'em_viagem',
+        localizacao: 'BR-116, KM 128',
+        destino: 'Porto Alegre - RS',
+        velocidade: 82,
+        combustivel: 68,
+        temperatura: 16,
+        odometro: 156780,
+        tempo_viagem: '4:20',
+        ultimaAtualizacao: new Date(Date.now() - 60000),
+        carga: 'Automotivos',
+        peso: 22.1,
+        efficiency: 2.5,
+        nextMaintenance: 2500,
+        alerts: ['combustivel_baixo'],
+        routeProgress: 45
+      },
+      {
+        id: 4,
+        placa: 'JKL0M12',
+        modelo: 'Ford Cargo 2428',
+        motorista: 'Ana Rodrigues',
+        status: 'manutencao',
+        localizacao: 'Oficina Central',
+        destino: 'São Paulo - SP',
+        velocidade: 0,
+        combustivel: 45,
+        temperatura: 25,
+        odometro: 234560,
+        tempo_viagem: '0:00',
+        ultimaAtualizacao: new Date(Date.now() - 1800000),
+        carga: 'Vazio',
+        peso: 0,
+        efficiency: 2.9,
+        nextMaintenance: 0,
+        alerts: ['em_manutencao'],
+        routeProgress: 0
+      },
+      {
+        id: 5,
+        placa: 'MNO3P45',
+        modelo: 'DAF XF 480',
+        motorista: 'Roberto Silva',
+        status: 'descanso',
+        localizacao: 'Posto de Descanso - MG',
+        destino: 'Belo Horizonte - MG',
+        velocidade: 0,
+        combustivel: 78,
+        temperatura: 20,
+        odometro: 189230,
+        tempo_viagem: '0:00',
+        ultimaAtualizacao: new Date(Date.now() - 900000),
+        carga: 'Têxteis',
+        peso: 12.5,
+        efficiency: 2.7,
+        nextMaintenance: 8000,
+        alerts: [],
+        routeProgress: 0
+      }
+    ];
+
+    setVehicles(initialVehicles);
+    setIsLoading(false);
+    
+    // Simula atualização em tempo real
+    const interval = setInterval(() => {
+      if (autoRefresh) {
+        setVehicles(prev => prev.map(vehicle => ({
+          ...vehicle,
+          ultimaAtualizacao: new Date(),
+          velocidade: vehicle.status === 'em_viagem' 
+            ? Math.max(0, vehicle.velocidade + (Math.random() - 0.5) * 10)
+            : 0,
+          combustivel: Math.max(5, vehicle.combustivel - (Math.random() * 0.1)),
+          routeProgress: vehicle.status === 'em_viagem' 
+            ? Math.min(100, vehicle.routeProgress + (Math.random() * 2))
+            : vehicle.routeProgress
+        })));
+        setLastUpdate(new Date());
+      }
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, [autoRefresh]);
+
+>>>>>>> 9d410153e6b110099f48b9ce892147f5ef75f43f
   const statusConfig = {
     'em_viagem': { 
       label: 'Em Viagem', 
@@ -459,6 +640,7 @@ const Monitoramento = ({ user, onNavigate }) => {
     'temperatura_alta': { label: 'Temperatura Alta', color: 'var(--error)', icon: <FiThermometer /> }
   };
 
+<<<<<<< HEAD
   // Carregar dados iniciais
   useEffect(() => {
     loadVehicles();
@@ -559,6 +741,8 @@ const Monitoramento = ({ user, onNavigate }) => {
   };
 
   // Filtros e estatísticas
+=======
+>>>>>>> 9d410153e6b110099f48b9ce892147f5ef75f43f
   const filters = [
     { key: 'todos', label: 'Todos', icon: <FiTruck />, count: vehicles.length },
     { key: 'em_viagem', label: 'Em Viagem', icon: <FiNavigation />, count: vehicles.filter(v => v.status === 'em_viagem').length },
@@ -595,7 +779,11 @@ const Monitoramento = ({ user, onNavigate }) => {
       change: '0'
     },
     {
+<<<<<<< HEAD
       value: `${((vehicles.filter(v => v.status === 'em_viagem').length / Math.max(vehicles.length, 1)) * 100).toFixed(0)}%`,
+=======
+      value: `${((vehicles.filter(v => v.status === 'em_viagem').length / vehicles.length) * 100).toFixed(0)}%`,
+>>>>>>> 9d410153e6b110099f48b9ce892147f5ef75f43f
       label: 'Taxa de Utilização',
       icon: <IoStatsChart />,
       color: 'purple',
@@ -610,7 +798,30 @@ const Monitoramento = ({ user, onNavigate }) => {
     return `${Math.floor(diff / 3600)} h atrás`;
   };
 
+<<<<<<< HEAD
   // Variantes de animação
+=======
+  const handleContactDriver = (vehicle) => {
+    // Simulação de contato
+    alert(`Contatando motorista ${vehicle.motorista} (${vehicle.placa})`);
+  };
+
+  const handleViewRoute = (vehicle) => {
+    // Simulação de visualização de rota
+    alert(`Mostrando rota para ${vehicle.destino}`);
+  };
+
+  const handleRefresh = () => {
+    setIsLoading(true);
+    setTimeout(() => setIsLoading(false), 800);
+    setLastUpdate(new Date());
+  };
+
+  const toggleAutoRefresh = () => {
+    setAutoRefresh(!autoRefresh);
+  };
+
+>>>>>>> 9d410153e6b110099f48b9ce892147f5ef75f43f
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -650,11 +861,14 @@ const Monitoramento = ({ user, onNavigate }) => {
     }
   };
 
+<<<<<<< HEAD
   // Configurações do Google Maps
   const renderMap = (status) => (
     <MapRenderer status={status} />
   );
 
+=======
+>>>>>>> 9d410153e6b110099f48b9ce892147f5ef75f43f
   if (isLoading) {
     return (
       <div className="monitoramento-loading-container">
@@ -771,6 +985,17 @@ const Monitoramento = ({ user, onNavigate }) => {
             <FiBarChart2 className="monitoramento-btn-icon" />
             Relatórios
           </motion.button>
+<<<<<<< HEAD
+=======
+          <motion.button 
+            className="monitoramento-btn-outline"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <FiSmartphone className="monitoramento-btn-icon" />
+            App Mobile
+          </motion.button>
+>>>>>>> 9d410153e6b110099f48b9ce892147f5ef75f43f
         </div>
       </motion.div>
 
@@ -815,7 +1040,11 @@ const Monitoramento = ({ user, onNavigate }) => {
                     animate="visible"
                     whileHover="hover"
                     className={`monitoramento-vehicle-card ${selectedVehicle?.id === vehicle.id ? 'active' : ''}`}
+<<<<<<< HEAD
                     onClick={() => handleVehicleSelect(vehicle)}
+=======
+                    onClick={() => setSelectedVehicle(vehicle)}
+>>>>>>> 9d410153e6b110099f48b9ce892147f5ef75f43f
                   >
                     <div className="monitoramento-vehicle-header">
                       <div className="monitoramento-vehicle-info">
@@ -858,6 +1087,10 @@ const Monitoramento = ({ user, onNavigate }) => {
                         <span className="monitoramento-detail-value truncate">{vehicle.localizacao}</span>
                       </div>
                       
+<<<<<<< HEAD
+=======
+                      {/* Alerts */}
+>>>>>>> 9d410153e6b110099f48b9ce892147f5ef75f43f
                       <AnimatePresence>
                         {vehicle.alerts.length > 0 && (
                           <motion.div 
@@ -929,6 +1162,10 @@ const Monitoramento = ({ user, onNavigate }) => {
                       </div>
                     </div>
 
+<<<<<<< HEAD
+=======
+                    {/* Progress Bar for traveling vehicles */}
+>>>>>>> 9d410153e6b110099f48b9ce892147f5ef75f43f
                     {vehicle.status === 'em_viagem' && (
                       <div className="monitoramento-route-progress">
                         <div className="monitoramento-progress-bar">
@@ -955,7 +1192,11 @@ const Monitoramento = ({ user, onNavigate }) => {
         {/* Map Container */}
         <motion.div className="monitoramento-map-container" variants={itemVariants}>
           <div className="monitoramento-map-header">
+<<<<<<< HEAD
             <h3>Visualização da Rota - Google Maps</h3>
+=======
+            <h3>Visualização da Rota</h3>
+>>>>>>> 9d410153e6b110099f48b9ce892147f5ef75f43f
             <div className="monitoramento-map-controls">
               <motion.button 
                 className={`monitoramento-map-btn ${mapView === 'satellite' ? 'active' : ''}`}
@@ -977,14 +1218,18 @@ const Monitoramento = ({ user, onNavigate }) => {
               </motion.button>
               <motion.button 
                 className="monitoramento-map-btn"
+<<<<<<< HEAD
                 onClick={() => {
                   setMapCenter({ lat: -23.5505, lng: -46.6333 });
                   setMapZoom(10);
                 }}
+=======
+>>>>>>> 9d410153e6b110099f48b9ce892147f5ef75f43f
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
                 <MdMyLocation />
+<<<<<<< HEAD
                 Centralizar
               </motion.button>
             </div>
@@ -1025,6 +1270,96 @@ const Monitoramento = ({ user, onNavigate }) => {
                 </p>
               </div>
             )}
+=======
+                Minha Localização
+              </motion.button>
+            </div>
+          </div>
+          <div className="monitoramento-map-placeholder">
+            <div className="monitoramento-map-content">
+              <div className="monitoramento-map-visualization">
+                {selectedVehicle ? (
+                  <motion.div 
+                    className="monitoramento-route-map"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <div className="monitoramento-route-path">
+                      <div className="monitoramento-route-start">
+                        <span className="monitoramento-route-marker start">
+                          <FiFlag />
+                        </span>
+                        <span>Origem - São Paulo</span>
+                      </div>
+                      <div className="monitoramento-route-line">
+                        <motion.div 
+                          className="monitoramento-route-progress-line"
+                          initial={{ width: 0 }}
+                          animate={{ width: '100%' }}
+                          transition={{ duration: 2, delay: 0.5 }}
+                        />
+                      </div>
+                      <div className="monitoramento-route-current">
+                        <motion.span 
+                          className="monitoramento-route-marker vehicle"
+                          animate={{ 
+                            y: [0, -10, 0],
+                          }}
+                          transition={{ 
+                            duration: 2,
+                            repeat: Infinity,
+                            ease: "easeInOut"
+                          }}
+                        >
+                          <FiTruck />
+                        </motion.span>
+                        <span>{selectedVehicle.localizacao}</span>
+                      </div>
+                      <div className="monitoramento-route-line">
+                        <motion.div 
+                          className="monitoramento-route-progress-line"
+                          initial={{ width: 0 }}
+                          animate={{ width: '100%' }}
+                          transition={{ duration: 2, delay: 1 }}
+                        />
+                      </div>
+                      <div className="monitoramento-route-end">
+                        <span className="monitoramento-route-marker end">
+                          <FiNavigation />
+                        </span>
+                        <span>Destino - {selectedVehicle.destino}</span>
+                      </div>
+                    </div>
+                    <div className="monitoramento-vehicle-on-map">
+                      <h4>{selectedVehicle.placa}</h4>
+                      <p>
+                        <MdLocationOn />
+                        Posição atual: {selectedVehicle.localizacao}
+                      </p>
+                      <div className="monitoramento-map-stats">
+                        <span>Velocidade: {selectedVehicle.velocidade} km/h</span>
+                        <span>Combustível: {selectedVehicle.combustivel}%</span>
+                        <span>Progresso: {selectedVehicle.routeProgress.toFixed(0)}%</span>
+                      </div>
+                    </div>
+                  </motion.div>
+                ) : (
+                  <motion.div 
+                    className="monitoramento-no-vehicle-selected"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                  >
+                    <div className="monitoramento-map-icon">
+                      <FiMap />
+                    </div>
+                    <h3>Mapa em Tempo Real</h3>
+                    <p>Selecione um veículo para visualizar a rota e localização</p>
+                  </motion.div>
+                )}
+              </div>
+            </div>
+>>>>>>> 9d410153e6b110099f48b9ce892147f5ef75f43f
           </div>
         </motion.div>
 
@@ -1065,10 +1400,14 @@ const Monitoramento = ({ user, onNavigate }) => {
                   </div>
                   <div className="monitoramento-driver-details">
                     <span className="monitoramento-driver-name">{selectedVehicle.motorista}</span>
+<<<<<<< HEAD
                     <span 
                       className="monitoramento-driver-contact"
                       onClick={() => handleContactDriver(selectedVehicle)}
                     >
+=======
+                    <span className="monitoramento-driver-contact">
+>>>>>>> 9d410153e6b110099f48b9ce892147f5ef75f43f
                       <FiPhone />
                       Contatar Motorista
                     </span>

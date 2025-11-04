@@ -7,7 +7,7 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-<<<<<<< HEAD
+
 # Dependencies
 node_modules
 *.local
@@ -23,11 +23,10 @@ node_modules
 dist
 build
 
-=======
+
 node_modules
 *.local
 
->>>>>>> 9d410153e6b110099f48b9ce892147f5ef75f43f
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -38,9 +37,8 @@ node_modules
 *.njsproj
 *.sln
 *.sw?
-<<<<<<< HEAD
+
 
 # System files
 Thumbs.db
-=======
->>>>>>> 9d410153e6b110099f48b9ce892147f5ef75f43f
+

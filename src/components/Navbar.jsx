@@ -25,9 +25,7 @@ import {
   FaHeadset,
   FaBook,
   FaShieldAlt,
-  FaDatabase,
-  FaNetworkWired,
-  FaCloud
+  FaTimes
 } from 'react-icons/fa';
 import { 
   HiMenuAlt3,
@@ -66,7 +64,11 @@ const useDropdown = () => {
     };
 
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
   }, [close]);
 
   return { isOpen, toggle, close, open, ref };
@@ -77,21 +79,12 @@ const AnimatedIcon = ({ icon: Icon, isActive, size = 20 }) => (
   <motion.div
     className={`nav-icon-wrapper ${isActive ? 'active' : ''}`}
     whileHover={{ 
-      scale: 1.2,
-      rotate: [0, -5, 5, 0],
-      transition: { duration: 0.3 }
+      scale: 1.1,
+      transition: { duration: 0.2 }
     }}
     whileTap={{ scale: 0.9 }}
   >
     <Icon size={size} />
-    {isActive && (
-      <motion.div
-        className="icon-pulse"
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 0.3 }}
-      />
-    )}
   </motion.div>
 );
 
@@ -100,7 +93,6 @@ const ProfessionalNavbar = ({ user, onLogout, sidebarOpen, onToggleSidebar }) =>
   const location = useLocation();
   const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
-  const [activeHover, setActiveHover] = useState(null);
   const [mobileView, setMobileView] = useState(false);
   
   const dropdown = useDropdown();
@@ -113,7 +105,9 @@ const ProfessionalNavbar = ({ user, onLogout, sidebarOpen, onToggleSidebar }) =>
     const handleResize = () => {
       const isMobile = window.innerWidth < 1024;
       setMobileView(isMobile);
-      if (!isMobile) mobileMenu.close();
+      if (!isMobile) {
+        mobileMenu.close();
+      }
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -288,12 +282,17 @@ const ProfessionalNavbar = ({ user, onLogout, sidebarOpen, onToggleSidebar }) =>
         transition: { duration: 0.25, ease: "easeInOut" }
       }
     },
-    icon: {
-      hover: {
-        scale: 1.2,
-        rotate: 360,
-        transition: { duration: 0.4 }
-      }
+    mobileItem: {
+      hidden: { x: 50, opacity: 0 },
+      visible: (i) => ({
+        x: 0,
+        opacity: 1,
+        transition: {
+          type: "spring",
+          stiffness: 300,
+          delay: i * 0.1
+        }
+      })
     }
   };
 
@@ -311,15 +310,11 @@ const ProfessionalNavbar = ({ user, onLogout, sidebarOpen, onToggleSidebar }) =>
             <motion.button 
               className="nav-trigger nav-trigger--sidebar"
               onClick={onToggleSidebar}
-              whileHover={{ scale: 1.1, rotate: 180 }}
+              whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
+              aria-label="Alternar menu lateral"
             >
-              <motion.div
-                animate={{ rotate: sidebarOpen ? 90 : 0 }}
-                transition={{ type: "spring", stiffness: 200 }}
-              >
-                <FaBars className="trigger-icon" />
-              </motion.div>
+              <FaBars className="trigger-icon" />
             </motion.button>
 
             <motion.div
@@ -328,144 +323,86 @@ const ProfessionalNavbar = ({ user, onLogout, sidebarOpen, onToggleSidebar }) =>
               whileTap={{ scale: 0.98 }}
             >
               <Link to="/" className="brand" onClick={closeAllMenus}>
-                <motion.div
-                  className="brand-icon-container"
-                  whileHover={{ 
-                    rotate: [0, -10, 10, 0],
-                    transition: { duration: 0.6 }
-                  }}
-                >
+                <div className="brand-icon-container">
                   <FaRocket className="brand-icon" />
-                  <motion.div 
-                    className="brand-glow"
-                    animate={{ opacity: [0.5, 1, 0.5] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  />
-                </motion.div>
+                </div>
                 <div className="brand-content">
-                  <motion.span 
-                    className="brand-name"
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.1 }}
-                  >
-                    Transita .AI
-                  </motion.span>
-                  <motion.span 
-                    className="brand-tagline"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                  >
-                    Pro
-                  </motion.span>
+                  <span className="brand-name">Transita .AI</span>
+                  <span className="brand-tagline">Pro</span>
                 </div>
               </Link>
             </motion.div>
 
-            {/* Primary Navigation */}
-            <nav className="primary-nav" aria-label="Navegação principal">
-              {navigationConfig.primary.map((item, index) => {
-                const active = isActive(item.path);
-                return (
-                  <motion.div
-                    key={item.path}
-                    className="nav-item"
-                    custom={index}
-                    variants={animations.navItem}
-                    onHoverStart={() => setActiveHover(item.path)}
-                    onHoverEnd={() => setActiveHover(null)}
-                  >
-                    <Link 
-                      to={item.path}
-                      className={`nav-link ${active ? 'active' : ''}`}
-                      onClick={closeAllMenus}
-                      style={{ '--item-color': item.color }}
+            {/* Primary Navigation - Hidden on mobile */}
+            {!mobileView && (
+              <nav className="primary-nav" aria-label="Navegação principal">
+                {navigationConfig.primary.map((item, index) => {
+                  const active = isActive(item.path);
+                  return (
+                    <motion.div
+                      key={item.path}
+                      className="nav-item"
+                      custom={index}
+                      variants={animations.navItem}
                     >
-                      <AnimatedIcon icon={item.icon} isActive={active} />
-                      <span className="nav-label">{item.label}</span>
-                      
-                      {/* Active Indicator */}
-                      {active && (
-                        <motion.div 
-                          className="nav-indicator"
-                          layoutId="navIndicator"
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
-                          transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                        />
-                      )}
-
-                      {/* Hover Effect */}
-                      <motion.div 
-                        className="nav-hover-effect"
-                        initial={{ scale: 0 }}
-                        whileHover={{ scale: 1 }}
-                        transition={{ type: "spring", stiffness: 400 }}
-                      />
-
-                      {/* Hover Tooltip */}
-                      <AnimatePresence>
-                        {activeHover === item.path && (
+                      <Link 
+                        to={item.path}
+                        className={`nav-link ${active ? 'active' : ''}`}
+                        onClick={closeAllMenus}
+                        style={{ '--item-color': item.color }}
+                      >
+                        <AnimatedIcon icon={item.icon} isActive={active} />
+                        <span className="nav-label">{item.label}</span>
+                        
+                        {active && (
                           <motion.div 
-                            className="nav-tooltip"
-                            initial={{ opacity: 0, y: 10, scale: 0.9 }}
-                            animate={{ opacity: 1, y: 0, scale: 1 }}
-                            exit={{ opacity: 0, y: 10, scale: 0.9 }}
-                          >
-                            {item.description}
-                            <div className="tooltip-arrow" />
-                          </motion.div>
+                            className="nav-indicator"
+                            layoutId="navIndicator"
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                          />
                         )}
-                      </AnimatePresence>
-                    </Link>
-                  </motion.div>
-                );
-              })}
-            </nav>
+                      </Link>
+                    </motion.div>
+                  );
+                })}
+              </nav>
+            )}
           </div>
 
-          {/* User Menu & Actions */}
+          {/* User Menu & Actions - SEMPRE VISÍVEL, TANTO NO PC QUANTO MOBILE */}
           <div className="nav-section nav-section--secondary">
-            {/* User Menu */}
+            
+            {/* Menu do Usuário - VISÍVEL EM TODOS OS DISPOSITIVOS */}
             {user ? (
               <div className="nav-dropdown" ref={userMenu.ref}>
                 <motion.button 
                   className={`user-trigger ${userMenu.isOpen ? 'active' : ''}`}
                   onClick={userMenu.toggle}
-                  whileHover={{ scale: 1.05, y: -1 }}
+                  whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
+                  aria-label="Menu do usuário"
                 >
                   <div className="user-profile-mini">
-                    <motion.div 
-                      className="user-avatar"
-                      whileHover={{ scale: 1.1, rotate: 5 }}
-                      whileTap={{ scale: 0.9 }}
-                    >
+                    <div className="user-avatar">
                       <FaUserCircle className="avatar-icon" />
-                      <motion.div 
-                        className="user-status"
-                        animate={{ scale: [1, 1.2, 1] }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                      />
-                    </motion.div>
-                    <div className="user-info-mini">
-                      <span className="user-name">{user.displayName || user.email}</span>
-                      <span className="user-role">Usuário</span>
                     </div>
-                    <motion.div
-                      animate={{ rotate: userMenu.isOpen ? 180 : 0 }}
-                      transition={{ type: "spring", stiffness: 200 }}
-                    >
-                      <FaChevronDown className="trigger-chevron" />
-                    </motion.div>
+                    {/* Informações do usuário visíveis apenas no PC */}
+                    {!mobileView && (
+                      <div className="user-info-mini">
+                        <span className="user-name">{user.displayName || user.email}</span>
+                        <span className="user-role">Usuário</span>
+                      </div>
+                    )}
+                    <FaChevronDown className={`trigger-chevron ${userMenu.isOpen ? 'rotated' : ''}`} />
                   </div>
                 </motion.button>
 
                 <AnimatePresence>
                   {userMenu.isOpen && (
                     <motion.div 
-                      className="dropdown-panel user-panel"
+                      className={`dropdown-panel user-panel ${mobileView ? 'mobile-dropdown' : ''}`}
                       variants={animations.dropdown}
                       initial="hidden"
                       animate="visible"
@@ -473,13 +410,9 @@ const ProfessionalNavbar = ({ user, onLogout, sidebarOpen, onToggleSidebar }) =>
                     >
                       <div className="dropdown-header">
                         <div className="user-header-content">
-                          <motion.div 
-                            className="header-avatar"
-                            whileHover={{ rotate: 360 }}
-                            transition={{ duration: 0.6 }}
-                          >
+                          <div className="header-avatar">
                             <FaUserCircle />
-                          </motion.div>
+                          </div>
                           <div>
                             <h3>Menu do Usuário</h3>
                             <span>Configurações e suporte</span>
@@ -517,24 +450,11 @@ const ProfessionalNavbar = ({ user, onLogout, sidebarOpen, onToggleSidebar }) =>
                                 >
                                   <div className="item-icon-container">
                                     <item.icon className="item-icon" />
-                                    {isActive(item.path) && (
-                                      <motion.div 
-                                        className="item-active-indicator"
-                                        layoutId="activeIndicator"
-                                      />
-                                    )}
                                   </div>
                                   <div className="item-content">
                                     <span className="item-title">{item.label}</span>
                                     <span className="item-description">{item.description}</span>
                                   </div>
-                                  <motion.div 
-                                    className="item-arrow"
-                                    initial={{ x: -5, opacity: 0 }}
-                                    whileHover={{ x: 0, opacity: 1 }}
-                                  >
-                                    <FaChevronDown />
-                                  </motion.div>
                                 </Link>
                               </motion.div>
                             ))}
@@ -546,16 +466,11 @@ const ProfessionalNavbar = ({ user, onLogout, sidebarOpen, onToggleSidebar }) =>
                         <motion.button 
                           className="logout-button"
                           onClick={handleLogout}
-                          whileHover={{ scale: 1.05, x: 5 }}
+                          whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                         >
                           <FaSignOutAlt className="button-icon" />
                           <span>Sair do Sistema</span>
-                          <motion.div 
-                            className="logout-glow"
-                            animate={{ opacity: [0.3, 0.7, 0.3] }}
-                            transition={{ duration: 2, repeat: Infinity }}
-                          />
                         </motion.button>
                       </div>
                     </motion.div>
@@ -569,52 +484,50 @@ const ProfessionalNavbar = ({ user, onLogout, sidebarOpen, onToggleSidebar }) =>
               >
                 <Link to="/login" className="auth-button" onClick={closeAllMenus}>
                   <FaSignInAlt className="button-icon" />
-                  <span>Acessar Sistema</span>
-                  <motion.div 
-                    className="auth-glow"
-                    animate={{ scale: [1, 1.1, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  />
+                  {!mobileView && <span>Acessar Sistema</span>}
                 </Link>
               </motion.div>
             )}
 
-            {/* Mobile Menu Trigger */}
-            <motion.button
-              className="nav-trigger nav-trigger--mobile"
-              onClick={mobileMenu.toggle}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <AnimatePresence mode="wait">
-                {mobileMenu.isOpen ? (
-                  <motion.div
-                    key="close"
-                    initial={{ rotate: -90, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: 90, opacity: 0 }}
-                  >
-                    <HiX className="trigger-icon" />
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="menu"
-                    initial={{ rotate: 90, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: -90, opacity: 0 }}
-                  >
-                    <HiMenuAlt3 className="trigger-icon" />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.button>
+            {/* Mobile Menu Trigger - APENAS PARA NAVEGAÇÃO PRINCIPAL */}
+            {mobileView && (
+              <motion.button
+                className="nav-trigger nav-trigger--mobile"
+                onClick={mobileMenu.toggle}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                aria-label="Abrir menu de navegação"
+              >
+                <AnimatePresence mode="wait">
+                  {mobileMenu.isOpen ? (
+                    <motion.div
+                      key="close"
+                      initial={{ rotate: -90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: 90, opacity: 0 }}
+                    >
+                      <HiX className="trigger-icon" />
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="menu"
+                      initial={{ rotate: 90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: -90, opacity: 0 }}
+                    >
+                      <HiMenuAlt3 className="trigger-icon" />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.button>
+            )}
           </div>
         </div>
       </motion.nav>
 
-      {/* Mobile Navigation Panel */}
+      {/* Mobile Navigation Panel - APENAS PARA NAVEGAÇÃO PRINCIPAL */}
       <AnimatePresence>
-        {mobileMenu.isOpen && (
+        {mobileMenu.isOpen && mobileView && (
           <>
             <motion.div 
               className="mobile-overlay"
@@ -632,8 +545,6 @@ const ProfessionalNavbar = ({ user, onLogout, sidebarOpen, onToggleSidebar }) =>
               exit="exit"
             >
               <MobileNavigation 
-                user={user}
-                onLogout={handleLogout}
                 navigationConfig={navigationConfig}
                 isActive={isActive}
                 onClose={closeAllMenus}
@@ -646,145 +557,83 @@ const ProfessionalNavbar = ({ user, onLogout, sidebarOpen, onToggleSidebar }) =>
   );
 };
 
-// Enhanced Mobile Navigation Component
-const MobileNavigation = ({ user, onLogout, navigationConfig, isActive, onClose }) => (
+// Mobile Navigation Component - APENAS NAVEGAÇÃO PRINCIPAL
+const MobileNavigation = ({ navigationConfig, isActive, onClose }) => (
   <div className="mobile-nav">
-    {/* User Header */}
+    {/* Mobile Header with Close Button */}
     <div className="mobile-nav-header">
-      {user ? (
-        <div className="mobile-user-header">
-          <motion.div 
-            className="user-avatar-large"
-            whileHover={{ rotate: 360 }}
-            transition={{ duration: 0.6 }}
-          >
-            <FaUserCircle className="avatar-icon" />
-            <div className="user-status online" />
-          </motion.div>
-          <div className="user-details">
-            <span className="user-name">{user.displayName || user.email}</span>
-            <span className="user-role">Administrador do Sistema</span>
+      <div className="mobile-header-content">
+        <div className="mobile-brand">
+          <div className="brand-icon-container">
+            <FaRocket className="brand-icon" />
           </div>
-          <motion.button 
-            className="logout-button mobile"
-            onClick={onLogout}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <FaSignOutAlt />
-          </motion.button>
+          <div className="brand-content">
+            <span className="brand-name">Transita .AI</span>
+            <span className="brand-tagline">Pro</span>
+          </div>
         </div>
-      ) : (
-        <div className="mobile-auth-section">
-          <motion.div
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            <Link to="/login" className="mobile-auth-button primary" onClick={onClose}>
-              <FaSignInAlt />
-              <span>Acessar Sistema</span>
-            </Link>
-          </motion.div>
-        </div>
-      )}
+        <motion.button 
+          className="close-mobile-menu"
+          onClick={onClose}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          aria-label="Fechar menu"
+        >
+          <FaTimes />
+        </motion.button>
+      </div>
     </div>
 
     <div className="mobile-nav-content">
       {/* Primary Navigation */}
       <nav className="mobile-nav-section">
         <h3 className="section-title">Navegação Principal</h3>
-        {navigationConfig.primary.map((item) => {
+        {navigationConfig.primary.map((item, index) => {
           const active = isActive(item.path);
           return (
-            <Link
+            <motion.div
               key={item.path}
-              to={item.path}
-              className={`mobile-nav-item ${active ? 'active' : ''}`}
-              onClick={onClose}
-              style={{ '--item-color': item.color }}
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: index * 0.1 }}
             >
-              <div className="item-icon">
-                <AnimatedIcon icon={item.icon} isActive={active} size={18} />
-              </div>
-              <div className="item-content">
-                <span className="item-label">{item.label}</span>
-                <span className="item-description">{item.description}</span>
-              </div>
-              {active && (
-                <motion.div 
-                  className="mobile-active-indicator"
-                  layoutId="mobileActiveIndicator"
-                />
-              )}
-            </Link>
-          );
-        })}
-      </nav>
-
-      {/* User Menu Sections */}
-      {navigationConfig.userMenu.map((section, index) => (
-        <nav key={index} className="mobile-nav-section">
-          <h3 className="section-title">
-            <div 
-              className="title-icon-container"
-              style={{ '--section-color': section.color }}
-            >
-              <section.icon className="title-icon" />
-            </div>
-            {section.title}
-          </h3>
-          {section.items.map((item) => {
-            const active = isActive(item.path);
-            return (
               <Link
-                key={item.path}
                 to={item.path}
                 className={`mobile-nav-item ${active ? 'active' : ''}`}
                 onClick={onClose}
+                style={{ '--item-color': item.color }}
               >
                 <div className="item-icon">
-                  <item.icon />
-                  {active && <div className="mobile-item-active-dot" />}
+                  <AnimatedIcon icon={item.icon} isActive={active} size={18} />
                 </div>
                 <div className="item-content">
                   <span className="item-label">{item.label}</span>
                   <span className="item-description">{item.description}</span>
                 </div>
+                {active && (
+                  <motion.div 
+                    className="mobile-active-indicator"
+                    layoutId="mobileActiveIndicator"
+                  />
+                )}
               </Link>
-            );
-          })}
-        </nav>
-      ))}
+            </motion.div>
+          );
+        })}
+      </nav>
     </div>
 
     {/* Mobile Footer */}
     <div className="mobile-nav-footer">
       <div className="mobile-app-info">
-        <motion.div 
-          className="app-version"
-          whileHover={{ scale: 1.05 }}
-        >
+        <div className="app-version">
           <FaRocket className="version-icon" />
           <span>TrasitaPro v2.1.0</span>
-        </motion.div>
-        <div className="app-stats">
-          <motion.span 
-            className="stat"
-            whileHover={{ scale: 1.1 }}
-          >
-            <FaUserCircle />
-            Online
-          </motion.span>
         </div>
       </div>
-      <motion.div 
-        className="app-copyright"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.5 }}
-      >
-        <span>© 205 Trasita .AI Pro. Todos os direitos reservados.</span>
-      </motion.div>
+      <div className="app-copyright">
+        <span>© 2024 Trasita .AI Pro. Todos os direitos reservados.</span>
+      </div>
     </div>
   </div>
 );

@@ -10,35 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
-<<<<<<< HEAD
-    "@googlemaps/react-wrapper": "^1.2.0",
     "axios": "^1.13.1",
     "firebase": "^12.5.0",
-    "framer-motion": "^12.23.24",
-=======
-    "axios": "^1.13.1",
-    "firebase": "^12.5.0",
->>>>>>> 9d410153e6b110099f48b9ce892147f5ef75f43f
     "motion": "^12.23.24",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-hot-toast": "^2.6.0",
     "react-icons": "^5.5.0",
     "react-router-dom": "^7.9.5",
-<<<<<<< HEAD
-    "socket.io-client": "^4.8.1",
-    "styled-components": "^6.1.19"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.39.1",
-    "@types/react": "^19.1.16",
-    "@types/react-dom": "^19.1.9",
-    "@vitejs/plugin-react": "^5.1.0",
-    "eslint": "^9.39.1",
-    "eslint-plugin-react-hooks": "^5.2.0",
-    "eslint-plugin-react-refresh": "^0.4.24",
-    "globals": "^16.5.0",
-=======
     "styled-components": "^6.1.19"
   },
   "devDependencies": {
@@ -50,7 +29,6 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.22",
     "globals": "^16.4.0",
->>>>>>> 9d410153e6b110099f48b9ce892147f5ef75f43f
     "vite": "^7.1.12"
   }
 }

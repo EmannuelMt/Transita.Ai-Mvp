@@ -1,37 +1,19 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { 
-  FiTruck, FiRefreshCw, FiMap, FiPhone, FiBarChart2,
-  FiSmartphone, FiNavigation, FiClock, FiThermometer,
-  FiDroplet, FiActivity, FiUser, FiCalendar, FiAlertCircle,
-  FiCheckCircle, FiSettings, FiPlay, FiPause, FiFlag
-} from 'react-icons/fi';
-import { 
-  MdSatellite, MdTraffic, MdLocationOn, MdMyLocation,
-  MdSpeed, MdLocalGasStation, MdDirectionsCar
-} from 'react-icons/md';
-import { 
-  IoStatsChart, IoSpeedometerOutline, IoTimeOutline, IoNavigateOutline
-} from 'react-icons/io5';
+import { FiTruck, FiRefreshCw, FiMap, FiPhone, FiBarChart2, FiSmartphone, FiNavigation, FiClock, FiThermometer, FiDroplet, FiActivity, FiUser, FiCalendar, FiAlertCircle, FiCheckCircle, FiSettings, FiPlay, FiPause, FiFlag } from 'react-icons/fi';
+import { MdSatellite, MdTraffic, MdLocationOn, MdMyLocation, MdSpeed, MdLocalGasStation, MdDirectionsCar } from 'react-icons/md';
+import { IoStatsChart, IoSpeedometerOutline, IoTimeOutline, IoNavigateOutline } from 'react-icons/io5';
 import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
 import { Wrapper, Status } from '@googlemaps/react-wrapper';
+console.log("Google Maps Key:", import.meta.env.VITE_GOOGLE_MAPS_API_KEY);
 import './Monitoramento.css';
 
-// Configurações da API
 const API_CONFIG = {
-  GOOGLE_MAPS_API_KEY: import.meta.env?.REACT_APP_GOOGLE_MAPS_API_KEY || 'SUA_CHAVE_API_AQUI',
-  FLEET_API_BASE_URL: import.meta.env?.REACT_APP_FLEET_API_BASE_URL || 'https://api.transportadora.com/v1'
+  GOOGLE_MAPS_API_KEY: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
+  FLEET_API_BASE_URL: import.meta.env.VITE_FLEET_API_BASE_URL
 };
 
-// Componente do Mapa do Google
-const MapComponent = ({ 
-  selectedVehicle, 
-  vehicles, 
-  center, 
-  zoom = 10,
-  onMapClick,
-  onMarkerClick 
-}) => {
+const MapComponent = ({ selectedVehicle, vehicles, center, zoom = 10, onMapClick, onMarkerClick }) => {
   const ref = useRef(null);
   const [map, setMap] = useState(null);
   const [markers, setMarkers] = useState([]);
@@ -71,11 +53,9 @@ const MapComponent = ({
     }
   }, [ref, map, center, zoom]);
 
-  // Atualizar marcadores dos veículos
   useEffect(() => {
     if (!map) return;
 
-    // Limpar marcadores antigos
     markers.forEach(marker => marker.setMap(null));
 
     const newMarkers = vehicles.map(vehicle => {
@@ -101,7 +81,6 @@ const MapComponent = ({
     setMarkers(newMarkers);
   }, [map, vehicles]);
 
-  // Calcular rota quando um veículo é selecionado
   useEffect(() => {
     if (!selectedVehicle || !directionsService || !directionsRenderer) return;
 
@@ -123,27 +102,31 @@ const MapComponent = ({
     });
   }, [selectedVehicle, directionsService, directionsRenderer, map]);
 
-  const getVehicleIcon = (vehicle) => {
-    const statusColor = getStatusColor(vehicle.status);
-    
-    return `data:image/svg+xml;base64,${btoa(`
-      <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="16" cy="16" r="14" fill="${statusColor}" stroke="white" stroke-width="2"/>
-        <text x="16" y="20" text-anchor="middle" fill="white" font-size="12">🚚</text>
-      </svg>
-    `)}`;
-  };
+const getVehicleIcon = (vehicle) => {
+  const statusColor = getStatusColor(vehicle.status);
+  
+  const svg = `
+    <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="16" cy="16" r="14" fill="${statusColor}" stroke="white" stroke-width="2"/>
+      <text x="16" y="20" text-anchor="middle" fill="white" font-size="12">🚚</text>
+    </svg>
+  `;
 
-  const getStatusColor = (status) => {
-    const colors = {
-      'em_viagem': '#10B981',
-      'carregando': '#F59E0B',
-      'descanso': '#6B7280', 
-      'manutencao': '#EF4444',
-      'parado': '#3B82F6'
-    };
-    return colors[status] || '#6B7280';
+  const base64 = btoa(unescape(encodeURIComponent(svg)));
+
+  return `data:image/svg+xml;base64,${base64}`;
+};
+
+const getStatusColor = (status) => {
+  const colors = {
+    'em_viagem': '#10B981',
+    'carregando': '#F59E0B',
+    'descanso': '#6B7280', 
+    'manutencao': '#EF4444',
+    'parado': '#3B82F6'
   };
+  return colors[status] || '#6B7280';
+};
 
   const getVehiclePosition = (vehicle) => {
     return {
@@ -166,7 +149,6 @@ const MapComponent = ({
   return <div ref={ref} style={{ width: '100%', height: '100%' }} />;
 };
 
-// Componente de renderização do mapa
 const MapRenderer = ({ status }) => {
   if (status === Status.LOADING) {
     return (
@@ -194,7 +176,6 @@ const MapRenderer = ({ status }) => {
   return null;
 };
 
-// Serviço de API Real
 class FleetMonitoringService {
   constructor() {
     this.baseURL = API_CONFIG.FLEET_API_BASE_URL;
@@ -202,7 +183,6 @@ class FleetMonitoringService {
 
   async getVehicles() {
     try {
-      // Simulação de API real
       return await this.mockGetVehicles();
     } catch (error) {
       console.error('Erro ao buscar veículos:', error);
@@ -227,7 +207,6 @@ class FleetMonitoringService {
       return response.data;
     } catch (error) {
       console.error('Erro ao calcular rota:', error);
-      // Retorna dados mock em caso de erro
       return this.mockGetRoute(origin, destination);
     }
   }
@@ -241,7 +220,6 @@ class FleetMonitoringService {
     }
   }
 
-  // Métodos mock para simulação
   async mockGetVehicles() {
     return new Promise((resolve) => {
       setTimeout(() => {
@@ -398,7 +376,6 @@ class FleetMonitoringService {
   }
 }
 
-// Componente Principal
 const Monitoramento = ({ user, onNavigate }) => {
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [vehicles, setVehicles] = useState([]);
@@ -407,13 +384,146 @@ const Monitoramento = ({ user, onNavigate }) => {
   const [activeFilter, setActiveFilter] = useState('todos');
   const [mapView, setMapView] = useState('standard');
   const [autoRefresh, setAutoRefresh] = useState(true);
+
   const [mapCenter, setMapCenter] = useState({ lat: -23.5505, lng: -46.6333 });
   const [mapZoom, setMapZoom] = useState(10);
   const [mapError, setMapError] = useState(false);
 
   const monitoringService = useRef(new FleetMonitoringService());
 
-  // Configurações de status
+  useEffect(() => {
+    const initialVehicles = [
+      {
+        id: 1,
+        placa: 'ABC1I23',
+        modelo: 'Volvo FH 540',
+        motorista: 'Carlos Santos',
+        status: 'em_viagem',
+        localizacao: 'Rodovia Presidente Dutra, KM 42',
+        destino: 'Rio de Janeiro - RJ',
+        velocidade: 78,
+        combustivel: 85,
+        temperatura: 18,
+        odometro: 125420,
+        tempo_viagem: '2:45',
+        ultimaAtualizacao: new Date(Date.now() - 120000),
+        carga: 'Eletrônicos',
+        peso: 15.2,
+        efficiency: 2.8,
+        nextMaintenance: 5000,
+        alerts: ['manutencao_proxima'],
+        routeProgress: 65
+      },
+      {
+        id: 2,
+        placa: 'DEF4G56',
+        modelo: 'Scania R440',
+        motorista: 'Maria Oliveira',
+        status: 'carregando',
+        localizacao: 'Centro de Distribuição - SP',
+        destino: 'Brasília - DF',
+        velocidade: 0,
+        combustivel: 92,
+        temperatura: 22,
+        odometro: 89230,
+        tempo_viagem: '0:00',
+        ultimaAtualizacao: new Date(Date.now() - 300000),
+        carga: 'Alimentos',
+        peso: 8.7,
+        efficiency: 3.1,
+        nextMaintenance: 12000,
+        alerts: [],
+        routeProgress: 0
+      },
+      {
+        id: 3,
+        placa: 'GHI7J89',
+        modelo: 'Mercedes Actros 2651',
+        motorista: 'Pedro Costa',
+        status: 'em_viagem',
+        localizacao: 'BR-116, KM 128',
+        destino: 'Porto Alegre - RS',
+        velocidade: 82,
+        combustivel: 68,
+        temperatura: 16,
+        odometro: 156780,
+        tempo_viagem: '4:20',
+        ultimaAtualizacao: new Date(Date.now() - 60000),
+        carga: 'Automotivos',
+        peso: 22.1,
+        efficiency: 2.5,
+        nextMaintenance: 2500,
+        alerts: ['combustivel_baixo'],
+        routeProgress: 45
+      },
+      {
+        id: 4,
+        placa: 'JKL0M12',
+        modelo: 'Ford Cargo 2428',
+        motorista: 'Ana Rodrigues',
+        status: 'manutencao',
+        localizacao: 'Oficina Central',
+        destino: 'São Paulo - SP',
+        velocidade: 0,
+        combustivel: 45,
+        temperatura: 25,
+        odometro: 234560,
+        tempo_viagem: '0:00',
+        ultimaAtualizacao: new Date(Date.now() - 1800000),
+        carga: 'Vazio',
+        peso: 0,
+        efficiency: 2.9,
+        nextMaintenance: 0,
+        alerts: ['em_manutencao'],
+        routeProgress: 0
+      },
+      {
+        id: 5,
+        placa: 'MNO3P45',
+        modelo: 'DAF XF 480',
+        motorista: 'Roberto Silva',
+        status: 'descanso',
+        localizacao: 'Posto de Descanso - MG',
+        destino: 'Belo Horizonte - MG',
+        velocidade: 0,
+        combustivel: 78,
+        temperatura: 20,
+        odometro: 189230,
+        tempo_viagem: '0:00',
+        ultimaAtualizacao: new Date(Date.now() - 900000),
+        carga: 'Têxteis',
+        peso: 12.5,
+        efficiency: 2.7,
+        nextMaintenance: 8000,
+        alerts: [],
+        routeProgress: 0
+      }
+    ];
+
+    setVehicles(initialVehicles);
+    setIsLoading(false);
+    
+    const interval = setInterval(() => {
+      if (autoRefresh) {
+        setVehicles(prev => prev.map(vehicle => ({
+          ...vehicle,
+          ultimaAtualizacao: new Date(),
+          velocidade: vehicle.status === 'em_viagem' 
+            ? Math.max(0, vehicle.velocidade + (Math.random() - 0.5) * 10)
+            : 0,
+          combustivel: Math.max(5, vehicle.combustivel - (Math.random() * 0.1)),
+          routeProgress: vehicle.status === 'em_viagem' 
+            ? Math.min(100, vehicle.routeProgress + (Math.random() * 2))
+            : vehicle.routeProgress
+        })));
+        setLastUpdate(new Date());
+      }
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, [autoRefresh]);
+
+
   const statusConfig = {
     'em_viagem': { 
       label: 'Em Viagem', 
@@ -454,7 +564,6 @@ const Monitoramento = ({ user, onNavigate }) => {
     'temperatura_alta': { label: 'Temperatura Alta', color: 'var(--error)', icon: <FiThermometer /> }
   };
 
-  // Carregar dados iniciais
   useEffect(() => {
     loadVehicles();
     
@@ -553,7 +662,6 @@ const Monitoramento = ({ user, onNavigate }) => {
     setAutoRefresh(!autoRefresh);
   };
 
-  // Filtros e estatísticas
   const filters = [
     { key: 'todos', label: 'Todos', icon: <FiTruck />, count: vehicles.length },
     { key: 'em_viagem', label: 'Em Viagem', icon: <FiNavigation />, count: vehicles.filter(v => v.status === 'em_viagem').length },
@@ -605,7 +713,6 @@ const Monitoramento = ({ user, onNavigate }) => {
     return `${Math.floor(diff / 3600)} h atrás`;
   };
 
-  // Variantes de animação
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -645,7 +752,6 @@ const Monitoramento = ({ user, onNavigate }) => {
     }
   };
 
-  // Configurações do Google Maps
   const renderMap = (status) => (
     <MapRenderer status={status} />
   );
@@ -687,7 +793,6 @@ const Monitoramento = ({ user, onNavigate }) => {
       animate="visible"
       variants={containerVariants}
     >
-      {/* Header Section */}
       <motion.div className="monitoramento-header" variants={itemVariants}>
         <div className="monitoramento-header-content">
           <div className="monitoramento-header-text">
@@ -769,9 +874,7 @@ const Monitoramento = ({ user, onNavigate }) => {
         </div>
       </motion.div>
 
-      {/* Main Content */}
       <div className="monitoramento-content">
-        {/* Vehicles Sidebar */}
         <motion.div className="monitoramento-sidebar" variants={itemVariants}>
           <div className="monitoramento-sidebar-header">
             <h3>Frota Ativa</h3>
@@ -947,7 +1050,6 @@ const Monitoramento = ({ user, onNavigate }) => {
           </div>
         </motion.div>
 
-        {/* Map Container */}
         <motion.div className="monitoramento-map-container" variants={itemVariants}>
           <div className="monitoramento-map-header">
             <h3>Visualização da Rota - Google Maps</h3>
@@ -1023,7 +1125,6 @@ const Monitoramento = ({ user, onNavigate }) => {
           </div>
         </motion.div>
 
-        {/* Details Sidebar */}
         <motion.div className="monitoramento-details-sidebar" variants={itemVariants}>
           <AnimatePresence>
             {selectedVehicle ? (

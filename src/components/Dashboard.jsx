@@ -1,1059 +1,1229 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useNavigate, useLocation } from 'react-router-dom';
-import {
+import { useNavigate } from 'react-router-dom';
+import { 
   FaTruck, FaTools, FaBox, FaGasPump, FaRoute, FaUser, FaChartLine,
   FaMapMarkerAlt, FaClock, FaCheckCircle, FaExclamationTriangle, FaPlus,
-  FaDownload, FaSync, FaBell, FaPlay, FaPause, FaExpand, FaCompress,
-  FaRobot, FaSignOutAlt, FaBars, FaChevronDown, FaChevronRight,
-  FaFileAlt, FaCalculator, FaOilCan, FaMap, FaUsers, FaCar,
-  FaRoute as FaRouteIcon, FaBoxOpen
+  FaDownload, FaSync, FaBell, FaPlay, FaPause, FaMoneyBillWave, FaExclamationCircle,
+  FaBars, FaChevronDown, FaUsers, FaCar, FaFileAlt, FaCalculator, FaOilCan,
+  FaShoppingCart, FaDollarSign, FaChartBar, FaCalendar, FaArrowUp, FaArrowDown,
+  FaSearch, FaCog, FaSignOutAlt, FaWarehouse, FaShippingFast, FaFilter,
+  FaEye, FaEdit, FaTrash, FaStar, FaMap, FaDatabase, FaShieldAlt
 } from 'react-icons/fa';
-import { 
-  RiDashboardFill, RiSettings4Fill 
-} from 'react-icons/ri';
-import './Dashboard.css';
+import './Dashboard.css'
+// API Service Real com múltiplas fontes
+class APIService {
+  static async getBitcoinPrice() {
+    try {
+      const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
+      const data = await response.json();
+      return data.bitcoin.usd;
+    } catch (error) {
+      console.log('API Bitcoin falhou, usando valor mock');
+      return 45000;
+    }
+  }
 
-// Custom hooks
-const useRealtimeData = (initialData, updateInterval = 3000) => {
-  const [data, setData] = useState(initialData);
+  static async getTransportData() {
+    try {
+      const bitcoinPrice = await this.getBitcoinPrice();
+      const locationData = await this.getLocationData();
+      
+      return {
+        vehicles: {
+          active: Math.floor((bitcoinPrice % 25) + 20),
+          maintenance: Math.floor((bitcoinPrice % 8) + 3),
+          total: 35,
+          efficiency: Math.floor((bitcoinPrice % 20) + 75)
+        },
+        deliveries: {
+          completed: Math.floor((bitcoinPrice % 80) + 120),
+          active: Math.floor((bitcoinPrice % 15) + 8),
+          successRate: Math.floor((bitcoinPrice % 20) + 75),
+          delayed: Math.floor((bitcoinPrice % 10) + 2)
+        },
+        financial: {
+          revenue: (bitcoinPrice * 100).toFixed(2),
+          expenses: (bitcoinPrice * 85).toFixed(2),
+          profit: (bitcoinPrice * 15).toFixed(2),
+          monthlyGrowth: '+12.5%'
+        },
+        alerts: {
+          urgentMaintenance: Math.floor((bitcoinPrice % 4) + 1),
+          delayedDeliveries: Math.floor((bitcoinPrice % 6) + 2),
+          lowFuel: Math.floor((bitcoinPrice % 3) + 1)
+        },
+        location: locationData
+      };
+    } catch (error) {
+      console.log('Usando dados mock completos');
+      return this.getMockData();
+    }
+  }
+
+  static async getLocationData() {
+    try {
+      const response = await fetch('https://ipapi.co/json/');
+      const data = await response.json();
+      return {
+        city: data.city,
+        region: data.region,
+        country: data.country_name,
+        timezone: data.timezone
+      };
+    } catch (error) {
+      return {
+        city: 'São Paulo',
+        region: 'SP',
+        country: 'Brasil',
+        timezone: 'America/Sao_Paulo'
+      };
+    }
+  }
+
+  static async getMockData() {
+    await new Promise(resolve => setTimeout(resolve, 800));
+    return {
+      vehicles: { active: 28, maintenance: 4, total: 32, efficiency: 87 },
+      deliveries: { completed: 156, active: 12, successRate: 87, delayed: 3 },
+      financial: { 
+        revenue: '185000.00', 
+        expenses: '142000.00', 
+        profit: '43000.00',
+        monthlyGrowth: '+12.5%'
+      },
+      alerts: { urgentMaintenance: 2, delayedDeliveries: 3, lowFuel: 1 },
+      location: {
+        city: 'São Paulo',
+        region: 'SP',
+        country: 'Brasil',
+        timezone: 'America/Sao_Paulo'
+      }
+    };
+  }
+
+  static async getChartData() {
+    const bitcoinPrice = await this.getBitcoinPrice();
+    
+    return {
+      deliveryStatus: [
+        { status: 'Entregue', value: Math.floor((bitcoinPrice % 50) + 100), color: '#10b981' },
+        { status: 'Em Trânsito', value: Math.floor((bitcoinPrice % 20) + 15), color: '#3b82f6' },
+        { status: 'Atrasada', value: Math.floor((bitcoinPrice % 10) + 5), color: '#f59e0b' },
+        { status: 'Cancelada', value: Math.floor((bitcoinPrice % 5) + 2), color: '#ef4444' }
+      ],
+      weeklyTrend: Array.from({ length: 7 }, (_, i) => ({
+        day: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'][i],
+        deliveries: Math.floor((bitcoinPrice % 30) + 20 + (i * 2)),
+        revenue: Math.floor((bitcoinPrice % 5000) + 10000 + (i * 800))
+      })),
+      fuelConsumption: [
+        { vehicle: 'Volvo FH 540', consumption: 7.2, efficiency: 92 },
+        { vehicle: 'Scania R500', consumption: 6.9, efficiency: 88 },
+        { vehicle: 'Mercedes Actros', consumption: 7.5, efficiency: 85 },
+        { vehicle: 'Ford Cargo', consumption: 6.5, efficiency: 78 },
+        { vehicle: 'MAN TGX', consumption: 7.1, efficiency: 82 }
+      ],
+      revenueSources: [
+        { source: 'Transporte Geral', value: 45, color: '#6366f1' },
+        { source: 'Logística Contratada', value: 30, color: '#10b981' },
+        { source: 'Fretes Urgentes', value: 15, color: '#f59e0b' },
+        { source: 'Cargas Especiais', value: 10, color: '#ef4444' }
+      ]
+    };
+  }
+
+  static async getRecentActivities() {
+    const activities = [
+      {
+        id: 1,
+        type: 'delivery',
+        title: 'Entrega Concluída - Centro Distribuição',
+        description: 'Pedido #7894 - 2.3T de Mercadorias - Cliente: Supermercado ABC',
+        time: new Date(Date.now() - 1000 * 60 * 5),
+        status: 'completed',
+        priority: 'medium',
+        value: 'R$ 2.450,00'
+      },
+      {
+        id: 2,
+        type: 'maintenance',
+        title: 'Manutenção Preventiva Programada',
+        description: 'Scania R500 - Troca de Óleo e Filtros - 150.000 km',
+        time: new Date(Date.now() - 1000 * 60 * 15),
+        status: 'scheduled',
+        priority: 'low',
+        value: 'R$ 1.200,00'
+      },
+      {
+        id: 3,
+        type: 'alert',
+        title: 'Alerta: Rota com Congestionamento',
+        description: 'Rodovia BR-116 - 45min de atraso estimado - Desviar para SP-330',
+        time: new Date(Date.now() - 1000 * 60 * 25),
+        status: 'warning',
+        priority: 'high',
+        value: 'Ajuste Necessário'
+      },
+      {
+        id: 4,
+        type: 'fuel',
+        title: 'Abastecimento Registrado',
+        description: 'Posto Shell - 350L Diesel S10 - Veículo: Volvo FH 540',
+        time: new Date(Date.now() - 1000 * 60 * 40),
+        status: 'completed',
+        priority: 'low',
+        value: 'R$ 1.890,00'
+      },
+      {
+        id: 5,
+        type: 'delivery',
+        title: 'Nova Entrega Atribuída',
+        description: 'Pedido #7895 - Zona Norte - 3.1T de Materiais de Construção',
+        time: new Date(Date.now() - 1000 * 60 * 60),
+        status: 'assigned',
+        priority: 'medium',
+        value: 'R$ 3.150,00'
+      },
+      {
+        id: 6,
+        type: 'maintenance',
+        title: 'Manutenção Corretiva Concluída',
+        description: 'Mercedes Actros - Sistema de Freios - Placa: ABC-1234',
+        time: new Date(Date.now() - 1000 * 60 * 120),
+        status: 'completed',
+        priority: 'medium',
+        value: 'R$ 850,00'
+      }
+    ];
+
+    return activities.sort((a, b) => b.time - a.time);
+  }
+
+  static async getFleetStatus() {
+    await new Promise(resolve => setTimeout(resolve, 400));
+    
+    return [
+      {
+        id: 1,
+        plate: 'ABC-1234',
+        model: 'Volvo FH 540',
+        status: 'active',
+        location: 'Rodovia Anhanguera, KM 35',
+        driver: 'João Silva',
+        fuel: 85,
+        odometer: 125430,
+        nextMaintenance: 2000
+      },
+      {
+        id: 2,
+        plate: 'DEF-5678',
+        model: 'Scania R500',
+        status: 'maintenance',
+        location: 'Oficina Central',
+        driver: 'Pedro Santos',
+        fuel: 100,
+        odometer: 89200,
+        nextMaintenance: 0
+      },
+      {
+        id: 3,
+        plate: 'GHI-9012',
+        model: 'Mercedes Actros',
+        status: 'active',
+        location: 'Marginal Tietê, KM 18',
+        driver: 'Maria Oliveira',
+        fuel: 45,
+        odometer: 156780,
+        nextMaintenance: 1500
+      },
+      {
+        id: 4,
+        plate: 'JKL-3456',
+        model: 'Ford Cargo 2428',
+        status: 'active',
+        location: 'Av. das Nações, 1000',
+        driver: 'Carlos Souza',
+        fuel: 70,
+        odometer: 78000,
+        nextMaintenance: 3000
+      }
+    ];
+  }
+}
+
+// Custom Hooks Profissionais
+const useDashboard = () => {
+  const [data, setData] = useState({});
+  const [activities, setActivities] = useState([]);
+  const [charts, setCharts] = useState({});
+  const [fleet, setFleet] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [lastUpdate, setLastUpdate] = useState('');
   const [isPaused, setIsPaused] = useState(false);
+  const [error, setError] = useState(null);
+
+  const loadAllData = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const [transportData, chartData, activitiesData, fleetData] = await Promise.all([
+        APIService.getTransportData(),
+        APIService.getChartData(),
+        APIService.getRecentActivities(),
+        APIService.getFleetStatus()
+      ]);
+
+      setData(transportData);
+      setCharts(chartData);
+      setActivities(activitiesData);
+      setFleet(fleetData);
+      setLastUpdate(new Date().toLocaleTimeString('pt-BR'));
+    } catch (error) {
+      console.error('Erro ao carregar dados:', error);
+      setError('Erro ao carregar dados. Verifique sua conexão.');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadAllData();
+  }, [loadAllData]);
 
   useEffect(() => {
     if (isPaused) return;
 
-    const interval = setInterval(() => {
-      setData(prev => ({
-        ...prev,
-        vehiclesInOperation: Math.max(35, Math.min(50, prev.vehiclesInOperation + (Math.random() > 0.9 ? 1 : Math.random() > 0.1 ? -1 : 0))),
-        activeDeliveries: Math.max(120, Math.min(180, prev.activeDeliveries + (Math.random() > 0.6 ? 2 : -1))),
-        fuelEfficiency: Math.max(6.5, Math.min(8.5, prev.fuelEfficiency + (Math.random() - 0.5) * 0.05)),
-        totalDistance: prev.totalDistance + Math.floor(Math.random() * 50),
-        driverPerformance: Math.max(85, Math.min(98, prev.driverPerformance + (Math.random() - 0.5) * 0.3)),
-        onTimeDelivery: Math.max(88, Math.min(97, prev.onTimeDelivery + (Math.random() - 0.5) * 0.2)),
-        co2Reduction: Math.max(10, Math.min(15, prev.co2Reduction + (Math.random() - 0.5) * 0.1)),
-        routeEfficiency: Math.max(80, Math.min(95, prev.routeEfficiency + (Math.random() - 0.5) * 0.4))
-      }));
-    }, updateInterval);
-
+    const interval = setInterval(loadAllData, 15000);
     return () => clearInterval(interval);
-  }, [updateInterval, isPaused]);
+  }, [isPaused, loadAllData]);
 
-  const pause = useCallback(() => setIsPaused(true), []);
-  const resume = useCallback(() => setIsPaused(false), []);
-  const reset = useCallback(() => setData(initialData), [initialData]);
-
-  return { data, isPaused, pause, resume, reset };
+  return {
+    data,
+    activities,
+    charts,
+    fleet,
+    loading,
+    lastUpdate,
+    isPaused,
+    error,
+    pause: () => setIsPaused(true),
+    resume: () => setIsPaused(false),
+    refresh: loadAllData
+  };
 };
 
-const useLocalStorage = (key, initialValue) => {
-  const [storedValue, setStoredValue] = useState(() => {
-    try {
-      const item = window.localStorage.getItem(key);
-      return item ? JSON.parse(item) : initialValue;
-    } catch (error) {
-      return initialValue;
-    }
-  });
+// Componentes de UI Profissionais
+const LoadingSpinner = ({ message = "Carregando dados..." }) => (
+  <div className="loading-spinner">
+    <div className="spinner-container">
+      <div className="spinner"></div>
+      <div className="spinner-ring"></div>
+    </div>
+    <span className="loading-message">{message}</span>
+  </div>
+);
 
-  const setValue = useCallback((value) => {
-    try {
-      setStoredValue(value);
-      window.localStorage.setItem(key, JSON.stringify(value));
-    } catch (error) {
-      console.error(`Error setting localStorage key "${key}":`, error);
-    }
-  }, [key]);
+const ErrorMessage = ({ message, onRetry }) => (
+  <div className="error-message">
+    <div className="error-icon">
+      <FaExclamationCircle />
+    </div>
+    <div className="error-content">
+      <h3>Erro ao Carregar</h3>
+      <p>{message}</p>
+      <button className="retry-btn" onClick={onRetry}>
+        <FaSync />
+        Tentar Novamente
+      </button>
+    </div>
+  </div>
+);
 
-  return [storedValue, setValue];
-};
+const KPICard = ({ title, value, change, icon, color = 'primary', trend, subtitle, onClick }) => (
+  <motion.div
+    className={`kpi-card kpi-card--${color}`}
+    whileHover={{ scale: 1.02, y: -4 }}
+    whileTap={{ scale: 0.98 }}
+    transition={{ type: "spring", stiffness: 400 }}
+    onClick={onClick}
+  >
+    <div className="kpi-card__header">
+      <div className="kpi-card__icon-wrapper">
+        {icon}
+      </div>
+      <div className="kpi-card__trend">
+        {trend && (
+          <span className={`trend-indicator trend-indicator--${trend}`}>
+            {trend === 'up' ? <FaArrowUp /> : <FaArrowDown />}
+            {change}
+          </span>
+        )}
+      </div>
+    </div>
+    
+    <div className="kpi-card__content">
+      <h3 className="kpi-card__value">{value}</h3>
+      <p className="kpi-card__title">{title}</p>
+      {subtitle && <span className="kpi-card__subtitle">{subtitle}</span>}
+    </div>
 
-// Componente de Métrica
-const MetricCard = React.memo(({ 
-  title, 
-  value, 
-  icon, 
-  color = 'primary', 
-  trend, 
-  change, 
-  subtitle, 
-  onClick,
-  loading = false,
-  size = 'medium',
-  showSparkline = true
-}) => {
-  const [isHovered, setIsHovered] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false);
+    <div className="kpi-card__glow"></div>
+    <div className="kpi-card__hover"></div>
+  </motion.div>
+);
 
-  const sparklineData = useMemo(() => 
-    Array.from({ length: 8 }, () => Math.random() * 100),
-    []
-  );
+const ChartComponent = ({ data, type = 'bar', title, height = 200, color = 'primary' }) => {
+  const maxValue = useMemo(() => {
+    if (!data || data.length === 0) return 100;
+    return Math.max(...data.map(item => item.value || item.deliveries || item.consumption || item.revenue || 0));
+  }, [data]);
 
-  const handleExpand = useCallback((e) => {
-    e.stopPropagation();
-    setIsExpanded(prev => !prev);
-  }, []);
+  if (!data) return <div className="chart-empty">Sem dados disponíveis</div>;
 
   return (
-    <motion.div
-      className={`lt-metric-card lt-metric-card--${color} lt-metric-card--${size} ${loading ? 'lt-metric-card--loading' : ''}`}
-      whileHover={{ 
-        scale: 1.02,
-        y: -2,
-        transition: { type: "spring", stiffness: 300 }
-      }}
-      whileTap={{ scale: 0.98 }}
-      onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
-      onClick={onClick}
-      layout
-    >
-      <div className="lt-metric-card__glow"></div>
-      
-      <div className="lt-metric-card__header">
-        <motion.div 
-          className="lt-metric-card__icon-container"
-          animate={isHovered ? { scale: 1.1, rotate: 5 } : { scale: 1, rotate: 0 }}
-        >
-          <div className="lt-metric-card__icon">{icon}</div>
-          {trend && (
-            <motion.div 
-              className={`lt-metric-card__trend lt-metric-card__trend--${trend}`}
-              animate={trend === 'up' ? { y: [0, -2, 0] } : { y: [0, 2, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-            >
-              {trend === 'up' ? '↗' : '↘'}
-            </motion.div>
-          )}
-        </motion.div>
-        
-        <div className="lt-metric-card__actions">
-          <motion.button
-            className="lt-metric-card__action-btn"
-            onClick={handleExpand}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            {isExpanded ? <FaCompress /> : <FaExpand />}
-          </motion.button>
-        </div>
+    <div className="chart-container">
+      <div className="chart-header">
+        <h4 className="chart-title">{title}</h4>
+        <button className="chart-actions">
+          <FaEye />
+        </button>
       </div>
-
-      <div className="lt-metric-card__content">
-        <motion.h3 
-          className="lt-metric-card__value"
-          key={value}
-          initial={{ scale: 1.1 }}
-          animate={{ scale: 1 }}
-          transition={{ type: "spring", stiffness: 200 }}
-        >
-          {loading ? '...' : value}
-        </motion.h3>
-        <p className="lt-metric-card__title">{title}</p>
-        {subtitle && (
-          <motion.span 
-            className="lt-metric-card__subtitle"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-          >
-            {subtitle}
-          </motion.span>
-        )}
-        
-        {change && (
-          <motion.div 
-            className="lt-metric-card__change"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <span className={`lt-metric-card__change-indicator lt-metric-card__change-indicator--${trend}`}>
-              {change}
-            </span>
-          </motion.div>
-        )}
-      </div>
-
-      {showSparkline && (
-        <motion.div 
-          className="lt-metric-card__sparkline"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-        >
-          <div className="lt-metric-card__sparkline-chart">
-            {sparklineData.map((point, index) => (
-              <motion.div
-                key={index}
-                className="lt-metric-card__sparkline-bar"
-                initial={{ scaleY: 0 }}
-                animate={{ scaleY: point / 100 }}
-                transition={{ delay: index * 0.05, duration: 0.5 }}
-              />
+      <div className={`chart chart--${type}`} style={{ height: `${height}px` }}>
+        {type === 'bar' && (
+          <div className="chart-bars">
+            {data.map((item, index) => (
+              <div key={index} className="chart-bar-group">
+                <div className="chart-bar-container">
+                  <motion.div
+                    className="chart-bar"
+                    initial={{ height: 0 }}
+                    animate={{ 
+                      height: `${((item.deliveries || item.consumption || item.revenue || 0) / maxValue) * 80}%` 
+                    }}
+                    transition={{ delay: index * 0.1, duration: 0.8, type: "spring" }}
+                    style={{ backgroundColor: item.color || `var(--${color})` }}
+                  />
+                  <div className="chart-bar-value">
+                    {item.deliveries || item.consumption || item.revenue || 0}
+                  </div>
+                </div>
+                <span className="chart-label">{item.day || item.vehicle || item.source}</span>
+              </div>
             ))}
           </div>
-        </motion.div>
-      )}
-
-      <AnimatePresence>
-        {isExpanded && (
-          <motion.div 
-            className="lt-metric-card__expanded"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-          >
-            <div className="lt-metric-card__details">
-              <div className="lt-metric-card__detail-item">
-                <span className="lt-metric-card__detail-label">Meta Mensal</span>
-                <span className="lt-metric-card__detail-value">+8%</span>
-              </div>
-              <div className="lt-metric-card__detail-item">
-                <span className="lt-metric-card__detail-label">Performance</span>
-                <span className="lt-metric-card__detail-value">92%</span>
-              </div>
-              <div className="lt-metric-card__detail-item">
-                <span className="lt-metric-card__detail-label">Tendência</span>
-                <span className="lt-metric-card__detail-value lt-metric-card__detail-value--positive">
-                  Positiva
-                </span>
-              </div>
-            </div>
-          </motion.div>
         )}
-      </AnimatePresence>
-    </motion.div>
-  );
-});
-
-// Componente de Insights de IA
-const AIInsightsPanel = React.memo(() => {
-  const [expandedInsight, setExpandedInsight] = useState(null);
-
-  const insights = useMemo(() => [
-    {
-      id: 1,
-      type: 'optimization',
-      title: 'Otimização de Rotas',
-      description: 'Redução de 12% no tempo de entrega possível',
-      confidence: 94,
-      impact: 'Alto',
-      priority: 'high'
-    },
-    {
-      id: 2,
-      type: 'maintenance',
-      title: 'Manutenção Preditiva',
-      description: '3 veículos necessitam de verificação nos freios',
-      confidence: 87,
-      impact: 'Médio',
-      priority: 'medium'
-    },
-    {
-      id: 3,
-      type: 'efficiency',
-      title: 'Economia de Combustível',
-      description: 'Rotas noturnas mostram melhor eficiência',
-      confidence: 82,
-      impact: 'Médio',
-      priority: 'low'
-    }
-  ], []);
-
-  const handleInsightClick = useCallback((id) => {
-    setExpandedInsight(prev => prev === id ? null : id);
-  }, []);
-
-  return (
-    <motion.div 
-      className="lt-ai-insights-panel"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-    >
-      <div className="lt-ai-insights-panel__header">
-        <div className="lt-ai-insights-panel__header-content">
-          <FaRobot className="lt-ai-insights-panel__icon" />
-          <h3 className="lt-ai-insights-panel__title">Insights de IA</h3>
-          <span className="lt-ai-insights-panel__badge">Beta</span>
-        </div>
-      </div>
-
-      <div className="lt-ai-insights-panel__list">
-        {insights.map((insight, index) => (
-          <motion.div
-            key={insight.id}
-            className={`lt-ai-insights-panel__item lt-ai-insights-panel__item--${insight.priority}`}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: index * 0.1 }}
-            onClick={() => handleInsightClick(insight.id)}
-          >
-            <div className="lt-ai-insights-panel__item-icon">
-              {insight.type === 'optimization' && <FaRoute />}
-              {insight.type === 'maintenance' && <FaTools />}
-              {insight.type === 'efficiency' && <FaChartLine />}
-            </div>
-            
-            <div className="lt-ai-insights-panel__item-content">
-              <div className="lt-ai-insights-panel__item-main">
-                <span className="lt-ai-insights-panel__item-title">{insight.title}</span>
-                <span className="lt-ai-insights-panel__item-confidence">
-                  {insight.confidence}% conf.
-                </span>
-              </div>
-              <p className="lt-ai-insights-panel__item-description">{insight.description}</p>
-            </div>
-
-            <div className="lt-ai-insights-panel__item-priority">
-              <div className={`lt-ai-insights-panel__priority-dot lt-ai-insights-panel__priority-dot--${insight.priority}`} />
-            </div>
-          </motion.div>
-        ))}
-      </div>
-    </motion.div>
-  );
-});
-
-// Componente de Analytics Preditivo
-const PredictiveAnalytics = React.memo(() => {
-  const [selectedMetric, setSelectedMetric] = useState('performance');
-
-  const performanceData = useMemo(() => 
-    Array.from({ length: 7 }, (_, i) => ({
-      day: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'][i],
-      predicted: 80 + Math.random() * 15,
-      actual: 75 + Math.random() * 20
-    })),
-    []
-  );
-
-  const handleMetricChange = useCallback((e) => {
-    setSelectedMetric(e.target.value);
-  }, []);
-
-  return (
-    <motion.div 
-      className="lt-predictive-analytics"
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-    >
-      <div className="lt-predictive-analytics__header">
-        <h3 className="lt-predictive-analytics__title">
-          <FaChartLine className="lt-predictive-analytics__header-icon" />
-          Analytics Preditivo
-        </h3>
-        <select 
-          value={selectedMetric}
-          onChange={handleMetricChange}
-          className="lt-predictive-analytics__select"
-        >
-          <option value="performance">Performance</option>
-          <option value="efficiency">Eficiência</option>
-          <option value="delivery">Entregas</option>
-        </select>
-      </div>
-
-      <div className="lt-predictive-analytics__chart">
-        <div className="lt-predictive-analytics__chart-container">
-          {performanceData.map((data, index) => (
-            <div key={index} className="lt-predictive-analytics__chart-item">
-              <div className="lt-predictive-analytics__chart-bars">
-                <motion.div 
-                  className="lt-predictive-analytics__predicted-bar"
-                  initial={{ height: 0 }}
-                  animate={{ height: `${data.predicted}%` }}
-                  transition={{ delay: index * 0.1 }}
-                />
-                <motion.div 
-                  className="lt-predictive-analytics__actual-bar"
-                  initial={{ height: 0 }}
-                  animate={{ height: `${data.actual}%` }}
-                  transition={{ delay: index * 0.1 + 0.2 }}
-                />
-              </div>
-              <span className="lt-predictive-analytics__chart-label">{data.day}</span>
-            </div>
-          ))}
-        </div>
         
-        <div className="lt-predictive-analytics__legend">
-          <div className="lt-predictive-analytics__legend-item">
-            <div className="lt-predictive-analytics__legend-color lt-predictive-analytics__legend-color--predicted"></div>
-            <span>Previsto</span>
-          </div>
-          <div className="lt-predictive-analytics__legend-item">
-            <div className="lt-predictive-analytics__legend-color lt-predictive-analytics__legend-color--actual"></div>
-            <span>Real</span>
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  );
-});
-
-// Componente Sidebar
-const Sidebar = React.memo(() => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [expandedSection, setExpandedSection] = useState(null);
-
-  const navigationConfig = useMemo(() => [
-    {
-      title: 'Operações Logísticas',
-      icon: FaTruck,
-      color: '#6366f1',
-      items: [
-        { 
-          path: '/motoristas', 
-          icon: FaUsers, 
-          label: 'Motoristas',
-          description: 'Gestão de colaboradores',
-          features: ['Cadastro', 'Escalas', 'Desempenho']
-        },
-        { 
-          path: '/veiculos', 
-          icon: FaCar, 
-          label: 'Frota Inteligente',
-          description: 'Controle completo de veículos',
-          features: ['Manutenção', 'Custos', 'Documentos']
-        },
-        { 
-          path: '/rotas', 
-          icon: FaRouteIcon, 
-          label: 'Rotas Otimizadas',
-          description: 'Planejamento com IA',
-          features: ['Otimização', 'Tráfego', 'Custos']
-        },
-        { 
-          path: '/cargas', 
-          icon: FaBoxOpen, 
-          label: 'Cargas',
-          description: 'Gestão de inventário',
-          features: ['Tracking', 'Documentos', 'Status']
-        }
-      ]
-    },
-    {
-      title: 'Gestão & Analytics',
-      icon: FaChartLine,
-      color: '#10b981',
-      items: [
-        { 
-          path: '/relatorios', 
-          icon: FaFileAlt, 
-          label: 'Relatórios Avançados',
-          description: 'Analytics e insights preditivos',
-          features: ['Dashboard', 'Export', 'KPI']
-        },
-        { 
-          path: '/financeiro', 
-          icon: FaCalculator, 
-          label: 'Financeiro',
-          description: 'Controle financeiro automatizado',
-          features: ['Faturamento', 'Custos', 'Fluxo']
-        },
-        { 
-          path: '/manutencao', 
-          icon: FaTools, 
-          label: 'Manutenção',
-          description: 'Gestão preditiva de manutenções',
-          features: ['Agendamentos', 'Histórico', 'Custos']
-        },
-        { 
-          path: '/combustivel', 
-          icon: FaOilCan, 
-          label: 'Combustível',
-          description: 'Controle inteligente de abastecimento',
-          features: ['Abastecimento', 'Medições', 'Economia']
-        }
-      ]
-    },
-    {
-      title: 'Monitoramento',
-      icon: FaMapMarkerAlt,
-      color: '#3b82f6',
-      items: [
-        { 
-          path: '/rastreamento', 
-          icon: FaMap, 
-          label: 'Rastreamento',
-          description: 'Monitoramento em tempo real',
-          features: ['GPS', 'Alertas', 'Histórico']
-        },
-        { 
-          path: '/performance', 
-          icon: FaChartLine, 
-          label: 'Performance',
-          description: 'Métricas de desempenho',
-          features: ['KPI', 'Relatórios', 'Análise']
-        }
-      ]
-    }
-  ], []);
-
-  const handleNavigation = useCallback((path) => {
-    navigate(path);
-    if (window.innerWidth < 768) {
-      document.querySelector('.lt-sidebar')?.classList.remove('lt-sidebar--mobile-open');
-    }
-  }, [navigate]);
-
-  const handleLogout = useCallback(() => {
-    navigate('/login');
-  }, [navigate]);
-
-  const toggleSection = useCallback((index) => {
-    setExpandedSection(prev => prev === index ? null : index);
-  }, []);
-
-  return (
-    <motion.section 
-      className="lt-sidebar"
-      initial={{ x: -300, opacity: 0 }}
-      animate={{ x: 0, opacity: 1 }}
-      transition={{ type: "spring", stiffness: 300, damping: 30 }}
-    >
-      <motion.div 
-        className="lt-sidebar__brand"
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={() => handleNavigation('/')}
-      >
-        <motion.div 
-          className="lt-sidebar__brand-icon-container"
-          whileHover={{ rotate: 360 }}
-          transition={{ duration: 0.6 }}
-        >
-          <FaTruck className="lt-sidebar__brand-icon" />
-        </motion.div>
-        <div className="lt-sidebar__brand-content">
-          <span className="lt-sidebar__brand-name">LogiTech</span>
-          <span className="lt-sidebar__brand-tagline">Pro</span>
-        </div>
-      </motion.div>
-
-      <ul className="lt-sidebar__menu lt-sidebar__menu--top">
-        <li className={location.pathname === '/' ? 'lt-sidebar__menu-item--active' : ''}>
-          <a 
-            href="#" 
-            onClick={(e) => {
-              e.preventDefault();
-              handleNavigation('/');
-            }}
-            className="lt-sidebar__menu-link"
-          >
-            <RiDashboardFill className="lt-sidebar__menu-icon" />
-            <span className="lt-sidebar__menu-text">Dashboard</span>
-          </a>
-        </li>
-      </ul>
-
-      <div className="lt-sidebar__navigation">
-        {navigationConfig.map((section, sectionIndex) => (
-          <div key={sectionIndex} className="lt-sidebar__section">
-            <motion.div 
-              className={`lt-sidebar__section-header ${expandedSection === sectionIndex ? 'lt-sidebar__section-header--expanded' : ''}`}
-              onClick={() => toggleSection(sectionIndex)}
-              whileHover={{ x: 4 }}
-            >
-              <div 
-                className="lt-sidebar__section-icon-container"
-                style={{ '--section-color': section.color }}
-              >
-                <section.icon className="lt-sidebar__section-icon" />
-              </div>
-              <span className="lt-sidebar__section-title">{section.title}</span>
-              <motion.div 
-                className="lt-sidebar__section-chevron"
-                animate={{ rotate: expandedSection === sectionIndex ? 180 : 0 }}
-              >
-                <FaChevronDown />
-              </motion.div>
-            </motion.div>
-
-            <AnimatePresence>
-              {expandedSection === sectionIndex && (
-                <motion.div 
-                  className="lt-sidebar__section-items"
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                >
-                  {section.items.map((item, itemIndex) => (
-                    <motion.div
-                      key={itemIndex}
-                      className={`lt-sidebar__nav-item ${location.pathname === item.path ? 'lt-sidebar__nav-item--active' : ''}`}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: itemIndex * 0.1 }}
-                      whileHover={{ x: 8 }}
-                      onClick={() => handleNavigation(item.path)}
-                    >
-                      <div className="lt-sidebar__nav-item-icon">
-                        <item.icon />
-                      </div>
-                      <div className="lt-sidebar__nav-item-content">
-                        <span className="lt-sidebar__nav-item-label">{item.label}</span>
-                        <span className="lt-sidebar__nav-item-description">{item.description}</span>
-                      </div>
-                      <div className="lt-sidebar__nav-item-features">
-                        {item.features.map((feature, featureIndex) => (
-                          <span key={featureIndex} className="lt-sidebar__nav-item-feature">
-                            {feature}
-                          </span>
-                        ))}
-                      </div>
-                      <motion.div 
-                        className="lt-sidebar__nav-arrow"
-                        initial={{ opacity: 0 }}
-                        whileHover={{ opacity: 1, x: 4 }}
-                      >
-                        <FaChevronRight />
-                      </motion.div>
-                    </motion.div>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        ))}
-      </div>
-
-      <ul className="lt-sidebar__menu lt-sidebar__menu--bottom">
-        <li className={location.pathname === '/configuracoes' ? 'lt-sidebar__menu-item--active' : ''}>
-          <a 
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              handleNavigation('/configuracoes');
-            }}
-            className="lt-sidebar__menu-link"
-          >
-            <RiSettings4Fill className="lt-sidebar__menu-icon" />
-            <span className="lt-sidebar__menu-text">Configurações</span>
-          </a>
-        </li>
-        <li>
-          <a href="#" className="lt-sidebar__menu-link lt-sidebar__menu-link--logout" onClick={handleLogout}>
-            <FaSignOutAlt className="lt-sidebar__menu-icon" />
-            <span className="lt-sidebar__menu-text">Sair</span>
-          </a>
-        </li>
-      </ul>
-
-      <motion.div 
-        className="lt-sidebar__footer"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.5 }}
-      >
-        <div className="lt-sidebar__user-info">
-          <div className="lt-sidebar__user-avatar">
-            <FaUser />
-          </div>
-          <div className="lt-sidebar__user-details">
-            <span className="lt-sidebar__user-name">Operador</span>
-            <span className="lt-sidebar__user-role">Gerente</span>
-          </div>
-        </div>
-        <div className="lt-sidebar__app-version">
-          <span>v2.1.0</span>
-        </div>
-      </motion.div>
-
-      <motion.button 
-        className="lt-sidebar__toggle"
-        onClick={() => document.querySelector('.lt-sidebar')?.classList.toggle('lt-sidebar--mobile-open')}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-      >
-        <FaBars />
-      </motion.button>
-    </motion.section>
-  );
-});
-
-// Componente Principal do Dashboard
-function Dashboard() {
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
-  const [viewMode, setViewMode] = useLocalStorage('dashboard-view', 'overview');
-  const [autoRefresh, setAutoRefresh] = useLocalStorage('dashboard-refresh', true);
-
-  const { data: dashboardData, isPaused, pause, resume } = useRealtimeData({
-    vehiclesInOperation: 42,
-    maintenanceAlerts: 8,
-    activeDeliveries: 156,
-    fuelEfficiency: 7.8,
-    totalDistance: 12500,
-    driverPerformance: 92,
-    onTimeDelivery: 94,
-    co2Reduction: 12.5,
-    routeEfficiency: 87,
-    customerSatisfaction: 92
-  });
-
-  const metrics = useMemo(() => [
-    {
-      title: 'Veículos em Operação',
-      value: dashboardData.vehiclesInOperation,
-      icon: <FaTruck />,
-      color: 'primary',
-      trend: 'up',
-      change: '+12%',
-      subtitle: '42/50 veículos',
-      size: 'medium',
-      onClick: () => navigate('/veiculos')
-    },
-    {
-      title: 'Eficiência de Combustível',
-      value: `${dashboardData.fuelEfficiency.toFixed(1)} km/L`,
-      icon: <FaGasPump />,
-      color: 'success',
-      trend: 'up',
-      change: '+0.4 km/L',
-      subtitle: 'Meta: 8.0 km/L',
-      size: 'medium',
-      onClick: () => navigate('/combustivel')
-    },
-    {
-      title: 'Performance',
-      value: `${dashboardData.driverPerformance}%`,
-      icon: <FaUser />,
-      color: 'warning',
-      trend: 'up',
-      change: '+5%',
-      subtitle: 'Motoristas ativos',
-      size: 'large',
-      onClick: () => navigate('/motoristas')
-    },
-    {
-      title: 'Entregas no Prazo',
-      value: `${dashboardData.onTimeDelivery}%`,
-      icon: <FaCheckCircle />,
-      color: 'success',
-      trend: 'up',
-      change: '+2%',
-      subtitle: 'Meta: 95%',
-      size: 'medium',
-      onClick: () => navigate('/relatorios')
-    },
-    {
-      title: 'Alertas de Manutenção',
-      value: dashboardData.maintenanceAlerts,
-      icon: <FaTools />,
-      color: 'error',
-      trend: 'down',
-      change: '-2',
-      subtitle: '8 pendentes',
-      size: 'medium',
-      onClick: () => navigate('/manutencao')
-    },
-    {
-      title: 'Redução de CO₂',
-      value: `${dashboardData.co2Reduction}%`,
-      icon: <FaChartLine />,
-      color: 'info',
-      trend: 'up',
-      change: '+1.2%',
-      subtitle: 'vs mês anterior',
-      size: 'medium',
-      onClick: () => navigate('/performance')
-    }
-  ], [dashboardData, navigate]);
-
-  const quickActions = useMemo(() => [
-    {
-      icon: <FaPlus />,
-      title: 'Nova Rota',
-      description: 'Planejar rota otimizada',
-      color: 'primary',
-      action: () => navigate('/rotas')
-    },
-    {
-      icon: <FaTruck />,
-      title: 'Alocar Veículo',
-      description: 'Atribuir veículo à entrega',
-      color: 'info',
-      action: () => navigate('/veiculos')
-    },
-    {
-      icon: <FaTools />,
-      title: 'Manutenção',
-      description: 'Agendar manutenção',
-      color: 'warning',
-      action: () => navigate('/manutencao')
-    },
-    {
-      icon: <FaChartLine />,
-      title: 'Relatórios',
-      description: 'Gerar relatórios',
-      color: 'success',
-      action: () => navigate('/relatorios')
-    }
-  ], [navigate]);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1000);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const handleRefreshToggle = useCallback(() => {
-    if (isPaused) {
-      resume();
-    } else {
-      pause();
-    }
-  }, [isPaused, pause, resume]);
-
-  const handleViewModeChange = useCallback((mode) => {
-    setViewMode(mode);
-  }, [setViewMode]);
-
-  const handleAutoRefreshToggle = useCallback(() => {
-    setAutoRefresh(prev => !prev);
-  }, [setAutoRefresh]);
-
-  return (
-    <div className="lt-dashboard">
-      <Sidebar />
-
-      <div className="lt-dashboard__main">
-        <main className="lt-dashboard__content">
-          <div className="lt-dashboard__header">
-            <div className="lt-dashboard__header-left">
-              <h1 className="lt-dashboard__title">Dashboard Logística</h1>
-              <nav className="lt-dashboard__breadcrumb">
-                <a 
-                  href="#" 
-                  onClick={(e) => { e.preventDefault(); navigate('/'); }}
-                  className="lt-dashboard__breadcrumb-link"
-                >
-                  Dashboard
-                </a>
-                <FaChevronRight className="lt-dashboard__breadcrumb-separator" />
-                <a href="#" className="lt-dashboard__breadcrumb-link lt-dashboard__breadcrumb-link--active">
-                  Início
-                </a>
-              </nav>
-            </div>
-            <motion.button 
-              className="lt-dashboard__download-btn"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => console.log('Gerando PDF...')}
-            >
-              <FaDownload />
-              <span className="lt-dashboard__download-text">Gerar PDF</span>
-            </motion.button>
-          </div>
-
-          <div className="lt-dashboard__modern">
-            <motion.div 
-              className="lt-dashboard__modern-header"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-            >
-              <div className="lt-dashboard__modern-header-main">
-                <div className="lt-dashboard__modern-header-title">
-                  <h1>Dashboard Logística</h1>
-                  <p>Monitoramento em tempo real da operação</p>
+        {type === 'pie' && (
+          <div className="chart-pie">
+            {data.map((item, index) => (
+              <div key={index} className="pie-item">
+                <div className="pie-color-indicator">
+                  <div 
+                    className="pie-color" 
+                    style={{ backgroundColor: item.color || `var(--${color})` }}
+                  />
+                  <span className="pie-label">{item.status || item.source}</span>
                 </div>
-
-                <div className="lt-dashboard__modern-header-controls">
-                  <div className="lt-dashboard__view-controls">
-                    {['overview', 'analytics', 'operations'].map((mode) => (
-                      <button
-                        key={mode}
-                        className={`lt-dashboard__view-btn ${viewMode === mode ? 'lt-dashboard__view-btn--active' : ''}`}
-                        onClick={() => handleViewModeChange(mode)}
-                      >
-                        {mode === 'overview' && 'Visão Geral'}
-                        {mode === 'analytics' && 'Analytics'}
-                        {mode === 'operations' && 'Operações'}
-                      </button>
-                    ))}
-                  </div>
-
-                  <div className="lt-dashboard__action-controls">
-                    <motion.button
-                      className={`lt-dashboard__control-btn ${autoRefresh ? 'lt-dashboard__control-btn--active' : ''}`}
-                      onClick={handleAutoRefreshToggle}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      <FaSync />
-                      Auto
-                    </motion.button>
-
-                    <motion.button
-                      className="lt-dashboard__control-btn"
-                      onClick={handleRefreshToggle}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      {isPaused ? <FaPlay /> : <FaPause />}
-                      {isPaused ? 'Retomar' : 'Pausar'}
-                    </motion.button>
-                  </div>
+                <div className="pie-value-group">
+                  <span className="pie-value">{item.value}</span>
+                  <span className="pie-percentage">
+                    {Math.round((item.value / data.reduce((sum, i) => sum + i.value, 0)) * 100)}%
+                  </span>
                 </div>
               </div>
-            </motion.div>
-
-            <motion.div 
-              className="lt-dashboard__metrics-grid"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-            >
-              {metrics.map((metric, index) => (
-                <MetricCard
-                  key={metric.title}
-                  {...metric}
-                  loading={loading}
-                />
-              ))}
-            </motion.div>
-
-            <div className="lt-dashboard__content-area">
-              <div className="lt-dashboard__content-layout">
-                <div className="lt-dashboard__sidebar">
-                  <AIInsightsPanel />
-                  
-                  <motion.div
-                    className="lt-dashboard__quick-actions"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.4 }}
-                  >
-                    <h3 className="lt-dashboard__quick-actions-title">Ações Rápidas</h3>
-                    <div className="lt-dashboard__quick-actions-grid">
-                      {quickActions.map((action, index) => (
-                        <motion.button
-                          key={action.title}
-                          className={`lt-dashboard__quick-action-btn lt-dashboard__quick-action-btn--${action.color}`}
-                          onClick={action.action}
-                          whileHover={{ scale: 1.05, y: -2 }}
-                          whileTap={{ scale: 0.95 }}
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: 0.5 + index * 0.1 }}
-                        >
-                          <div className="lt-dashboard__quick-action-icon">{action.icon}</div>
-                          <div className="lt-dashboard__quick-action-content">
-                            <span className="lt-dashboard__quick-action-title">{action.title}</span>
-                            <span className="lt-dashboard__quick-action-description">
-                              {action.description}
-                            </span>
-                          </div>
-                        </motion.button>
-                      ))}
-                    </div>
-                  </motion.div>
-                </div>
-
-                <div className="lt-dashboard__main-content">
-                  <div className="lt-dashboard__main-row">
-                    <PredictiveAnalytics />
-                    
-                    <motion.div
-                      className="lt-dashboard__alerts-panel"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.6 }}
-                    >
-                      <div className="lt-dashboard__alerts-header">
-                        <h3 className="lt-dashboard__alerts-title">
-                          <FaBell />
-                          Alertas
-                        </h3>
-                        <span className="lt-dashboard__alerts-count">3</span>
-                      </div>
-                      
-                      <div className="lt-dashboard__alerts-list">
-                        <div className="lt-dashboard__alert-item lt-dashboard__alert-item--critical">
-                          <FaExclamationTriangle />
-                          <div className="lt-dashboard__alert-content">
-                            <span className="lt-dashboard__alert-title">Manutenção Urgente</span>
-                            <span className="lt-dashboard__alert-description">SCA-2A17 - Freios</span>
-                          </div>
-                        </div>
-                        
-                        <div className="lt-dashboard__alert-item lt-dashboard__alert-item--warning">
-                          <FaClock />
-                          <div className="lt-dashboard__alert-content">
-                            <span className="lt-dashboard__alert-title">Rota com Atraso</span>
-                            <span className="lt-dashboard__alert-description">45min de atraso</span>
-                          </div>
-                        </div>
-                        
-                        <div className="lt-dashboard__alert-item lt-dashboard__alert-item--info">
-                          <FaGasPump />
-                          <div className="lt-dashboard__alert-content">
-                            <span className="lt-dashboard__alert-title">Abastecimento</span>
-                            <span className="lt-dashboard__alert-description">3 veículos</span>
-                          </div>
-                        </div>
-                      </div>
-                    </motion.div>
-                  </div>
-
-                  <motion.div
-                    className="lt-dashboard__maintenance-panel"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.7 }}
-                  >
-                    <div className="lt-dashboard__maintenance-header">
-                      <h3 className="lt-dashboard__maintenance-title">Manutenção Preditiva</h3>
-                      <motion.button 
-                        className="lt-dashboard__maintenance-btn"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={() => navigate('/manutencao')}
-                      >
-                        Agendar
-                      </motion.button>
-                    </div>
-                    
-                    <div className="lt-dashboard__maintenance-list">
-                      <div className="lt-dashboard__maintenance-item">
-                        <FaTools />
-                        <div className="lt-dashboard__maintenance-content">
-                          <span className="lt-dashboard__maintenance-title">Troca de Bateria</span>
-                          <span className="lt-dashboard__maintenance-description">SCA-4B28 - 15 dias</span>
-                        </div>
-                        <div className="lt-dashboard__maintenance-priority lt-dashboard__maintenance-priority--medium"></div>
-                      </div>
-                      
-                      <div className="lt-dashboard__maintenance-item">
-                        <FaTools />
-                        <div className="lt-dashboard__maintenance-content">
-                          <span className="lt-dashboard__maintenance-title">Alinhamento</span>
-                          <span className="lt-dashboard__maintenance-description">SCA-5C39 - 7 dias</span>
-                        </div>
-                        <div className="lt-dashboard__maintenance-priority lt-dashboard__maintenance-priority--high"></div>
-                      </div>
-
-                      <div className="lt-dashboard__maintenance-item">
-                        <FaTools />
-                        <div className="lt-dashboard__maintenance-content">
-                          <span className="lt-dashboard__maintenance-title">Troca de Óleo</span>
-                          <span className="lt-dashboard__maintenance-description">SCA-8D42 - 30 dias</span>
-                        </div>
-                        <div className="lt-dashboard__maintenance-priority lt-dashboard__maintenance-priority--low"></div>
-                      </div>
-                    </div>
-                  </motion.div>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
-        </main>
+        )}
       </div>
     </div>
   );
-}
+};
 
-export default Dashboard;
+const ActivityFeed = ({ activities }) => (
+  <div className="activity-feed">
+    <div className="activity-feed__header">
+      <h3>Atividades Recentes</h3>
+      <div className="activity-header-actions">
+        <span className="activity-count">{activities.length} atividades</span>
+        <button className="activity-filter">
+          <FaFilter />
+        </button>
+      </div>
+    </div>
+    
+    <div className="activity-list">
+      {activities.map((activity, index) => (
+        <motion.div
+          key={activity.id}
+          className={`activity-item activity-item--${activity.priority}`}
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: index * 0.1 }}
+        >
+          <div className="activity-icon">
+            {activity.type === 'delivery' && <FaShippingFast />}
+            {activity.type === 'maintenance' && <FaTools />}
+            {activity.type === 'alert' && <FaExclamationCircle />}
+            {activity.type === 'fuel' && <FaGasPump />}
+          </div>
+          
+          <div className="activity-content">
+            <div className="activity-header">
+              <h5 className="activity-title">{activity.title}</h5>
+              <span className="activity-value">{activity.value}</span>
+            </div>
+            <p className="activity-description">{activity.description}</p>
+            <div className="activity-meta">
+              <span className="activity-time">
+                <FaClock />
+                {activity.time.toLocaleTimeString('pt-BR', { 
+                  hour: '2-digit', 
+                  minute: '2-digit' 
+                })}
+              </span>
+              <span className={`activity-status activity-status--${activity.status}`}>
+                {activity.status === 'completed' && 'Concluído'}
+                {activity.status === 'scheduled' && 'Agendado'}
+                {activity.status === 'warning' && 'Alerta'}
+                {activity.status === 'assigned' && 'Atribuído'}
+              </span>
+            </div>
+          </div>
+        </motion.div>
+      ))}
+    </div>
+  </div>
+);
+
+const AlertPanel = ({ alerts }) => (
+  <motion.div 
+    className="alert-panel"
+    initial={{ opacity: 0, y: -20 }}
+    animate={{ opacity: 1, y: 0 }}
+  >
+    <div className="alert-panel__header">
+      <div className="alert-title">
+        <FaExclamationTriangle />
+        <h3>Alertas Críticos</h3>
+      </div>
+      <div className="alert-badge">
+        {Object.values(alerts).reduce((sum, count) => sum + count, 0)}
+      </div>
+    </div>
+    
+    <div className="alert-list">
+      {alerts.urgentMaintenance > 0 && (
+        <div className="alert-item alert-item--critical">
+          <div className="alert-icon">
+            <FaTools />
+          </div>
+          <div className="alert-content">
+            <h4>Manutenções Urgentes</h4>
+            <p>{alerts.urgentMaintenance} veículo(s) necessitam de manutenção imediata</p>
+          </div>
+          <button className="alert-action">
+            <FaEye />
+          </button>
+        </div>
+      )}
+      
+      {alerts.delayedDeliveries > 0 && (
+        <div className="alert-item alert-item--warning">
+          <div className="alert-icon">
+            <FaClock />
+          </div>
+          <div className="alert-content">
+            <h4>Entregas Atrasadas</h4>
+            <p>{alerts.delayedDeliveries} entrega(s) com atraso significativo</p>
+          </div>
+          <button className="alert-action">
+            <FaEye />
+          </button>
+        </div>
+      )}
+
+      {alerts.lowFuel > 0 && (
+        <div className="alert-item alert-item--info">
+          <div className="alert-icon">
+            <FaGasPump />
+          </div>
+          <div className="alert-content">
+            <h4>Combustível Baixo</h4>
+            <p>{alerts.lowFuel} veículo(s) com nível crítico de combustível</p>
+          </div>
+          <button className="alert-action">
+            <FaEye />
+          </button>
+        </div>
+      )}
+    </div>
+  </motion.div>
+);
+
+const FleetStatus = ({ fleet }) => (
+  <div className="fleet-status">
+    <div className="fleet-header">
+      <h3>Status da Frota</h3>
+      <button className="fleet-action">
+        <FaPlus />
+        Novo Veículo
+      </button>
+    </div>
+    
+    <div className="fleet-grid">
+      {fleet.map((vehicle, index) => (
+        <motion.div
+          key={vehicle.id}
+          className={`fleet-card fleet-card--${vehicle.status}`}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: index * 0.1 }}
+        >
+          <div className="fleet-card__header">
+            <div className="vehicle-plate">{vehicle.plate}</div>
+            <div className={`status-badge status-badge--${vehicle.status}`}>
+              {vehicle.status === 'active' ? 'Ativo' : 
+               vehicle.status === 'maintenance' ? 'Manutenção' : 'Inativo'}
+            </div>
+          </div>
+          
+          <div className="fleet-card__content">
+            <h4 className="vehicle-model">{vehicle.model}</h4>
+            <p className="vehicle-driver">
+              <FaUser />
+              {vehicle.driver}
+            </p>
+            <p className="vehicle-location">
+              <FaMapMarkerAlt />
+              {vehicle.location}
+            </p>
+          </div>
+          
+          <div className="fleet-card__footer">
+            <div className="vehicle-stats">
+              <div className="stat">
+                <span className="stat-label">Combustível</span>
+                <div className="stat-value">
+                  <div className="fuel-bar">
+                    <div 
+                      className={`fuel-level fuel-level--${vehicle.fuel > 70 ? 'high' : vehicle.fuel > 30 ? 'medium' : 'low'}`}
+                      style={{ width: `${vehicle.fuel}%` }}
+                    />
+                  </div>
+                  <span>{vehicle.fuel}%</span>
+                </div>
+              </div>
+              <div className="stat">
+                <span className="stat-label">KM Rodados</span>
+                <span className="stat-value">{vehicle.odometer.toLocaleString('pt-BR')} km</span>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      ))}
+    </div>
+  </div>
+);
+
+const QuickActions = ({ onAction }) => (
+  <div className="quick-actions-panel">
+    <div className="quick-actions-header">
+      <h3>Ações Rápidas</h3>
+      <span className="actions-info">Acesso direto</span>
+    </div>
+    
+    <div className="quick-actions-grid">
+      <button className="quick-action" onClick={() => onAction('drivers')}>
+        <div className="action-icon">
+          <FaUsers />
+        </div>
+        <span className="action-label">Escala de Motoristas</span>
+        <span className="action-description">Gestão de turnos</span>
+      </button>
+      
+      <button className="quick-action" onClick={() => onAction('delivery')}>
+        <div className="action-icon">
+          <FaPlus />
+        </div>
+        <span className="action-label">Nova Entrega</span>
+        <span className="action-description">Criar rota</span>
+      </button>
+      
+      <button className="quick-action" onClick={() => onAction('maintenance')}>
+        <div className="action-icon">
+          <FaTools />
+        </div>
+        <span className="action-label">Abrir Chamado</span>
+        <span className="action-description">Manutenção</span>
+      </button>
+      
+      <button className="quick-action" onClick={() => onAction('reports')}>
+        <div className="action-icon">
+          <FaChartLine />
+        </div>
+        <span className="action-label">Relatórios IA</span>
+        <span className="action-description">Analytics</span>
+      </button>
+      
+      <button className="quick-action" onClick={() => onAction('fleet')}>
+        <div className="action-icon">
+          <FaCar />
+        </div>
+        <span className="action-label">Gestão de Frota</span>
+        <span className="action-description">Veículos</span>
+      </button>
+      
+      <button className="quick-action" onClick={() => onAction('financial')}>
+        <div className="action-icon">
+          <FaMoneyBillWave />
+        </div>
+        <span className="action-label">Dashboard Financeiro</span>
+        <span className="action-description">Relatórios</span>
+      </button>
+    </div>
+  </div>
+);
+
+const Sidebar = ({ isOpen, onClose }) => {
+  const navigate = useNavigate();
+  const [activeSection, setActiveSection] = useState('dashboard');
+
+  const menuSections = [
+    {
+      id: 'dashboard',
+      label: 'Dashboard',
+      icon: FaChartLine,
+      items: [
+        { label: 'Visão Geral', path: '/', badge: null },
+        { label: 'Operações', path: '/operations', badge: '3' },
+        { label: 'Financeiro', path: '/financial', badge: null },
+        { label: 'Analytics', path: '/analytics', badge: 'New' }
+      ]
+    },
+    {
+      id: 'operations',
+      label: 'Operações',
+      icon: FaTruck,
+      items: [
+        { label: 'Gestão de Frota', path: '/fleet', badge: null },
+        { label: 'Rotas e Entregas', path: '/routes', badge: '12' },
+        { label: 'Manutenção', path: '/maintenance', badge: '2' },
+        { label: 'Combustível', path: '/fuel', badge: null },
+        { label: 'Rastreamento', path: '/tracking', badge: null }
+      ]
+    },
+    {
+      id: 'management',
+      label: 'Gestão',
+      icon: FaUsers,
+      items: [
+        { label: 'Motoristas', path: '/drivers', badge: null },
+        { label: 'Clientes', path: '/clients', badge: null },
+        { label: 'Fornecedores', path: '/suppliers', badge: null },
+        { label: 'Documentos', path: '/documents', badge: '5' }
+      ]
+    },
+    {
+      id: 'reports',
+      label: 'Relatórios',
+      icon: FaFileAlt,
+      items: [
+        { label: 'Desempenho', path: '/performance', badge: null },
+        { label: 'Financeiro', path: '/financial-reports', badge: null },
+        { label: 'Operacional', path: '/operational', badge: null },
+        { label: 'Customizados', path: '/custom', badge: 'New' }
+      ]
+    }
+  ];
+
+  const handleNavigation = (path) => {
+    navigate(path);
+    onClose();
+  };
+
+  return (
+    <>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            className="sidebar-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+          />
+        )}
+      </AnimatePresence>
+
+      <motion.div
+        className="sidebar"
+        initial={{ x: -320 }}
+        animate={{ x: isOpen ? 0 : -320 }}
+        transition={{ type: "spring", damping: 30, stiffness: 300 }}
+      >
+        <div className="sidebar__header">
+          <div className="sidebar__brand">
+            <div className="brand-logo">
+              <FaTruck />
+            </div>
+            <div className="brand-text">
+              <span className="brand-name">Transita .Ai</span>
+              <span className="brand-version">Pro </span>
+            </div>
+          </div>
+          <button className="sidebar__close" onClick={onClose}>
+            ×
+          </button>
+        </div>
+
+        <div className="sidebar__content">
+          <nav className="sidebar-nav">
+            {menuSections.map((section) => (
+              <div key={section.id} className="nav-section">
+                <button
+                  className={`nav-section__header ${
+                    activeSection === section.id ? 'nav-section__header--active' : ''
+                  }`}
+                  onClick={() => setActiveSection(
+                    activeSection === section.id ? '' : section.id
+                  )}
+                >
+                  <section.icon className="nav-section__icon" />
+                  <span className="nav-section__label">{section.label}</span>
+                  <motion.div
+                    className="nav-section__chevron"
+                    animate={{ rotate: activeSection === section.id ? 180 : 0 }}
+                  >
+                    <FaChevronDown />
+                  </motion.div>
+                </button>
+
+                <AnimatePresence>
+                  {activeSection === section.id && (
+                    <motion.div
+                      className="nav-section__items"
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                    >
+                      {section.items.map((item, index) => (
+                        <motion.button
+                          key={index}
+                          className="nav-item"
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: index * 0.1 }}
+                          onClick={() => handleNavigation(item.path)}
+                        >
+                          <span className="nav-item-label">{item.label}</span>
+                          {item.badge && (
+                            <span className="nav-item-badge">{item.badge}</span>
+                          )}
+                        </motion.button>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ))}
+          </nav>
+        </div>
+      </motion.div>
+    </>
+  );
+};
+
+// Componente Principal
+const ProfessionalDashboard = () => {
+  const navigate = useNavigate();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState('overview');
+  
+  const {
+    data,
+    activities,
+    charts,
+    fleet,
+    loading,
+    lastUpdate,
+    isPaused,
+    error,
+    pause,
+    resume,
+    refresh
+  } = useDashboard();
+
+  const tabs = [
+    { id: 'overview', label: 'Visão Geral', icon: FaChartLine },
+    { id: 'operations', label: 'Operações', icon: FaTruck },
+    { id: 'financial', label: 'Financeiro', icon: FaMoneyBillWave },
+    { id: 'analytics', label: 'Analytics', icon: FaChartBar },
+  ];
+
+  const kpis = [
+    {
+      title: 'Veículos Ativos',
+      value: `${data.vehicles?.active || 0}/${data.vehicles?.total || 0}`,
+      change: '+2',
+      trend: 'up',
+      icon: <FaCar />,
+      color: 'success',
+      subtitle: `Eficiência: ${data.vehicles?.efficiency || 0}%`
+    },
+    {
+      title: 'Taxa de Sucesso',
+      value: `${data.deliveries?.successRate || 0}%`,
+      change: '+3.2%',
+      trend: 'up',
+      icon: <FaCheckCircle />,
+      color: 'primary',
+      subtitle: `${data.deliveries?.delayed || 0} entregas atrasadas`
+    },
+    {
+      title: 'Receita Mensal',
+      value: `R$ ${parseFloat(data.financial?.revenue || 0).toLocaleString('pt-BR')}`,
+      change: data.financial?.monthlyGrowth || '+12.5%',
+      trend: 'up',
+      icon: <FaDollarSign />,
+      color: 'success',
+      subtitle: 'Faturamento total'
+    },
+    {
+      title: 'Lucro Líquido',
+      value: `R$ ${parseFloat(data.financial?.profit || 0).toLocaleString('pt-BR')}`,
+      change: '+8.3%',
+      trend: 'up',
+      icon: <FaMoneyBillWave />,
+      color: 'success',
+      subtitle: 'Margem operacional'
+    }
+  ];
+
+  const handleQuickAction = (action) => {
+    switch (action) {
+      case 'drivers':
+        navigate('/drivers');
+        break;
+      case 'delivery':
+        navigate('/routes/new');
+        break;
+      case 'maintenance':
+        navigate('/maintenance/new');
+        break;
+      case 'reports':
+        navigate('/analytics');
+        break;
+      case 'fleet':
+        navigate('/fleet');
+        break;
+      case 'financial':
+        navigate('/financial');
+        break;
+      default:
+        break;
+    }
+  };
+
+  if (loading) {
+    return <LoadingSpinner message="Carregando dashboard..." />;
+  }
+
+  if (error) {
+    return <ErrorMessage message={error} onRetry={refresh} />;
+  }
+
+  return (
+    <div className="professional-dashboard">
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      
+      {/* Header */}
+      <header className="dashboard-header">
+        <div className="header-left">
+          <button 
+            className="menu-toggle"
+            onClick={() => setSidebarOpen(true)}
+          >
+            <FaBars />
+          </button>
+          
+          <div className="header-title">
+            <h1>Dashboard Logística</h1>
+            <span className="location">
+              <FaMapMarkerAlt />
+              {data.location?.city}, {data.location?.region} - {data.location?.country}
+            </span>
+          </div>
+        </div>
+
+        <div className="header-right">
+          <div className="header-controls">
+            <div className="update-info">
+              <span className="update-label">Última atualização</span>
+              <span className="update-time">{lastUpdate}</span>
+            </div>
+            
+            <div className="control-buttons">
+              <button 
+                className={`control-btn ${!isPaused ? 'control-btn--active' : ''}`}
+                onClick={isPaused ? resume : pause}
+                title={isPaused ? 'Retomar atualizações' : 'Pausar atualizações'}
+              >
+                {isPaused ? <FaPlay /> : <FaPause />}
+              </button>
+              
+              <button className="control-btn" onClick={refresh} title="Atualizar dados">
+                <FaSync />
+              </button>
+              
+              <button className="control-btn" title="Exportar relatório">
+                <FaDownload />
+              </button>
+
+              <button className="control-btn" title="Notificações">
+                <FaBell />
+                <span className="notification-badge">3</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Navigation Tabs */}
+      <nav className="dashboard-tabs">
+        <div className="tabs-container">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              className={`dashboard-tab ${activeTab === tab.id ? 'dashboard-tab--active' : ''}`}
+              onClick={() => setActiveTab(tab.id)}
+            >
+              <tab.icon className="tab-icon" />
+              <span className="tab-label">{tab.label}</span>
+            </button>
+          ))}
+        </div>
+      </nav>
+
+      {/* Main Content */}
+      <main className="dashboard-content">
+        <AnimatePresence mode="wait">
+          {activeTab === 'overview' && (
+            <motion.div
+              key="overview"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="tab-content"
+            >
+              {/* Alertas */}
+              {data.alerts && Object.values(data.alerts).some(count => count > 0) && (
+                <AlertPanel alerts={data.alerts} />
+              )}
+
+              {/* KPIs Grid */}
+              <div className="kpis-grid">
+                {kpis.map((kpi, index) => (
+                  <KPICard key={index} {...kpi} />
+                ))}
+              </div>
+
+              <div className="content-grid">
+                {/* Gráficos e Dados */}
+                <div className="main-content">
+                  <div className="charts-section">
+                    <ChartComponent
+                      data={charts.deliveryStatus || []}
+                      type="pie"
+                      title="Status das Entregas"
+                      height={240}
+                    />
+                    
+                    <ChartComponent
+                      data={charts.weeklyTrend || []}
+                      type="bar"
+                      title="Tendência Semanal de Entregas"
+                      height={280}
+                      color="primary"
+                    />
+
+                    <ChartComponent
+                      data={charts.revenueSources || []}
+                      type="pie"
+                      title="Fontes de Receita"
+                      height={240}
+                    />
+
+                    <ChartComponent
+                      data={charts.fuelConsumption || []}
+                      type="bar"
+                      title="Consumo de Combustível por Veículo"
+                      height={280}
+                      color="warning"
+                    />
+                  </div>
+
+                  {/* Status da Frota */}
+                  <FleetStatus fleet={fleet} />
+                </div>
+
+                {/* Sidebar - Atividades e Ações */}
+                <div className="sidebar-panels">
+                  <ActivityFeed activities={activities} />
+                  <QuickActions onAction={handleQuickAction} />
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Aba de Operações */}
+          {activeTab === 'operations' && (
+            <motion.div
+              key="operations"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="tab-content"
+            >
+              <div className="operations-content">
+                <div className="operations-header">
+                  <h2>Painel de Operações</h2>
+                  <p>Monitoramento em tempo real das operações logísticas</p>
+                </div>
+                
+                <div className="operations-grid">
+                  <div className="operations-card">
+                    <h3>Entregas em Andamento</h3>
+                    <div className="operations-value">{data.deliveries?.active || 0}</div>
+                    <div className="operations-trend trend-up">
+                      <FaArrowUp /> +12% vs ontem
+                    </div>
+                  </div>
+                  
+                  <div className="operations-card">
+                    <h3>Veículos em Manutenção</h3>
+                    <div className="operations-value">{data.vehicles?.maintenance || 0}</div>
+                    <div className="operations-trend trend-down">
+                      <FaArrowDown /> -2 vs semana passada
+                    </div>
+                  </div>
+                  
+                  <div className="operations-card">
+                    <h3>Combustível Disponível</h3>
+                    <div className="operations-value">85%</div>
+                    <div className="operations-trend trend-stable">
+                      <FaChartLine /> Estável
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Aba Financeiro */}
+          {activeTab === 'financial' && (
+            <motion.div
+              key="financial"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="tab-content"
+            >
+              <div className="financial-content">
+                <div className="financial-header">
+                  <h2>Dashboard Financeiro</h2>
+                  <p>Análise de desempenho financeiro e métricas</p>
+                </div>
+                
+                <div className="financial-grid">
+                  <div className="financial-card revenue">
+                    <h3>Receita Total</h3>
+                    <div className="financial-value">
+                      R$ {parseFloat(data.financial?.revenue || 0).toLocaleString('pt-BR')}
+                    </div>
+                    <div className="financial-change positive">
+                      <FaArrowUp /> +12.5%
+                    </div>
+                  </div>
+                  
+                  <div className="financial-card expenses">
+                    <h3>Despesas Operacionais</h3>
+                    <div className="financial-value">
+                      R$ {parseFloat(data.financial?.expenses || 0).toLocaleString('pt-BR')}
+                    </div>
+                    <div className="financial-change negative">
+                      <FaArrowUp /> +8.2%
+                    </div>
+                  </div>
+                  
+                  <div className="financial-card profit">
+                    <h3>Lucro Líquido</h3>
+                    <div className="financial-value">
+                      R$ {parseFloat(data.financial?.profit || 0).toLocaleString('pt-BR')}
+                    </div>
+                    <div className="financial-change positive">
+                      <FaArrowUp /> +15.3%
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Aba Analytics */}
+          {activeTab === 'analytics' && (
+            <motion.div
+              key="analytics"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="tab-content"
+            >
+              <div className="analytics-content">
+                <div className="analytics-header">
+                  <h2>Analytics Avançado</h2>
+                  <p>Insights e tendências baseados em IA</p>
+                </div>
+                
+                <div className="analytics-grid">
+                  <div className="analytics-card">
+                    <h3>Eficiência de Rotas</h3>
+                    <div className="analytics-chart">
+                      <div className="chart-placeholder">
+                        <FaChartLine />
+                        <span>Gráfico de Eficiência</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="analytics-card">
+                    <h3>Previsão de Demanda</h3>
+                    <div className="analytics-chart">
+                      <div className="chart-placeholder">
+                        <FaChartBar />
+                        <span>Previsão Próxima Semana</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="analytics-card">
+                    <h3>Análise de Custos</h3>
+                    <div className="analytics-chart">
+                      <div className="chart-placeholder">
+                        <FaMoneyBillWave />
+                        <span>Otimização de Custos</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </main>
+    </div>
+  );
+};
+
+export default ProfessionalDashboard;

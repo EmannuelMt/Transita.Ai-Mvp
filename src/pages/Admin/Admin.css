@@ -1,0 +1,189 @@
+.admin-container {
+    .admin-page {
+
+        padding: 2rem;
+        /* Admin panel simple clean styles */
+
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .admin-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .tab-button {
+            background: transparent;
+            border: 1px solid transparent;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            color: #6b7280;
+        }
+
+        .tab-button.active {
+            background: #2563eb;
+            color: white;
+            border-color: #2563eb;
+        }
+
+        .admin-panel {
+            background: #fff;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 6px 18px rgba(18, 38, 63, 0.06);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .search-group {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .search-group input {
+            padding: 8px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px
+        }
+
+        .search-group button {
+            padding: 8px 10px;
+            border-radius: 6px;
+            background: #2563eb;
+            color: #fff;
+            border: none
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px
+        }
+
+        .admin-table th,
+        .admin-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #f3f4f6;
+            text-align: left
+        }
+
+        .admin-table th {
+            background: #fafafa;
+            font-weight: 600
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px
+        }
+
+        .btn {
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid #e5e7eb;
+            background: #fff;
+            cursor: pointer
+        }
+
+        .btn.danger {
+            background: #fee2e2;
+            border-color: #fca5a5
+        }
+
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px
+        }
+
+        .activity-item {
+            padding: 10px;
+            border: 1px solid #eef2f7;
+            border-radius: 6px;
+            background: #fff
+        }
+
+        .act-meta {
+            font-weight: 600
+        }
+
+        .act-body {
+            margin-top: 8px;
+            font-size: 12px;
+            background: #fafafa;
+            padding: 8px;
+            border-radius: 4px;
+            overflow: auto
+        }
+
+        .invite-form {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 12px
+        }
+
+        .invite-form input {
+            padding: 8px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px
+        }
+
+        .invite-form button {
+            padding: 8px 12px;
+            border-radius: 6px;
+            background: #10b981;
+            color: white;
+            border: none
+        }
+
+        @media (max-width: 768px) {
+            .admin-container {
+                padding: 12px
+            }
+
+            .panel-header {
+                flex-direction: column;
+                gap: 8px;
+                align-items: flex-start
+            }
+
+            .actions {
+                flex-direction: column
+            }
+        }
+
+        .invite-form button:disabled {
+
+            background: #4CAF50;
+            background: #9ca3af;
+
+            color: white;
+            cursor: not-allowed;
+
+            border: none;
+        }
+
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .invite-form button:hover {
+        background: #388E3C;
+    }
+
+    .invite-form button:disabled {
+        background: #cccccc;
+        cursor: not-allowed;
+    }

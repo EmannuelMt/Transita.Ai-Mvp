@@ -1,0 +1,85 @@
+.my-multas-card {
+    padding: 16px;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+    margin-bottom: 16px;
+}
+
+.my-multas-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.my-multa-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.my-multa-item .left {
+    display: flex;
+    flex-direction: column;
+}
+
+.my-multa-item .placa {
+    font-weight: 700;
+}
+
+.my-multa-item .descricao {
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.my-multa-item .right {
+    text-align: right;
+}
+
+.my-multa-item .valor {
+    color: #111;
+    font-weight: 600;
+}
+
+.status {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+}
+
+.status-pendente {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-paga {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-contestada {
+    background: #e2e3e5;
+    color: #6c757d;
+}
+
+.my-multas-actions {
+    margin-top: 12px;
+    text-align: center;
+}
+
+.my-multas-empty {
+    padding: 16px;
+    color: #666;
+}
+
+.inline-spinner {
+    color: #444;
+    font-weight: 600;
+}
+
+.end-list {
+    color: #888;
+    font-size: 0.9rem;
+}

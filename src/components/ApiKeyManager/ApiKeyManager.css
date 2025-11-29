@@ -1,0 +1,27 @@
+.api-key-manager {
+    padding: 1rem;
+}
+
+.key-box {
+    background: var(--surface-ground);
+    padding: 0.5rem;
+    border-radius: 6px;
+    font-family: monospace;
+    word-break: break-all
+}
+
+.actions {
+    margin-top: 0.5rem;
+    display: flex;
+    gap: 0.5rem
+}
+
+.actions button {
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px
+}
+
+.actions button.danger {
+    background: var(--red-500);
+    color: white
+}

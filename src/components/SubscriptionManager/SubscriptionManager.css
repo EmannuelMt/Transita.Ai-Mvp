@@ -1,0 +1,24 @@
+.subscription-manager {
+    padding: 1rem;
+}
+
+.subscription-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 0.75rem
+}
+
+.subscription-actions button {
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    border: 1px solid var(--surface-border);
+    background: var(--surface-card);
+    cursor: pointer
+}
+
+.subscription-actions button.danger {
+    background: var(--red-500);
+    color: white;
+    border-color: transparent
+}
